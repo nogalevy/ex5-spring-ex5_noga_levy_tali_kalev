@@ -1,13 +1,68 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Hello</title>
+    <title>Thymeleaf Example</title>
+    <!-- Include Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<h1 th:text="${greeting}"></h1>
-    <p>This is a test page.</p>
-    <p>Delete it from your repo before submission!</p>
+<div class="container mt-5">
+    <div class="d-flex justify-content-end mb-3">
+        <button class="btn btn-primary me-2">Profile</button>
+        <button class="btn btn-primary">My Likes</button>
+    </div>
+
+<!--    OPTION 1-->
+<!--    <div class="d-flex flex-column align-items-center justify-content-center align-self-center">-->
+<!--    <div class="flip-card">-->
+<!--        <div class="flip-card-inner">-->
+<!--            <div class="flip-card-front">-->
+<!--                <h1>A Joke</h1>-->
+<!--            </div>-->
+<!--            <div class="flip-card-back">-->
+<!--                <h1>Laugh</h1>-->
+<!--                <p>It's funny</p>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--        <button class="btn btn-primary mt-3">Generate New</button>-->
+<!--    </div>-->
+
+    <!--    OPTION 2-->
+
+    <div class="artboard">
+        <div class="d-flex flex-column align-items-center justify-content-center align-self-center">
+
+        <div class="card">
+
+            <div class="card__side card__side--back">
+                <div class="card__cover">
+                    <h4 class="card__heading">
+                        <span class="card__heading-span">The Joke</span>
+                    </h4>
+                </div>
+                <div class="card__details">
+                    <ul>
+                        <li>Its a funny one</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card__side card__side--front">
+                <div class="card__theme">
+                    <div class="card__theme-box">
+                        <p class="card__subject">Look at this joke</p>
+                        <p class="card__title">It's a Joke!</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+                <button class="btn btn-primary mt-3">Generate New</button>
+        </div>
+    </div>
+</div>
 
 </body>
 </html>
