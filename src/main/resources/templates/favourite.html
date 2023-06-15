@@ -8,8 +8,19 @@
 </head>
 <body>
     <div class="container">
-        <header th:insert="./index.html :: header"> </header>
+        <header th:insert="fragments/header.html :: header"> </header>
         <h1>Favourite</h1>
+
+        <!-- cards : -->
+        <div class="row row-cols-1 row-cols-md-2 g-4">
+            <div th:insert="fragments/card.html :: card"></div>
+            <div th:insert="fragments/card.html :: card"></div>
+            <div th:insert="fragments/card.html :: card"></div>
+            <div th:insert="fragments/card.html :: card"></div>
+            <div th:insert="fragments/card.html :: card"></div>
+            <div th:insert="fragments/card.html :: card"></div>
+            <div th:insert="fragments/card.html :: card"></div>
+        </div>
     </div>
 </body>
 </html>

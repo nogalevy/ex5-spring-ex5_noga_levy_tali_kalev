@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Header</title>
+</head>
+<body>
+    <!--  NOGA: https://www.baeldung.com/spring-thymeleaf-fragments -->
+    <div th:fragment="header" class="d-flex mb-3 p-5">
+        <a class="btn me-auto p-2" href="/" style="background-color: #575761; color: white;">Home</a>
+        <a class="btn p-2 me-3" href="/user" style="background-color: #575761; color: white;">Profile</a>
+        <a class="btn p-2" href="/favourite" style="background-color: #575761; color: white;">My Likes</a>
+    </div>
+</body>
+</html>

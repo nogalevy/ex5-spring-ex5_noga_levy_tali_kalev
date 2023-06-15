@@ -1,70 +1,44 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <title>Jokes</title>
     <!-- Include Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
-<div class="container">
-<!--  TODO: move to fragments folder - https://www.baeldung.com/spring-thymeleaf-fragments -->
-    <div th:fragment="header" class="d-flex mb-3 p-5">
-        <a class="btn me-auto p-2" href="/" style="background-color: #575761; color: white;">Home</a>
-        <a class="btn p-2 me-3" href="/user" style="background-color: #575761; color: white;">Profile</a>
-        <a class="btn p-2" href="/favourite" style="background-color: #575761; color: white;">My Likes</a>
-    </div>
+    <div class="container">
+        <header th:insert="fragments/header.html :: header"> </header>
 
-<!--    OPTION 1-->
-<!--    <div class="d-flex flex-column align-items-center justify-content-center align-self-center">-->
-<!--    <div class="flip-card">-->
-<!--        <div class="flip-card-inner">-->
-<!--            <div class="flip-card-front">-->
-<!--                <h1>A Joke</h1>-->
-<!--            </div>-->
-<!--            <div class="flip-card-back">-->
-<!--                <h1>Laugh</h1>-->
-<!--                <p>It's funny</p>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--        <button class="btn btn-primary mt-3">Generate New</button>-->
-<!--    </div>-->
+        <!--    OPTION 1-->
+        <!--    <div class="d-flex flex-column align-items-center justify-content-center align-self-center">-->
+        <!--    <div class="flip-card">-->
+        <!--        <div class="flip-card-inner">-->
+        <!--            <div class="flip-card-front">-->
+        <!--                <h1>A Joke</h1>-->
+        <!--            </div>-->
+        <!--            <div class="flip-card-back">-->
+        <!--                <h1>Laugh</h1>-->
+        <!--                <p>It's funny</p>-->
+        <!--            </div>-->
+        <!--        </div>-->
+        <!--    </div>-->
+        <!--        <button class="btn btn-primary mt-3">Generate New</button>-->
+        <!--    </div>-->
 
-    <!--    OPTION 2-->
+        <!--    OPTION 2-->
 
-    <div class="artboard">
-        <div class="d-flex flex-column align-items-center justify-content-center align-self-center">
-
-        <div class="card">
-            <div class="card__side card__side--back">
-                <div class="card__cover">
-                    <h4 class="card__heading">
-                        <span class="card__heading-span" style="color: #F9B872;">The Joke</span>
-                    </h4>
-                </div>
-<!--                <div class="card__details">-->
-<!--                    <ul>-->
-<!--                        <li>Its a funny one</li>-->
-<!--                    </ul>-->
-<!--                </div>-->
-            </div>
-
-            <div class="card__side card__side--front">
-                <div class="card__theme">
-                    <div class="card__theme-box">
-                        <p class="card__subject">Look at this joke</p>
-                        <p class="card__title">It's a Joke!</p>
-                    </div>
-                </div>
-            </div>
-
-        </div>
+        <div class="artboard">
+            <div class="d-flex flex-column align-items-center justify-content-center align-self-center">
+                <div th:insert="fragments/card.html :: card"></div>
                 <button class="btn mt-3" style="background-color: #575761; color: white;">Generate New</button>
+            </div>
         </div>
-    </div>
 
-</div>
+    </div>
 
 </body>
+
 </html>
