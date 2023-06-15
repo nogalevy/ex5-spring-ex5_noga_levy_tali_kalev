@@ -49,19 +49,19 @@ public class Default {
 
         if (responseEntity.getStatusCode().is2xxSuccessful()) {
             JokeApiResponse jokeApiResponse = responseEntity.getBody();
-            if (jokeApiResponse != null && !jokeApiResponse.isError()) {
-                List<Joke> jokes = jokeApiResponse.getJokes();
+            if (jokeApiResponse != null && !jokeApiResponse.error()) {
+                List<Joke> jokes = jokeApiResponse.jokes();
                 if (jokes != null) {
                     for (Joke joke : jokes) {
-                        if(joke.getJoke() != null){
+                        if(joke.joke() != null){
                             System.out.println("Printing one liner");
-                            System.out.println(joke.getJoke());
+                            System.out.println(joke.joke());
                         }
                         else{
                             System.out.println("Printing two parter");
 
-                            System.out.println(joke.getSetup());
-                            System.out.println(joke.getDelivery());
+                            System.out.println(joke.setup());
+                            System.out.println(joke.delivery());
                         }
                         System.out.println("-----");
                     }
