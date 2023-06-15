@@ -62,6 +62,12 @@
             <optional>true</optional>
         </dependency>
 
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <version>3.1.0</version>
+        </dependency>
+
         <!-- uncomment this if you are using h2 (in memory database) and comment out the dependency com.mysql above -->
 <!--        <dependency>-->
 <!--            <groupId>com.h2database</groupId>-->

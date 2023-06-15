@@ -5,6 +5,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpMethod;
+
+import java.util.List;
 
 /** this is a test controller, delete/replace it when you start working on your project */
 @Controller
@@ -32,9 +36,45 @@ public class Default {
         final String uri = "https://v2.jokeapi.dev/joke/Any?amount=4?format=json";
 
         RestTemplate restTemplate = new RestTemplate();
-        String result = restTemplate.getForObject(uri, String.class);
-//        NOGA:
-        System.out.println(result);
+//        String result = restTemplate.getForObject(uri, String.class);
+////        NOGA:
+//        System.out.println(result);
+
+        ResponseEntity<JokeApiResponse> responseEntity = restTemplate.exchange(
+                uri,
+                HttpMethod.GET,
+                null,
+                JokeApiResponse.class
+        );
+
+        if (responseEntity.getStatusCode().is2xxSuccessful()) {
+            JokeApiResponse jokeApiResponse = responseEntity.getBody();
+            if (jokeApiResponse != null && !jokeApiResponse.isError()) {
+                List<Joke> jokes = jokeApiResponse.getJokes();
+                if (jokes != null) {
+                    for (Joke joke : jokes) {
+                        if(joke.getJoke() != null){
+                            System.out.println("Printing one liner");
+                            System.out.println(joke.getJoke());
+                        }
+                        else{
+                            System.out.println("Printing two parter");
+
+                            System.out.println(joke.getSetup());
+                            System.out.println(joke.getDelivery());
+                        }
+                        System.out.println("-----");
+                    }
+                } else {
+                    System.out.println("No jokes found.");
+                }
+            } else {
+                System.out.println("Error response received from the API.");
+            }
+        } else {
+            System.out.println("Failed to fetch jokes from the API.");
+        }
+
         return true;
     }
 }

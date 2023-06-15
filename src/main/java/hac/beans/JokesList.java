@@ -2,6 +2,7 @@ package hac.beans;
 
 import java.util.ArrayList;
 
+//TALI: CURRENTLY UNUSED
 public class JokesList {
     private ArrayList<Joke> jokesList = new ArrayList<>();
 

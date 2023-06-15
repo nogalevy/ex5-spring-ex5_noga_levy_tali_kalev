@@ -1,9 +1,9 @@
 package hac.beans;
-
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
 
+//TALI: CURRENTLY UNUSED
 @Component
 public class Joke implements Serializable {
     private Integer id;
