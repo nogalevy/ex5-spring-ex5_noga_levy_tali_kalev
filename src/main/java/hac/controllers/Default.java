@@ -13,4 +13,14 @@ public class Default {
         model.addAttribute("greeting", "Hello World");
         return "index";
     }
+
+    @GetMapping("/favourite")
+    public String favourite(Model model) {
+        return "favourite";
+    }
+
+    @GetMapping("/user")
+    public String userProfile(Model model) {
+        return "userProfile";
+    }
 }
