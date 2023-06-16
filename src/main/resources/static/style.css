@@ -186,22 +186,22 @@ body {
     padding: 1rem 1.5rem;
     color: #fff;
 }
-.card__details {
-    font-family: "Inconsolata", monospace;
-    padding: 4rem 2rem;
-}
-.card__details ul {
-    list-style: none;
-    width: 80%;
-    margin: 0 auto;
-}
-.card__details ul li {
-    text-align: center;
-    font-size: 1.8rem;
-    padding: 1rem;
-}
-.card__details ul li:not(:last-child) {
-    border-bottom: 1px solid #eee;
+/*.card__details {*/
+/*    font-family: "Inconsolata", monospace;*/
+/*    padding: 4rem 2rem;*/
+/*}*/
+/*.card__details ul {*/
+/*    list-style: none;*/
+/*    width: 80%;*/
+/*    margin: 0 auto;*/
+/*}*/
+/*.card__details ul li {*/
+/*    text-align: center;*/
+/*    font-size: 1.8rem;*/
+/*    padding: 1rem;*/
+/*}*/
+/*.card__details ul li:not(:last-child) {*/
+/*    border-bottom: 1px solid #eee;*/
 }
 @media only screen and (max-width: 37.5em), only screen and (hover: none) {
     .card {

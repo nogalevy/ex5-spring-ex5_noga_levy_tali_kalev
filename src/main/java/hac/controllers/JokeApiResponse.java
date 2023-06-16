@@ -2,7 +2,11 @@ package hac.controllers;
 
 import java.util.List;
 
-public record JokeApiResponse(boolean error, int amount ,List<Joke> jokes) {
+public record JokeApiResponse(boolean error, int amount, List<Joke> jokes, String category, String type, String setup, String delivery, String joke, int id, boolean safe, String lang) {
+
+    public List<Joke> jokes() {
+        return jokes != null ? jokes : List.of(new Joke(category, type, setup, delivery, joke, id, safe, lang));
+    }
 }
 
 //public class JokeApiResponse {

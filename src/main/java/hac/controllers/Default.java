@@ -1,5 +1,6 @@
 package hac.controllers;
 
+import com.mysql.cj.x.protobuf.MysqlxDatatypes;
 import org.springframework.boot.Banner;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,10 +18,20 @@ public class Default {
 
     @GetMapping("/")
     public String index(Model model) {
-//        model.addAttribute("greeting", "Hello World");
         List<Joke> jokes = getJokesFromApi();
-        String joke = jokes.get(0).joke()==null ? jokes.get(0).setup() + '\n' + jokes.get(0).delivery()  : jokes.get(0).joke();
-        model.addAttribute("joke", joke);
+        if(jokes == null){
+            model.addAttribute("joke", "Something happened...no joke at the moment");
+            return "index";
+        }
+        Joke joke = jokes.get(0);
+        model.addAttribute("type", joke.type());
+        if(joke.type().equals("twopart")){
+            model.addAttribute("setup", joke.setup());
+            model.addAttribute("delivery", joke.delivery());
+        }
+        else{
+            model.addAttribute("joke", joke.joke());
+        }
         return "index";
     }
 
@@ -35,14 +46,25 @@ public class Default {
     }
 
     @GetMapping("/getJokes")
-    private @ResponseBody Boolean getJokes()
+    private String getJokes(Model model)
     {
-//        List<Joke> jokes = getJokesFromApi();
-        return true;
+        System.out.println("here");
+        List<Joke> jokes = getJokesFromApi();
+        if(jokes == null){
+            System.out.println("no jokes");
+            model.addAttribute("joke", "Something happened...no joke at the moment");
+            return "index";
+        }
+        String joke = jokes.get(0).joke()==null ? jokes.get(0).setup() + '\n' + jokes.get(0).delivery()  : jokes.get(0).joke();
+        model.addAttribute("joke", joke);
+        return "index";
     }
 
     private List<Joke> getJokesFromApi(){
-        final String uri = "https://v2.jokeapi.dev/joke/Any?amount=4?format=json";
+//        final String uri = "https://v2.jokeapi.dev/joke/Any?amount=4?format=json";
+//        final String uri = "https://v2.jokeapi.dev/joke/Any";
+//        final String uri = "https://v2.jokeapi.dev/joke/Any?blacklistFlags=nsfw,religious,political,racist,sexist,explicit&amount=2";
+        final String uri = "https://v2.jokeapi.dev/joke/Any?blacklistFlags=nsfw,religious,political,racist,sexist,explicit";
         RestTemplate restTemplate = new RestTemplate();
         List<Joke> jokes = null;
 
@@ -55,6 +77,8 @@ public class Default {
 
         if (responseEntity.getStatusCode().is2xxSuccessful()) {
             JokeApiResponse jokeApiResponse = responseEntity.getBody();
+            System.out.println(jokeApiResponse.error());
+            System.out.println(jokeApiResponse);
             if (jokeApiResponse != null && !jokeApiResponse.error()) {
                 jokes = jokeApiResponse.jokes();
                 if (jokes != null) {
@@ -76,6 +100,8 @@ public class Default {
                 }
             } else {
                 System.out.println("Error response received from the API.");
+                System.out.println(jokeApiResponse.error());
+                System.out.println(jokeApiResponse);
             }
         } else {
             System.out.println("Failed to fetch jokes from the API.");

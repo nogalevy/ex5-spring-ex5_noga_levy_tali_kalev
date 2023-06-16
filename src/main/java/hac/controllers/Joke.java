@@ -1,11 +1,5 @@
 package hac.controllers;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
-import java.util.ArrayList;
-import java.util.List;
-
-//@JsonIgnoreProperties(ignoreUnknown = true)
 public record Joke(String category, String type, String setup, String delivery, String joke, int id, boolean safe, String lang) { }
 
 //public class Joke{

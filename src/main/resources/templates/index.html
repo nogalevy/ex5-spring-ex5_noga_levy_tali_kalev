@@ -8,20 +8,20 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <script>
-    (function () {
-        document.addEventListener("DOMContentLoaded", () => {
-            //playBtn clicked
-            document.getElementById("generate").addEventListener("click", (event) => {
-                fetch('/getJokes')
-                .then((data)=>{
-                    console.log(data);
-                })
-                .catch((e)=>{
-                    console.log(e)
-                })
-            });
-        });
-    })();
+    // (function () {
+    //     document.addEventListener("DOMContentLoaded", () => {
+    //         //playBtn clicked
+    //         document.getElementById("generate").addEventListener("click", (event) => {
+    //             fetch('/getJokes')
+    //             .then((data)=>{
+    //                 console.log(data);
+    //             })
+    //             .catch((e)=>{
+    //                 console.log(e)
+    //             })
+    //         });
+    //     });
+    // })();
 </script>
 <body>
     <div class="container">
@@ -48,7 +48,7 @@
         <div class="artboard">
             <div class="d-flex flex-column align-items-center justify-content-center align-self-center">
                 <div th:insert="fragments/card.html :: card"></div>
-                <button id="generate" class="btn mt-3" style="background-color: #575761; color: white;">Generate New</button>
+                <a href="/getJokes" id="generate" class="btn mt-3" style="background-color: #575761; color: white;">Generate New</a>
             </div>
         </div>
 

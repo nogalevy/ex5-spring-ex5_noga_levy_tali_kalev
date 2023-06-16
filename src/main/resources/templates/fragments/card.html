@@ -8,10 +8,14 @@
 </head>
 <body>
 <div th:fragment="card" class="card">
-  <div class="card__side card__side--back">
+  <!--/*@thymesVar id="type" type=""*/-->
+  <div class="card__side card__side--back" >
     <div class="card__cover">
       <h4 class="card__heading">
-        <span class="card__heading-span" style="color: #F9B872;">The Joke</span>
+        <!--/*@thymesVar id="joke" type=""*/-->
+        <!--/*@thymesVar id="delivery" type=""*/-->
+        <span th:text="${delivery}"></span>
+<!--        <span class="card__heading-span" style="color: #F9B872; " th:text="${joke != null ? 'The Joke' : delivery}"></span>-->
       </h4>
     </div>
     <!--                <div class="card__details">-->
@@ -24,10 +28,11 @@
   <div class="card__side card__side--front">
     <div class="card__theme">
       <div class="card__theme-box">
-        <p class="card__subject">Look at this joke</p>
+<!--        <p class="card__subject">Look at this joke</p>-->
 <!--        /*@thymesVar id="joke" type=""*/-->
 <!--        <p th:text="${joke}" class="card__title"></p>-->
-        <p th:text="${joke}" ></p>
+        <!--/*@thymesVar id="setup" type=""*/-->
+        <p th:text="${type == 'twopart' ? setup : joke}" ></p>
       </div>
     </div>
   </div>
