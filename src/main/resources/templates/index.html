@@ -8,20 +8,29 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <script>
-    // (function () {
-    //     document.addEventListener("DOMContentLoaded", () => {
-    //         //playBtn clicked
-    //         document.getElementById("generate").addEventListener("click", (event) => {
-    //             fetch('/getJokes')
-    //             .then((data)=>{
-    //                 console.log(data);
-    //             })
-    //             .catch((e)=>{
-    //                 console.log(e)
-    //             })
-    //         });
-    //     });
-    // })();
+    document.addEventListener("DOMContentLoaded", () => {
+        document.getElementById("generate").addEventListener("click", () => {
+            fetch('/getJokes')
+                .then(response => response.json())
+                .then(jsonData => {
+                    console.log(jsonData);
+                    // Process the JSON data as needed
+
+                    // Example: Display the joke type and content in the browser
+                    // const jokeType = jsonData.type;
+                    // const jokeContent = jsonData.joke || `${jsonData.setup}\n${jsonData.delivery}`;
+                    //
+                    // const jokeTypeElement = document.getElementById("jokeType");
+                    // const jokeContentElement = document.getElementById("jokeContent");
+                    //
+                    // jokeTypeElement.textContent = `Type: ${jokeType}`;
+                    // jokeContentElement.textContent = jokeContent;
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+        });
+    });
 </script>
 <body>
     <div class="container">
@@ -48,7 +57,8 @@
         <div class="artboard">
             <div class="d-flex flex-column align-items-center justify-content-center align-self-center">
                 <div th:insert="fragments/card.html :: card"></div>
-                <a href="/getJokes" id="generate" class="btn mt-3" style="background-color: #575761; color: white;">Generate New</a>
+<!--                <a href="/getJokes" id="generate" class="btn mt-3" style="background-color: #575761; color: white;">Generate New</a>-->
+                <button id="generate" class="btn mt-3" style="background-color: #575761; color: white;">Generate New</button>
             </div>
         </div>
 

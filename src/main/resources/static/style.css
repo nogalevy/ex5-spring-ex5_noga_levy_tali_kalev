@@ -202,7 +202,7 @@ body {
 /*}*/
 /*.card__details ul li:not(:last-child) {*/
 /*    border-bottom: 1px solid #eee;*/
-}
+/*}*/
 @media only screen and (max-width: 37.5em), only screen and (hover: none) {
     .card {
         height: auto;

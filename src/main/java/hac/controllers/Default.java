@@ -1,14 +1,14 @@
 package hac.controllers;
 
-import com.mysql.cj.x.protobuf.MysqlxDatatypes;
-import org.springframework.boot.Banner;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpMethod;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.http.HttpStatus;
+
 
 import java.util.List;
 
@@ -19,17 +19,13 @@ public class Default {
     @GetMapping("/")
     public String index(Model model) {
         List<Joke> jokes = getJokesFromApi();
-        if(jokes == null){
+        if (jokes == null) {
             model.addAttribute("joke", "Something happened...no joke at the moment");
-            return "index";
-        }
-        Joke joke = jokes.get(0);
-        model.addAttribute("type", joke.type());
-        if(joke.type().equals("twopart")){
+        } else {
+            Joke joke = jokes.get(0);
+            model.addAttribute("type", joke.type());
             model.addAttribute("setup", joke.setup());
             model.addAttribute("delivery", joke.delivery());
-        }
-        else{
             model.addAttribute("joke", joke.joke());
         }
         return "index";
@@ -45,20 +41,25 @@ public class Default {
         return "userProfile";
     }
 
-    @GetMapping("/getJokes")
-    private String getJokes(Model model)
-    {
-        System.out.println("here");
-        List<Joke> jokes = getJokesFromApi();
-        if(jokes == null){
-            System.out.println("no jokes");
-            model.addAttribute("joke", "Something happened...no joke at the moment");
-            return "index";
+        @GetMapping("/getJokes")
+        public ResponseEntity<String> getJokes() {
+            List<Joke> jokes = getJokesFromApi();
+            if (jokes == null) {
+                String errorResponse = "{\"error\": \"Something happened...no joke at the moment\"}";
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
+            } else {
+                Joke joke = jokes.get(0);
+                ObjectMapper objectMapper = new ObjectMapper();
+                try {
+                    String jokeResponse = objectMapper.writeValueAsString(joke);
+                    return ResponseEntity.ok(jokeResponse);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    String errorResponse = "{\"error\": \"Failed to process joke data\"}";
+                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
+                }
         }
-        String joke = jokes.get(0).joke()==null ? jokes.get(0).setup() + '\n' + jokes.get(0).delivery()  : jokes.get(0).joke();
-        model.addAttribute("joke", joke);
-        return "index";
-    }
+}
 
     private List<Joke> getJokesFromApi(){
 //        final String uri = "https://v2.jokeapi.dev/joke/Any?amount=4?format=json";
@@ -89,7 +90,6 @@ public class Default {
                         }
                         else{
                             System.out.println("Printing two parter");
-
                             System.out.println(joke.setup());
                             System.out.println(joke.delivery());
                         }
@@ -100,8 +100,6 @@ public class Default {
                 }
             } else {
                 System.out.println("Error response received from the API.");
-                System.out.println(jokeApiResponse.error());
-                System.out.println(jokeApiResponse);
             }
         } else {
             System.out.println("Failed to fetch jokes from the API.");
