@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.HttpStatus;
 
 
+import java.util.Collections;
 import java.util.List;
 
 /** this is a test controller, delete/replace it when you start working on your project */
@@ -28,6 +29,10 @@ public class Default {
             model.addAttribute("delivery", joke.delivery());
             model.addAttribute("joke", joke.joke());
         }
+        List<String> categories = getCategoriesFromApi();
+        model.addAttribute("categories", categories);
+        System.out.println(categories);
+
         return "index";
     }
 
@@ -61,6 +66,8 @@ public class Default {
         }
 }
 
+
+//============================GET FROM API========================================
     private List<Joke> getJokesFromApi(){
 //        final String uri = "https://v2.jokeapi.dev/joke/Any?amount=4?format=json";
 //        final String uri = "https://v2.jokeapi.dev/joke/Any";
@@ -105,5 +112,30 @@ public class Default {
             System.out.println("Failed to fetch jokes from the API.");
         }
         return jokes;
+    }
+
+    private List<String> getCategoriesFromApi() {
+        final String uri = "https://v2.jokeapi.dev/categories";
+        RestTemplate restTemplate = new RestTemplate();
+
+        ResponseEntity<JokeApiCategoriesResponse> responseEntity = restTemplate.exchange(
+                uri,
+                HttpMethod.GET,
+                null,
+                JokeApiCategoriesResponse.class
+        );
+
+        if (responseEntity.getStatusCode().is2xxSuccessful()) {
+            JokeApiCategoriesResponse categoriesResponse = responseEntity.getBody();
+            if (categoriesResponse != null && !categoriesResponse.error()) {
+                return categoriesResponse.categories();
+            } else {
+                System.out.println("Error response received from the API.");
+                System.out.println(categoriesResponse.error());
+            }
+        } else {
+            System.out.println("Failed to fetch categories from the API.");
+        }
+        return Collections.emptyList();
     }
 }
