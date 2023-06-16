@@ -1,5 +1,6 @@
 package hac.controllers;
 
+import org.springframework.boot.Banner;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,7 +17,10 @@ public class Default {
 
     @GetMapping("/")
     public String index(Model model) {
-        model.addAttribute("greeting", "Hello World");
+//        model.addAttribute("greeting", "Hello World");
+        List<Joke> jokes = getJokesFromApi();
+        String joke = jokes.get(0).joke()==null ? jokes.get(0).setup() + '\n' + jokes.get(0).delivery()  : jokes.get(0).joke();
+        model.addAttribute("joke", joke);
         return "index";
     }
 
@@ -33,12 +37,14 @@ public class Default {
     @GetMapping("/getJokes")
     private @ResponseBody Boolean getJokes()
     {
-        final String uri = "https://v2.jokeapi.dev/joke/Any?amount=4?format=json";
+//        List<Joke> jokes = getJokesFromApi();
+        return true;
+    }
 
+    private List<Joke> getJokesFromApi(){
+        final String uri = "https://v2.jokeapi.dev/joke/Any?amount=4?format=json";
         RestTemplate restTemplate = new RestTemplate();
-//        String result = restTemplate.getForObject(uri, String.class);
-////        NOGA:
-//        System.out.println(result);
+        List<Joke> jokes = null;
 
         ResponseEntity<JokeApiResponse> responseEntity = restTemplate.exchange(
                 uri,
@@ -50,7 +56,7 @@ public class Default {
         if (responseEntity.getStatusCode().is2xxSuccessful()) {
             JokeApiResponse jokeApiResponse = responseEntity.getBody();
             if (jokeApiResponse != null && !jokeApiResponse.error()) {
-                List<Joke> jokes = jokeApiResponse.jokes();
+                jokes = jokeApiResponse.jokes();
                 if (jokes != null) {
                     for (Joke joke : jokes) {
                         if(joke.joke() != null){
@@ -74,7 +80,6 @@ public class Default {
         } else {
             System.out.println("Failed to fetch jokes from the API.");
         }
-
-        return true;
+        return jokes;
     }
 }

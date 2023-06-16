@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<!--<html lang="en">-->
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -23,7 +25,9 @@
     <div class="card__theme">
       <div class="card__theme-box">
         <p class="card__subject">Look at this joke</p>
-        <p class="card__title">It's a Joke!</p>
+<!--        /*@thymesVar id="joke" type=""*/-->
+<!--        <p th:text="${joke}" class="card__title"></p>-->
+        <p th:text="${joke}" ></p>
       </div>
     </div>
   </div>
