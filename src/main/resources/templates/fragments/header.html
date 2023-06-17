@@ -7,7 +7,10 @@
 <body>
     <!--  NOGA: https://www.baeldung.com/spring-thymeleaf-fragments -->
     <div th:fragment="header" class="d-flex mb-3 p-5">
-        <a class="btn me-auto p-2" href="/" style="background-color: #575761; color: white;">Home</a>
+        <a class="btn me-3 p-2" href="/" style="background-color: #575761; color: white;">Home</a>
+        <button class="btn me-auto p-2 " style="background-color: #575761; color: white;" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
+            Menu
+        </button>
         <a class="btn p-2 me-3" href="/user" style="background-color: #575761; color: white;">Profile</a>
         <a class="btn p-2" href="/favourite" style="background-color: #575761; color: white;">My Likes</a>
     </div>
