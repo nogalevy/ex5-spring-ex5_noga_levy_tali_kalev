@@ -38,11 +38,15 @@ public class Default {
 
     @GetMapping("/favourite")
     public String favourite(Model model) {
+        List<String> categories = getCategoriesFromApi();
+        model.addAttribute("categories", categories);
         return "favourite";
     }
 
     @GetMapping("/user")
     public String userProfile(Model model) {
+        List<String> categories = getCategoriesFromApi();
+        model.addAttribute("categories", categories);
         return "userProfile";
     }
 
