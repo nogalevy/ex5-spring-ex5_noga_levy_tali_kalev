@@ -35,7 +35,7 @@
     });
 </script>
 <body>
-    <div class="container">
+    <div class="container-fluid">
         <header th:insert="fragments/header.html :: header"> </header>
 
         <!--    OPTION 1-->
@@ -56,16 +56,20 @@
 
         <!--    OPTION 2-->
 
-        <div class="artboard">
-            <div class="d-flex flex-column align-items-center justify-content-center align-self-center">
-                <div th:insert="fragments/card.html :: card"></div>
-                <div class="d-flex">
-<!--                <a href="/getJokes" id="generate" class="btn mt-3" style="background-color: #575761; color: white;">Generate New</a>-->
-                    <button id="generate" class="btn mx-2 mt-3" style="background-color: #575761; color: white;">Generate New</button>
-                    <button id="addFavourite" class="btn mx-2 mt-3" style="background-color: #575761; color: white;">add</button>
-                </div>
-            </div>
+<!--        <div class="artboard">-->
+<!--            <div class="d-flex flex-column align-items-center justify-content-center align-self-center">-->
+            <div class="d-flex flex-column align-items-center row">
+
+                    <div th:insert="fragments/card2.html :: card2" class="col-md-6"></div>
+    <!--                <div th:insert="fragments/card.html :: card"></div>-->
+                    <div class="d-flex justify-content-evenly">
+    <!--                <a href="/getJokes" id="generate" class="btn mt-3" style="background-color: #575761; color: white;">Generate New</a>-->
+                        <button id="generate" class="btn mx-2 mt-3" style="background-color: #575761; color: white;">Generate New</button>
+                        <button id="addFavourite" class="btn mx-2 mt-3" style="background-color: #575761; color: white;">Add</button>
+                    </div>
         </div>
+<!--            </div>-->
+<!--        </div>-->
 
     </div>
     <div th:insert="fragments/menu.html :: menu"> </div>

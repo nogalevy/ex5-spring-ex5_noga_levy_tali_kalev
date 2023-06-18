@@ -1,3 +1,125 @@
+body {
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    text-align: center;
+}
+
+.cardBox {
+    /*float: left;*/
+    font-size: 1.2em;
+    margin: 1% 0 0 1%;
+    perspective: 800px;
+    transition: all 0.8s ease;
+    /*width: 23.7%;*/
+}
+
+.cardBox:hover .card {
+    transform: rotateY( 180deg);
+}
+
+.card {
+    background: #F9B872;
+    cursor: default;
+    height: 300px;
+    transform-style: preserve-3d;
+    transition: transform 0.8s ease ;
+    width: 100%;
+    -webkit-animation: giro 1s 1;
+    animation: giro 1s 1;
+}
+
+.card p {
+    margin-bottom: 1.8em;
+}
+
+.card .front,
+.card .back {
+    backface-visibility: hidden;
+    box-sizing: border-box;
+    color: white;
+    display: block;
+    font-size: 1.2em;
+    height: 100%;
+    padding: 0.8em;
+    position: absolute;
+    text-align: center;
+    width: 100%;
+}
+
+.card .front strong {
+    background: #fff;
+    border-radius: 100%;
+    color: #222;
+    font-size: 1.5em;
+    line-height: 30px;
+    padding: 0 7px 4px 6px;
+}
+
+.card .back {
+    transform: rotateY( 180deg);
+    background-color: #FAE7A5;
+}
+
+.card .back a {
+    padding: 0.3em 0.5em;
+    background: #333;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 1px;
+    font-size: 0.9em;
+    transition: all 0.2s ease 0s;
+}
+
+.card .back a:hover {
+    background: #fff;
+    color: #333;
+    text-shadow: 0 0 1px #333;
+}
+
+@-webkit-keyframes giro {
+    from {
+        transform: rotateY( 180deg);
+    }
+    to {
+        transform: rotateY( 0deg);
+    }
+}
+
+@keyframes giro {
+    from {
+        transform: rotateY( 180deg);
+    }
+    to {
+        transform: rotateY( 0deg);
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .cardBox {
+        margin-left: 2.8%;
+        margin-top: 3%;
+        width: 46%;
+    }
+    .card {
+        height: 285px;
+    }
+    .cardBox:last-child {
+        margin-bottom: 3%;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .cardBox {
+        width: 94.5%;
+    }
+    .card {
+        height: 260px;
+    }
+}
+
 /*!* The flip card container - set the width and height to whatever you want. We have added the border property to demonstrate that the flip itself goes out of the box on hover (remove perspective if you don't want the 3D effect *!*/
 /*.flip-card {*/
 /*    background-color: transparent;*/
@@ -46,200 +168,201 @@
 
 /*==============================================================================*/
 /* Reset */
-*,
-*::after,
-*::before {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+/*prev*/
+/**,*/
+/**::after,*/
+/**::before {*/
+/*    margin: 0;*/
+/*    padding: 0;*/
+/*    box-sizing: border-box;*/
+/*}*/
 
-html {
-    font-size: 62.5%;
-}
-@media (max-width: 75em) {
-    html {
-        font-size: 56.25%;
-    }
-}
-@media (max-width: 56.25em) {
-    html {
-        font-size: 50%;
-    }
-}
-@media (min-width: 112.5em) {
-    html {
-        font-size: 75%;
-    }
-}
+/*html {*/
+/*    font-size: 62.5%;*/
+/*}*/
+/*@media (max-width: 75em) {*/
+/*    html {*/
+/*        font-size: 56.25%;*/
+/*    }*/
+/*}*/
+/*@media (max-width: 56.25em) {*/
+/*    html {*/
+/*        font-size: 50%;*/
+/*    }*/
+/*}*/
+/*@media (min-width: 112.5em) {*/
+/*    html {*/
+/*        font-size: 75%;*/
+/*    }*/
+/*}*/
 
-body {
-    height: 100vh;
-    background-color: #B6E1E7;
-}
-
-.artboard {
-    display: flex;
-    flex-flow: row;
-    align-items: center;
-    justify-content: center;
-    padding: 4rem;
-    height: 70%;
-    position: relative;
-}
-@media (max-width: 37.5em) {
-    .artboard {
-        padding: 1rem;
-    }
-}
-
-.card {
-    flex: initial;
-    position: relative;
-    height: 30rem;
-    width: 48rem;
-    -moz-perspective: 200rem;
-    perspective: 200rem;
-    margin: 2rem;
-}
-.card__side {
-    height: 30rem;
-    transition: all 0.8s ease;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    -webkit-backface-visibility: hidden;
-    /* We don't want to see the back part of the element. */
-    backface-visibility: hidden;
-    /* We don't want to see the back part of the element. */
-    border-radius: 3px;
-    overflow: hidden;
-    /* The image is overflowing the parent. */
-    box-shadow: 0 2rem 6rem rgba(0, 0, 0, 0.15);
-}
-.card__side--front {
-    background-color: #F9B872;
-    /*background-image: linear-gradient(to right bottom, rgba(30, 11, 54, 0.65), rgba(202, 55, 130, 0.7)), url(https://cdn.spacetelescope.org/archives/images/screen/heic0406a.jpg);*/
-}
-.card__side--back {
-    background-color: #FAE7A5;
-    transform: rotateY(180deg);
-}
-.card:hover .card__side--back {
-    transform: rotateY(0);
-}
-.card:hover .card__side--front {
-    transform: rotateY(-180deg);
-}
-.card__theme {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    top: 54%;
-    width: 90%;
-    text-align: center;
-}
-.card__theme-box {
-    color: #fff;
-    margin-bottom: 8rem;
-}
-.card__subject {
-    font-family: "Inconsolata", monospace;
-    letter-spacing: 0.8rem;
-    font-size: 1.6rem;
-    text-transform: uppercase;
-    margin-bottom: 1rem;
-}
-.card__title {
-    font-family: "VT323", monospace;
-    text-transform: uppercase;
-    font-size: 6rem;
-    font-weight: 100;
-}
-/*.card__cover {*/
-/*    position: relative;*/
-/*    background-size: cover;*/
-/*    height: 14rem;*/
-/*    -webkit-clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);*/
-/*    clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);*/
-/*    border-top-left-radius: 3px;*/
-/*    border-top-right-radius: 3px;*/
+/*body {*/
+/*    height: 100vh;*/
 /*    background-color: #B6E1E7;*/
-/*    !*background-image: linear-gradient(to top right, rgba(30, 11, 54, 0.65), rgba(202, 55, 130, 0.65)), url(https://cdn.spacetelescope.org/archives/images/screen/heic0406a.jpg);*!*/
 /*}*/
-.card__heading {
-    text-align: center;
-    color: #fff;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 75%;
-}
-.card__heading-span {
-    font-family: "VT323", monospace;
-    font-size: 4.2rem;
-    font-weight: 300;
-    text-transform: uppercase;
-    padding: 1rem 1.5rem;
-    color: #fff;
-}
-/*.card__details {*/
-/*    font-family: "Inconsolata", monospace;*/
-/*    padding: 4rem 2rem;*/
+
+/*.artboard {*/
+/*    display: flex;*/
+/*    flex-flow: row;*/
+/*    align-items: center;*/
+/*    justify-content: center;*/
+/*    padding: 4rem;*/
+/*    height: 70%;*/
+/*    position: relative;*/
 /*}*/
-/*.card__details ul {*/
-/*    list-style: none;*/
-/*    width: 80%;*/
-/*    margin: 0 auto;*/
+/*@media (max-width: 37.5em) {*/
+/*    .artboard {*/
+/*        padding: 1rem;*/
+/*    }*/
 /*}*/
-/*.card__details ul li {*/
+
+/*.card {*/
+/*    flex: initial;*/
+/*    position: relative;*/
+/*    height: 30rem;*/
+/*    width: 48rem;*/
+/*    -moz-perspective: 200rem;*/
+/*    perspective: 200rem;*/
+/*    margin: 2rem;*/
+/*}*/
+/*.card__side {*/
+/*    height: 30rem;*/
+/*    transition: all 0.8s ease;*/
+/*    position: absolute;*/
+/*    top: 0;*/
+/*    left: 0;*/
+/*    width: 100%;*/
+/*    -webkit-backface-visibility: hidden;*/
+/*    !* We don't want to see the back part of the element. *!*/
+/*    backface-visibility: hidden;*/
+/*    !* We don't want to see the back part of the element. *!*/
+/*    border-radius: 3px;*/
+/*    overflow: hidden;*/
+/*    !* The image is overflowing the parent. *!*/
+/*    box-shadow: 0 2rem 6rem rgba(0, 0, 0, 0.15);*/
+/*}*/
+/*.card__side--front {*/
+/*    background-color: #F9B872;*/
+/*    !*background-image: linear-gradient(to right bottom, rgba(30, 11, 54, 0.65), rgba(202, 55, 130, 0.7)), url(https://cdn.spacetelescope.org/archives/images/screen/heic0406a.jpg);*!*/
+/*}*/
+/*.card__side--back {*/
+/*    background-color: #FAE7A5; */
+/*    transform: rotateY(180deg);*/
+/*}*/
+/*.card:hover .card__side--back {*/
+/*    transform: rotateY(0);*/
+/*}*/
+/*.card:hover .card__side--front {*/
+/*    transform: rotateY(-180deg);*/
+/*}*/
+/*.card__theme {*/
+/*    position: absolute;*/
+/*    top: 50%;*/
+/*    left: 50%;*/
+/*    transform: translate(-50%, -50%);*/
+/*    top: 54%;*/
+/*    width: 90%;*/
 /*    text-align: center;*/
-/*    font-size: 1.8rem;*/
-/*    padding: 1rem;*/
 /*}*/
-/*.card__details ul li:not(:last-child) {*/
-/*    border-bottom: 1px solid #eee;*/
+/*.card__theme-box {*/
+/*    color: #fff;*/
+/*    margin-bottom: 8rem;*/
 /*}*/
-@media only screen and (max-width: 37.5em), only screen and (hover: none) {
-    .card {
-        height: auto;
-        border-radius: 3px;
-        background-color: #fff;
-        box-shadow: 0 2rem 6rem rgba(0, 0, 0, 0.15);
-    }
-    .card__side {
-        height: auto;
-        position: relative;
-        box-shadow: none;
-    }
-    .card__side--front {
-        clip-path: polygon(0 15%, 100% 0, 100% 100%, 0 100%);
-    }
-    .card__side--back {
-        transform: rotateY(0);
-    }
-    .card:hover .card__side--front {
-        transform: rotateY(0);
-    }
-    .card__details {
-        padding: 3rem 2rem;
-    }
-    .card__theme {
-        position: relative;
-        top: 0;
-        left: 0;
-        transform: translate(0);
-        width: 100%;
-        padding: 5rem 4rem 1.5rem 4rem;
-        text-align: right;
-    }
-    .card__theme-box {
-        margin-bottom: 1.5rem;
-    }
-    .card__title {
-        font-size: 4rem;
-    }
-}
+/*.card__subject {*/
+/*    font-family: "Inconsolata", monospace;*/
+/*    letter-spacing: 0.8rem;*/
+/*    font-size: 1.6rem;*/
+/*    text-transform: uppercase;*/
+/*    margin-bottom: 1rem;*/
+/*}*/
+/*.card__title {*/
+/*    font-family: "VT323", monospace;*/
+/*    text-transform: uppercase;*/
+/*    font-size: 6rem;*/
+/*    font-weight: 100;*/
+/*}*/
+/*!*.card__cover {*!*/
+/*!*    position: relative;*!*/
+/*!*    background-size: cover;*!*/
+/*!*    height: 14rem;*!*/
+/*!*    -webkit-clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);*!*/
+/*!*    clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);*!*/
+/*!*    border-top-left-radius: 3px;*!*/
+/*!*    border-top-right-radius: 3px;*!*/
+/*!*    background-color: #B6E1E7;*!*/
+/*!*    !*background-image: linear-gradient(to top right, rgba(30, 11, 54, 0.65), rgba(202, 55, 130, 0.65)), url(https://cdn.spacetelescope.org/archives/images/screen/heic0406a.jpg);*!*!*/
+/*!*}*!*/
+/*.card__heading {*/
+/*    text-align: center;*/
+/*    color: #fff;*/
+/*    position: absolute;*/
+/*    top: 50%;*/
+/*    left: 50%;*/
+/*    transform: translate(-50%, -50%);*/
+/*    width: 75%;*/
+/*}*/
+/*.card__heading-span {*/
+/*    font-family: "VT323", monospace;*/
+/*    font-size: 4.2rem;*/
+/*    font-weight: 300;*/
+/*    text-transform: uppercase;*/
+/*    padding: 1rem 1.5rem;*/
+/*    color: #fff;*/
+/*}*/
+/*!*.card__details {*!*/
+/*!*    font-family: "Inconsolata", monospace;*!*/
+/*!*    padding: 4rem 2rem;*!*/
+/*!*}*!*/
+/*!*.card__details ul {*!*/
+/*!*    list-style: none;*!*/
+/*!*    width: 80%;*!*/
+/*!*    margin: 0 auto;*!*/
+/*!*}*!*/
+/*!*.card__details ul li {*!*/
+/*!*    text-align: center;*!*/
+/*!*    font-size: 1.8rem;*!*/
+/*!*    padding: 1rem;*!*/
+/*!*}*!*/
+/*!*.card__details ul li:not(:last-child) {*!*/
+/*!*    border-bottom: 1px solid #eee;*!*/
+/*!*}*!*/
+/*@media only screen and (max-width: 37.5em), only screen and (hover: none) {*/
+/*    .card {*/
+/*        height: auto;*/
+/*        border-radius: 3px;*/
+/*        background-color: #fff;*/
+/*        box-shadow: 0 2rem 6rem rgba(0, 0, 0, 0.15);*/
+/*    }*/
+/*    .card__side {*/
+/*        height: auto;*/
+/*        position: relative;*/
+/*        box-shadow: none;*/
+/*    }*/
+/*    .card__side--front {*/
+/*        clip-path: polygon(0 15%, 100% 0, 100% 100%, 0 100%);*/
+/*    }*/
+/*    .card__side--back {*/
+/*        transform: rotateY(0);*/
+/*    }*/
+/*    .card:hover .card__side--front {*/
+/*        transform: rotateY(0);*/
+/*    }*/
+/*    .card__details {*/
+/*        padding: 3rem 2rem;*/
+/*    }*/
+/*    .card__theme {*/
+/*        position: relative;*/
+/*        top: 0;*/
+/*        left: 0;*/
+/*        transform: translate(0);*/
+/*        width: 100%;*/
+/*        padding: 5rem 4rem 1.5rem 4rem;*/
+/*        text-align: right;*/
+/*    }*/
+/*    .card__theme-box {*/
+/*        margin-bottom: 1.5rem;*/
+/*    }*/
+/*    .card__title {*/
+/*        font-size: 4rem;*/
+/*    }*/
+/*}*/

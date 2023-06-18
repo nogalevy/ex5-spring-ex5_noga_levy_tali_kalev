@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<!--<div th:fragment="card2" class="boxesContainer">-->
+  <div th:fragment="card2" class="cardBox">
+    <div class="card">
+      <div class="front">
+        <!--/*@thymesVar id="setup" type=""*/-->
+        <h3 th:text="${type == 'twopart' ? setup : joke}" ></h3>
+        <p>Hover to flip</p>
+<!--        <strong>&#x21bb;</strong>-->
+      </div>
+      <div class="back">
+        <!--/*@thymesVar id="delivery" type=""*/-->
+        <h3 th:text="${delivery}"></h3>
+        <p>( LOL )</p>
+      </div>
+    </div>
+  </div>
+<!--</div>-->
+</body>
+</html>
