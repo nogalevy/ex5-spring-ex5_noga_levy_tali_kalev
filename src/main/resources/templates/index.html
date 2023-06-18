@@ -59,8 +59,11 @@
         <div class="artboard">
             <div class="d-flex flex-column align-items-center justify-content-center align-self-center">
                 <div th:insert="fragments/card.html :: card"></div>
+                <div class="d-flex">
 <!--                <a href="/getJokes" id="generate" class="btn mt-3" style="background-color: #575761; color: white;">Generate New</a>-->
-                <button id="generate" class="btn mt-3" style="background-color: #575761; color: white;">Generate New</button>
+                    <button id="generate" class="btn mx-2 mt-3" style="background-color: #575761; color: white;">Generate New</button>
+                    <button id="addFavourite" class="btn mx-2 mt-3" style="background-color: #575761; color: white;">add</button>
+                </div>
             </div>
         </div>
 
