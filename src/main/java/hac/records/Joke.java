@@ -1,4 +1,4 @@
-package hac.controllers;
+package hac.records;
 
 public record Joke(String category, String type, String setup, String delivery, String joke, int id, boolean safe, String lang) { }
 

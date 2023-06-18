@@ -1,5 +1,8 @@
 package hac.controllers;
 
+import hac.records.Joke;
+import hac.records.JokeApiCategoriesResponse;
+import hac.records.JokeApiResponse;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -67,15 +70,14 @@ public class Default {
                 String errorResponse = "{\"error\": \"Failed to process joke data\"}";
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
             }
+        }
     }
-}
-
 
 //============================GET FROM API========================================
     private List<Joke> getJokesFromApi(){
-//        final String uri = "https://v2.jokeapi.dev/joke/Any?amount=4?format=json";
-//        final String uri = "https://v2.jokeapi.dev/joke/Any";
-//        final String uri = "https://v2.jokeapi.dev/joke/Any?blacklistFlags=nsfw,religious,political,racist,sexist,explicit&amount=2";
+    //        final String uri = "https://v2.jokeapi.dev/joke/Any?amount=4?format=json";
+    //        final String uri = "https://v2.jokeapi.dev/joke/Any";
+    //        final String uri = "https://v2.jokeapi.dev/joke/Any?blacklistFlags=nsfw,religious,political,racist,sexist,explicit&amount=2";
         final String uri = "https://v2.jokeapi.dev/joke/Any?blacklistFlags=nsfw,religious,political,racist,sexist,explicit";
         RestTemplate restTemplate = new RestTemplate();
         List<Joke> jokes = null;

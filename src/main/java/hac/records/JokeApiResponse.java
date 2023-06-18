@@ -1,4 +1,4 @@
-package hac.controllers;
+package hac.records;
 
 import java.util.List;
 

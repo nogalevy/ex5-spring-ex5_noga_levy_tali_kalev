@@ -1,4 +1,4 @@
-package hac.controllers;
+package hac.records;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.util.List;
