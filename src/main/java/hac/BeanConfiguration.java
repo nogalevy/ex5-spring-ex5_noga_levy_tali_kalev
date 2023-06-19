@@ -2,6 +2,7 @@ package hac;
 
 import hac.beans.JokesList;
 import hac.beans.UserSession;
+import hac.beans.SearchFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.context.annotation.ApplicationScope;
@@ -32,4 +33,7 @@ public class BeanConfiguration {
 //    public Messages sessionBeanExample () {
 //        return new Messages();
 //    }
+    public SearchFilter searchFilterSession () {
+        return new SearchFilter();
+    }
 }

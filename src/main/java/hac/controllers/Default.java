@@ -1,12 +1,17 @@
 package hac.controllers;
 
 import hac.beans.JokesList;
+import hac.beans.SearchFilter;
 import hac.records.Joke;
 import hac.records.JokeApiCategoriesResponse;
 import hac.records.JokeApiResponse;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpMethod;
@@ -20,10 +25,15 @@ import java.util.List;
 /** this is a test controller, delete/replace it when you start working on your project */
 @Controller
 public class Default {
+    @Autowired
+    @Qualifier("searchFilterSession")
+    private SearchFilter currSearchFilter = new SearchFilter();
 
     @GetMapping("/")
     public String index(Model model) {
-        List<Joke> jokes = JokesList.getJokesFromApi();
+        List<Joke> jokes = JokesList.getJokesFromApi(currSearchFilter);
+//        currSearchFilter.getUri();
+        //NOGA: move to function ??
         if (jokes == null) {
             model.addAttribute("joke", "Something happened...no joke at the moment");
         } else {
@@ -35,6 +45,8 @@ public class Default {
         }
         List<String> categories = JokesList.getCategoriesFromApi();
         model.addAttribute("categories", categories);
+        model.addAttribute("searchFilter", currSearchFilter);
+
         System.out.println(categories);
 
         return "index";
@@ -52,5 +64,19 @@ public class Default {
         List<String> categories = JokesList.getCategoriesFromApi();
         model.addAttribute("categories", categories);
         return "userProfile";
+    }
+
+    //NOGA: maybe not need to be here but i needed the same 'currSearchFilter' like in the 'index' method
+    @PostMapping("/search")
+    public String search(@ModelAttribute SearchFilter searchFilter, Model model) {
+        System.out.println("=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+="+searchFilter.getSelectedOption());
+
+        currSearchFilter.setSelectedCategories(searchFilter.getSelectedCategories());
+        currSearchFilter.setSelectedOption(searchFilter.getSelectedOption());
+
+        model.addAttribute("searchFilter", searchFilter);
+//        List<Joke> jokes = JokesList.getJokesFromApi();
+
+        return "redirect:/";
     }
 }

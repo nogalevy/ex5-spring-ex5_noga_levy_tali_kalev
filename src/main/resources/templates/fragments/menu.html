@@ -11,19 +11,22 @@
       <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
     <div class="offcanvas-body">
-      <!--            Todo: change idss-->
-      <div th:each="category: ${categories}" class="form-check" >
-        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-        <label th:text="${category}" class="form-check-label" for="flexCheckDefault">
-
-        </label>
-      </div>
-      <label>Type of Joke</label>
-      <select class="form-select" aria-label="Default select example">
-        <option selected value="1">All</option>
-        <option value="2">One-liners</option>
-        <option value="3">Two-part</option>
-      </select>
+      <form action="#" th:action="@{/search}" th:object="${searchFilter}" method="post">
+        <!-- Todo: change ids -->
+        <div th:each="category: ${categories}" class="form-check">
+          <input class="form-check-input" type="checkbox" th:value="${category}"
+                 th:id="'category-' + ${category}" th:field="*{selectedCategories}" />
+          <label th:text="${category}" class="form-check-label" th:for="'category-' + ${category}">
+          </label>
+        </div>
+        <label>Type of Joke</label>
+        <select class="form-select" aria-label="Default select example" th:field="*{selectedOption}">
+          <option selected="selected" value="0">All</option>
+          <option value="1">One-liners</option>
+          <option value="2">Two-part</option>
+        </select>
+        <button class="btn btn-primary mt-3" type="submit">Search</button>
+      </form>
     </div>
   </div>
 </body>
