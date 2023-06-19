@@ -11,11 +11,25 @@
 </head>
 <script>
     document.addEventListener("DOMContentLoaded", () => {
+        let front = document.getElementById('frontCardContent'); //NOGA
+        let back = document.getElementById('backCardContent'); //NOGA
+
         document.getElementById("generate").addEventListener("click", () => {
             fetch('/getJokes')
-                .then(response => response.json())
+                .then(response =>
+                    response.json()
+                )
                 .then(jsonData => {
-                    console.log(jsonData);
+                    // console.log(jsonData)
+                    //TODO: add to constantnsnsts!
+                    if(jsonData.type === "twopart"){
+                        front.innerHTML = jsonData.setup;
+                        back.innerHTML = jsonData.delivery;
+                    }
+                    else{
+                        front.innerHTML = jsonData.joke;
+                    }
+                    //     console.log(jsonData);
                     // Process the JSON data as needed
 
                     // Example: Display the joke type and content in the browser

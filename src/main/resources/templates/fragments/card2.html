@@ -10,13 +10,13 @@
     <div class="card">
       <div class="front">
         <!--/*@thymesVar id="setup" type=""*/-->
-        <h3 th:text="${type == 'twopart' ? setup : joke}" ></h3>
+        <h3 id="frontCardContent" th:text="${type == 'twopart' ? setup : joke}" ></h3>
         <p>Hover to flip</p>
 <!--        <strong>&#x21bb;</strong>-->
       </div>
       <div class="back">
         <!--/*@thymesVar id="delivery" type=""*/-->
-        <h3 th:text="${delivery}"></h3>
+        <h3 id="backCardContent" th:text="${delivery}"></h3>
         <p>( LOL )</p>
       </div>
     </div>
