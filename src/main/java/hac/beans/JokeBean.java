@@ -1,11 +1,13 @@
 package hac.beans;
+import hac.records.Joke;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
 
 //TALI: CURRENTLY UNUSED
 @Component
-public class Joke implements Serializable {
+public class JokeBean implements Serializable {
+//    Joke jokeRecord;
     private Integer id;
     private String category;
     private String type;
@@ -13,11 +15,12 @@ public class Joke implements Serializable {
     private String setup;
     private String delivery;
 
-    public Joke(){
+    public JokeBean(){
 
     }
 
-    public Joke(Integer id, String category, String type, String joke, String setup, String delivery){
+    public JokeBean(Integer id, String category, String type, String joke, String setup, String delivery){
+//        jokeRecord = new Joke(category, type, setup, delivery, joke, id);
         this.id = id;
         this.category = category;
         this.type = type;

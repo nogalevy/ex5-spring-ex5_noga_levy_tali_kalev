@@ -1,6 +1,6 @@
 package hac.records;
 
-public record Joke(String category, String type, String setup, String delivery, String joke, int id, boolean safe, String lang) { }
+public record Joke(String category, String type, String setup, String delivery, String joke, int id) { }
 
 //public class Joke{
 //    private String category;

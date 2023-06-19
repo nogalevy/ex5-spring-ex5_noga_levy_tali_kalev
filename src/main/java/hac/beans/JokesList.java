@@ -9,23 +9,24 @@ import org.springframework.web.client.RestTemplate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import hac.records.Joke;
 
 //TALI: CURRENTLY UNUSED
 public class JokesList {
-    private ArrayList<Joke> jokesList = new ArrayList<>();
+    private ArrayList<JokeBean> jokesList = new ArrayList<>();
 
     public JokesList() {
     }
 
 
     //============================GET FROM API========================================
-    public static List<hac.records.Joke> getJokesFromApi(){
+    public static List<Joke> getJokesFromApi(){
         //        final String uri = "https://v2.jokeapi.dev/joke/Any?amount=4?format=json";
         //        final String uri = "https://v2.jokeapi.dev/joke/Any";
         //        final String uri = "https://v2.jokeapi.dev/joke/Any?blacklistFlags=nsfw,religious,political,racist,sexist,explicit&amount=2";
         final String uri = "https://v2.jokeapi.dev/joke/Any?blacklistFlags=nsfw,religious,political,racist,sexist,explicit";
         RestTemplate restTemplate = new RestTemplate();
-        List<hac.records.Joke> jokes = null;
+        List<Joke> jokes = null;
 
         ResponseEntity<JokeApiResponse> responseEntity = restTemplate.exchange(
                 uri,
@@ -91,15 +92,15 @@ public class JokesList {
     }
 
 
-    public ArrayList<Joke> getJokesList() {
+    public ArrayList<JokeBean> getJokesList() {
         return jokesList;
     }
 
-    public void setJokesList(ArrayList<Joke> jokes) {
+    public void setJokesList(ArrayList<JokeBean> jokes) {
         this.jokesList = jokes;
     }
 
-    public void add (Joke joke) {
+    public void add (JokeBean joke) {
         jokesList.add(joke);
     }
 
