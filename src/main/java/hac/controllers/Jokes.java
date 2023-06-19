@@ -2,20 +2,29 @@ package hac.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import hac.beans.JokesList;
+import hac.beans.SearchFilter;
 import hac.records.Joke;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.ui.Model;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
 
 @Controller
 public class Jokes {
+    @Autowired
+    @Qualifier("searchFilterSession")
+    private SearchFilter currSearchFilter;
 
     @GetMapping("/getJokes")
     public ResponseEntity<String> getJokes() {
-        List<Joke> jokes = JokesList.getJokesFromApi();
+        List<Joke> jokes = JokesList.getJokesFromApi(currSearchFilter); //NOGA: i dont knowwwwwwwwww
         if (jokes == null) {
             String errorResponse = "{\"error\": \"Something happened...no joke at the moment\"}";
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
@@ -32,4 +41,17 @@ public class Jokes {
             }
         }
     }
+
+//    @PostMapping("/search")
+//    public String search(@ModelAttribute SearchFilter searchFilter, Model model) {
+//        System.out.println("=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+="+searchFilter.getSelectedOption());
+////        return "index";
+////        List<String> selectedCategories = searchFilter.getSelectedCategories();
+//        currSearchFilter.setSelectedCategories(searchFilter.getSelectedCategories());
+//        currSearchFilter.setSelectedOption(searchFilter.getSelectedOption());
+//
+//        model.addAttribute("searchFilter", searchFilter);
+//
+//        return "redirect:/";
+//    }
 }

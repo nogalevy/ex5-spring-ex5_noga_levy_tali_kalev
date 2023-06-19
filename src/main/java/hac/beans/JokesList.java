@@ -19,8 +19,11 @@ public class JokesList {
     }
 
 
+
     //============================GET FROM API========================================
-    public static List<Joke> getJokesFromApi(){
+    public static List<Joke> getJokesFromApi(SearchFilter s){//String uri){
+
+        getUri(s);
         //        final String uri = "https://v2.jokeapi.dev/joke/Any?amount=4?format=json";
         //        final String uri = "https://v2.jokeapi.dev/joke/Any";
         //        final String uri = "https://v2.jokeapi.dev/joke/Any?blacklistFlags=nsfw,religious,political,racist,sexist,explicit&amount=2";
@@ -106,5 +109,34 @@ public class JokesList {
 
     public void clear() {
         jokesList.clear();
+    }
+
+    public static String getUri(SearchFilter s){
+        String BLACKLIST = "?blacklistFlags=nsfw,religious,political,racist,sexist,explicit";
+//        SearchFilter s = new SearchFilter();
+        String u = "https://v2.jokeapi.dev/joke";
+        String catgrs = "/";
+
+        int opInt = s.getSelectedOption();
+        String op = "?type=";
+
+        if(opInt == 0) op = "";
+        else if (opInt == 1) {
+            op = op + "single";
+        }
+        else{
+            op = op + "twopart";
+        }
+
+        if(s.getSelectedCategories().length == 0){catgrs = "/Any";}
+        for ( int i = 0 ; i < s.getSelectedCategories().length; i++) {
+            String c = s.getSelectedCategories()[i];
+            catgrs = catgrs.concat(c);
+            if(i < s.getSelectedCategories().length - 1) catgrs = catgrs + ",";
+        }
+        String x = u + catgrs + op + BLACKLIST;
+        System.out.println("---- uri: ----" + x);
+
+        return x;
     }
 }
