@@ -13,7 +13,7 @@ import jakarta.validation.constraints.NotEmpty;
  * but if you feel like you need to, please get in touch with the teacher.
  */
 @Entity
-public class User implements Serializable {
+public class UserInfo implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -31,14 +31,14 @@ public class User implements Serializable {
     @NotEmpty(message = "PASSWORD_MANDATORY")
     private String password;
 
-    public User(String email, String password, String firstName, String lastName) {
+    public UserInfo(String email, String password, String firstName, String lastName) {
         this.email = email;
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
     }
 
-    public User() {
+    public UserInfo() {
 
     }
 
