@@ -7,13 +7,12 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 /**
- * Interceptor responsible for authorizing users not logged in to
- * access login and registration pages.
+ * Interceptor responsible for authorized users to continue
+ * to home, favourites and userprofile pages.
  */
-public class LoggingInterceptor implements HandlerInterceptor {
-
+public class AuthInterceptor implements HandlerInterceptor {
     private UserSession userSession;
-    public LoggingInterceptor(UserSession u) {
+    public AuthInterceptor(UserSession u) {
         userSession = u;
     }
 
@@ -21,14 +20,14 @@ public class LoggingInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
             throws Exception {
 
-        String requestPath = request.getRequestURI();
-        System.out.println("Request path: " + requestPath);
+        // filter can redirect response to a specific page
+        // response.sendRedirect("/error");
 
-        if(userSession.isLoggedIn()){
+        if(!userSession.isLoggedIn()){
             System.out.println("Session bean in filter: " + userSession.isLoggedIn());
-            //response.sendRedirect("/");
-            //return false;
 
+//            response.sendRedirect("/users/login");
+//            return false;
         }
         return true;
     }
