@@ -33,12 +33,8 @@ public class BeanConfiguration {
 //    public Messages sessionBeanExample () {
 //        return new Messages();
 //    }
-<<<<<<< HEAD
-
-=======
     @Bean
     @SessionScope
->>>>>>> cad1b7ef50ad942574bdce9a865704ef164b9c69
     public SearchFilter searchFilterSession () {
         return new SearchFilter();
     }
