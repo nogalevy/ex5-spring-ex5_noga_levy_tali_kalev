@@ -39,6 +39,7 @@ public class Users {
         if(existingUser != null && existingUser.getPassword().equals(password)){
             //if exists, set userSession to logged in
             currUserSession.setLoggedIn(true);
+            currUserSession.setUser_id(existingUser.getId());
             return "redirect:/";
         }else {
             //else return error message
