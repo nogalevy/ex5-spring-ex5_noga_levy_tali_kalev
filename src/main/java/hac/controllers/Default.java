@@ -79,4 +79,24 @@ public class Default {
 
         return "redirect:/";
     }
+
+    @GetMapping("/getJokes")
+    public ResponseEntity<String> getJokes() {
+        List<Joke> jokes = JokesList.getJokesFromApi(currSearchFilter); //NOGA: i dont knowwwwwwwwww
+        if (jokes == null) {
+            String errorResponse = "{\"error\": \"Something happened...no joke at the moment\"}";
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
+        } else {
+            Joke joke = jokes.get(0);
+            ObjectMapper objectMapper = new ObjectMapper();
+            try {
+                String jokeResponse = objectMapper.writeValueAsString(joke);
+                return ResponseEntity.ok(jokeResponse);
+            } catch (Exception e) {
+                e.printStackTrace();
+                String errorResponse = "{\"error\": \"Failed to process joke data\"}";
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
+            }
+        }
+    }
 }

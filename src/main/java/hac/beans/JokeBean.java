@@ -7,7 +7,7 @@ import java.io.Serializable;
 //TALI: CURRENTLY UNUSED
 @Component
 public class JokeBean implements Serializable {
-//    Joke jokeRecord;
+//    Joke jokeRecord; //NOGA:
     private Integer id;
     private String category;
     private String type;
@@ -20,7 +20,7 @@ public class JokeBean implements Serializable {
     }
 
     public JokeBean(Integer id, String category, String type, String joke, String setup, String delivery){
-//        jokeRecord = new Joke(category, type, setup, delivery, joke, id);
+//        jokeRecord = new Joke(category, type, setup, delivery, joke, id); //NOGA
         this.id = id;
         this.category = category;
         this.type = type;

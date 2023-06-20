@@ -11,7 +11,7 @@ import java.util.Collections;
 import java.util.List;
 import hac.records.Joke;
 
-//TALI: CURRENTLY UNUSED
+//TODO : change class name
 public class JokesList {
     private ArrayList<JokeBean> jokesList = new ArrayList<>();
 
@@ -23,11 +23,11 @@ public class JokesList {
     //============================GET FROM API========================================
     public static List<Joke> getJokesFromApi(SearchFilter s){//String uri){
 
-        getUri(s);
+        final String uri = getUri(s);
         //        final String uri = "https://v2.jokeapi.dev/joke/Any?amount=4?format=json";
         //        final String uri = "https://v2.jokeapi.dev/joke/Any";
         //        final String uri = "https://v2.jokeapi.dev/joke/Any?blacklistFlags=nsfw,religious,political,racist,sexist,explicit&amount=2";
-        final String uri = "https://v2.jokeapi.dev/joke/Any?blacklistFlags=nsfw,religious,political,racist,sexist,explicit";
+//        final String uri = "https://v2.jokeapi.dev/joke/Any?blacklistFlags=nsfw,religious,political,racist,sexist,explicit";
         RestTemplate restTemplate = new RestTemplate();
         List<Joke> jokes = null;
 
