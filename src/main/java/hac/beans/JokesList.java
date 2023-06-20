@@ -45,6 +45,7 @@ public class JokesList {
             if (jokeApiResponse != null && !jokeApiResponse.error()) {
                 jokes = jokeApiResponse.jokes();
                 if (jokes != null) {
+                    System.out.println("here............");
                     for (hac.records.Joke joke : jokes) {
                         if(joke.joke() != null){
                             System.out.println("Printing one liner");
@@ -111,6 +112,7 @@ public class JokesList {
         jokesList.clear();
     }
 
+    //TODO : clean this function or something
     public static String getUri(SearchFilter s){
         String BLACKLIST = "?blacklistFlags=nsfw,religious,political,racist,sexist,explicit";
 //        SearchFilter s = new SearchFilter();
