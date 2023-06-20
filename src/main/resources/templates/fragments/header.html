@@ -1,19 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Header</title>
 </head>
+
 <body>
     <!--  NOGA: https://www.baeldung.com/spring-thymeleaf-fragments -->
     <div th:fragment="header" class="d-flex mb-3 p-2">
-        <button class="btn btn-outline-secondary me-3 p-2 px-3" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
+        <button class="btn btn-outline-secondary me-3 p-2 px-3" type="button" data-bs-toggle="offcanvas"
+            data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
             &#9776;
         </button>
-<!--        style="background-color: #575761; color: white;"-->
-        <a class="btn btn-secondary me-auto p-2" href="/" >Home</a>
-        <a class="btn btn-secondary p-2 me-3" href="/user" >Profile</a>
-        <a class="btn btn-secondary p-2" href="/favourite" >My Likes</a>
+        <!--        style="background-color: #575761; color: white;"-->
+        <a class="btn btn-secondary me-auto p-2" href="/">Home</a>
+        <a class="btn btn-secondary p-2 me-3" href="/user">Profile</a>
+        <a class="btn btn-secondary p-2" href="/favourite">My Likes</a>
     </div>
 </body>
+
 </html>

@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+  <meta charset="UTF-8">
+  <title>Title</title>
 </head>
+
 <body>
-  <div th:fragment="menu" class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+  <div th:fragment="menu" class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample"
+    aria-labelledby="offcanvasExampleLabel">
     <div class="offcanvas-header">
       <h5 class="offcanvas-title" id="offcanvasExampleLabel">Menu</h5>
       <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
@@ -14,8 +17,8 @@
       <form action="#" th:action="@{/search}" th:object="${searchFilter}" method="post">
         <!-- Todo: change ids -->
         <div th:each="category: ${categories}" class="form-check">
-          <input class="form-check-input" type="checkbox" th:value="${category}"
-                 th:id="'category-' + ${category}" th:field="*{selectedCategories}" />
+          <input class="form-check-input" type="checkbox" th:value="${category}" th:id="'category-' + ${category}"
+            th:field="*{selectedCategories}" />
           <label th:text="${category}" class="form-check-label" th:for="'category-' + ${category}">
           </label>
         </div>
@@ -30,4 +33,5 @@
     </div>
   </div>
 </body>
+
 </html>
