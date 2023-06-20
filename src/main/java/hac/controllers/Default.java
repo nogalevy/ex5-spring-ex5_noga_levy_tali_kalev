@@ -56,6 +56,7 @@ public class Default {
     public String favourite(Model model) {
         List<String> categories = JokesList.getCategoriesFromApi();
         model.addAttribute("categories", categories);
+        model.addAttribute("searchFilter", currSearchFilter);
         return "favourite";
     }
 
@@ -63,6 +64,7 @@ public class Default {
     public String userProfile(Model model) {
         List<String> categories = JokesList.getCategoriesFromApi();
         model.addAttribute("categories", categories);
+        model.addAttribute("searchFilter", currSearchFilter);
         return "userProfile";
     }
 
