@@ -28,7 +28,7 @@
         let back = document.getElementById('backCardContent'); //NOGA
 
         document.getElementById("generate").addEventListener("click", () => {
-            fetch('/getJokes')
+            fetch('/pages/getJokes')
                 .then(response =>
                     response.json()
                 )

@@ -2,6 +2,7 @@ package hac;
 
 
 import hac.beans.UserSession;
+import hac.filters.AuthInterceptor;
 import hac.filters.LoggingInterceptor;
 import jakarta.annotation.Resource;
 import org.springframework.context.annotation.Configuration;
@@ -20,10 +21,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @EnableWebMvc
 @Configuration
 public class FiltersConfig implements WebMvcConfigurer {
-
-    // we can inject a bean in the config class then pass it to other classes such as filter
-    //@Resource(name = "sessionBeanExample")
-    //private Messages messages;
     @Resource(name = "sessionUser")
     private UserSession sessionUser;
 
@@ -33,7 +30,12 @@ public class FiltersConfig implements WebMvcConfigurer {
 
         // if we want to pass some bean to the filter
 //        registry.addInterceptor(new LoggingInterceptor(sessionUser)).addPathPatterns("/**").excludePathPatterns("/static/**");
-        registry.addInterceptor(new LoggingInterceptor(sessionUser)).addPathPatterns("/**");
+//        registry.addInterceptor(new LoggingInterceptor(sessionUser)).addPathPatterns("/**");
+
+        //Interceptor for unauth users
+        registry.addInterceptor(new LoggingInterceptor(sessionUser)).addPathPatterns("/users/**"); //TODO: changes name to unauth
+        //Interceptor for auth users (logged in)
+        registry.addInterceptor(new AuthInterceptor(sessionUser)).addPathPatterns("/pages/**", "/");
 
         // no args ctor
 //        registry.addInterceptor(new LoggingInterceptor()); //.addPathPatterns("/signup");

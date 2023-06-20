@@ -56,7 +56,7 @@ public class Default {
         return "index";
     }
 
-    @GetMapping("/favourite")
+    @GetMapping("/pages/favourite")
     public String favourite(Model model) {
         List<String> categories = JokeApiHandler.getCategoriesFromApi();
         List<Joke> favourites = JokeApiHandler.getJokesByIdsFromApi(new ArrayList(Arrays.asList(34, 234, 43)));
@@ -66,7 +66,7 @@ public class Default {
         return "favourite";
     }
 
-    @GetMapping("/user")
+    @GetMapping("/pages/user")
     public String userProfile(Model model) {
         List<String> categories = JokeApiHandler.getCategoriesFromApi();
         model.addAttribute("categories", categories);
@@ -75,7 +75,7 @@ public class Default {
     }
 
     //NOGA: maybe not need to be here but i needed the same 'currSearchFilter' like in the 'index' method
-    @PostMapping("/search")
+    @PostMapping("/pages/search")
     public String search(@ModelAttribute SearchFilter searchFilter, Model model) {
         System.out.println("=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+="+searchFilter.getSelectedOption());
 
@@ -88,7 +88,7 @@ public class Default {
         return "redirect:/";
     }
 
-    @GetMapping("/getJokes")
+    @GetMapping("/pages/getJokes")
     public ResponseEntity<String> getJokes() {
         List<Joke> jokes = JokeApiHandler.getJokesFromApi(currSearchFilter); //NOGA: i dont knowwwwwwwwww
         if (jokes == null) {
