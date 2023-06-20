@@ -33,6 +33,12 @@
                     response.json()
                 )
                 .then(jsonData => {
+                    const f = document.getElementById('front')
+                    const b = document.getElementById('back')
+                    if(f.classList.contains('flipped')){
+                        f.classList.toggle('flipped')
+                        b.classList.toggle('flipped')
+                    }
                     //TODO: add to constantnsnsts!
                     if (jsonData.type === "twopart") {
                         front.innerHTML = jsonData.setup;
