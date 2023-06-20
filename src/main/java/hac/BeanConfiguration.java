@@ -33,6 +33,7 @@ public class BeanConfiguration {
 //    public Messages sessionBeanExample () {
 //        return new Messages();
 //    }
+
     public SearchFilter searchFilterSession () {
         return new SearchFilter();
     }

@@ -22,6 +22,7 @@ public class Jokes {
     @Qualifier("searchFilterSession")
     private SearchFilter currSearchFilter;
 
+    //TODO : move to Default controller
     @GetMapping("/getJokes")
     public ResponseEntity<String> getJokes() {
         List<Joke> jokes = JokesList.getJokesFromApi(currSearchFilter); //NOGA: i dont knowwwwwwwwww
