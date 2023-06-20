@@ -25,13 +25,13 @@ public class UserInfo implements Serializable {
     private String lastName;
 
     @NotEmpty(message = "EMAIL_MANDATORY")
-    @Email(message = "EMAIL_VALID")
+//    @Email(message = "EMAIL_VALID")
     private String email;
 
     @NotEmpty(message = "PASSWORD_MANDATORY")
     private String password;
 
-    public UserInfo(String email, String password, String firstName, String lastName) {
+    public UserInfo(String firstName, String lastName, String email, String password) {
         this.email = email;
         this.password = password;
         this.firstName = firstName;
