@@ -17,6 +17,7 @@
         }
         const cards = document.querySelectorAll('.card-con');
         cards.forEach(card => {
+            if((card.getAttribute("type") == 'single')) return;
             const f = document.querySelector('#' + card.id + ' #front');
             const b = document.querySelector('#' + card.id + ' #back');
             card.addEventListener('click', () => handleFlip(f,b))
@@ -27,33 +28,42 @@
     <div class="container-fluid">
         <header th:insert="fragments/header.html :: header"> </header>
         <h1>Favourite</h1>
+        <div class="row row-cols-1 row-cols-md-2 g-4 mx-3">
+<!--            <div " >-->
+                <div th:each="jokeObj : ${favourites}" th:id="'card-' + ${jokeObj.id}" class="col card-con" th:type="${jokeObj.type}">
+                    <div th:insert="fragments/card2.html :: card2" th:with="jokeObj=${jokeObj}"></div>
+                    <div>delete</div>
+                </div>
+<!--            </div>-->
+        </div>
 
         <!-- cards : -->
         <div class="row row-cols-1 row-cols-md-2 g-4 mx-3">
-            <div id="one" class="col card-con">
-                <div th:insert="fragments/card2.html :: card2"></div>
-                <div>delete</div>
-            </div>
-            <div id="two" class="col card-con">
-                <div th:insert="fragments/card2.html :: card2"></div>
-                <div>delete</div>
-            </div>
-            <div class="col card-con">
-                <div th:insert="fragments/card2.html :: card2"></div>
-                <div>delete</div>
-            </div>
-            <div class="col">
-                <div th:insert="fragments/card2.html :: card2"></div>
-                <div>delete</div>
-            </div>
-            <div class="col">
-                <div th:insert="fragments/card2.html :: card2"></div>
-                <div>delete</div>
-            </div>
-            <div class="col">
-                <div th:insert="fragments/card2.html :: card2"></div>
-                <div>delete</div>
-            </div>
+
+<!--            <div id="one" class="col card-con">-->
+<!--                <div th:insert="fragments/card2.html :: card2"></div>-->
+<!--                <div>delete</div>-->
+<!--            </div>-->
+<!--            <div id="two" class="col card-con">-->
+<!--                <div th:insert="fragments/card2.html :: card2"></div>-->
+<!--                <div>delete</div>-->
+<!--            </div>-->
+<!--            <div class="col card-con">-->
+<!--                <div th:insert="fragments/card2.html :: card2"></div>-->
+<!--                <div>delete</div>-->
+<!--            </div>-->
+<!--            <div class="col">-->
+<!--                <div th:insert="fragments/card2.html :: card2"></div>-->
+<!--                <div>delete</div>-->
+<!--            </div>-->
+<!--            <div class="col">-->
+<!--                <div th:insert="fragments/card2.html :: card2"></div>-->
+<!--                <div>delete</div>-->
+<!--            </div>-->
+<!--            <div class="col">-->
+<!--                <div th:insert="fragments/card2.html :: card2"></div>-->
+<!--                <div>delete</div>-->
+<!--            </div>-->
             <!--            <div th:insert="fragments/card2.html :: card2" class="col"></div>-->
             <!--            <div th:insert="fragments/card2.html :: card2" class="col"></div>-->
             <!--            <div th:insert="fragments/card2.html :: card2" class="col"></div>-->

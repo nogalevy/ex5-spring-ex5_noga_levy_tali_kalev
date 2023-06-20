@@ -2,11 +2,14 @@ package hac.beans;
 
 import hac.records.JokeApiCategoriesResponse;
 import hac.records.JokeApiResponse;
+import org.springframework.data.relational.core.sql.In;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import hac.records.Joke;
@@ -110,6 +113,43 @@ public class JokesList {
 
     public void clear() {
         jokesList.clear();
+    }
+
+    public static List<Joke> getJokesByIdsFromApi(ArrayList<Integer> ids){
+//        System.out.println("00000000000000000" + ids);
+        List<Joke> jokes = new ArrayList<Joke>();
+        for ( Integer id : ids) {
+            Joke joke = getJokeById(id);
+            jokes.add(joke);
+            System.out.println("0000000000000 id is " + joke.id());
+        }
+        return jokes;
+//        return Collections.emptyList();
+    }
+
+    public static Joke getJokeById(Integer id){
+//        Integer requestedId = id -1;
+        final String uri = "https://v2.jokeapi.dev/joke/Any?idRange=" + id;
+        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<JokeApiResponse> responseEntity = restTemplate.exchange(
+                uri,
+                HttpMethod.GET,
+                null,
+                JokeApiResponse.class
+        );
+
+        if (responseEntity.getStatusCode().is2xxSuccessful()) {
+            JokeApiResponse jokeApiResponse = responseEntity.getBody();
+            if (jokeApiResponse != null && !jokeApiResponse.error()) {
+                return jokeApiResponse.jokes().get(0);
+            } else {
+                System.out.println("Error response received from the API.");
+                System.out.println(jokeApiResponse.error());
+            }
+        } else {
+            System.out.println("Failed to fetch categories from the API.");
+        }
+        return null;
     }
 
     //TODO : clean this function or something

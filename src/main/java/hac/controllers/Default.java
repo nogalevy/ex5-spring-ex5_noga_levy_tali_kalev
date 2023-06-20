@@ -19,6 +19,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.HttpStatus;
 
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -38,10 +40,11 @@ public class Default {
             model.addAttribute("joke", "Something happened...no joke at the moment");
         } else {
             Joke joke = jokes.get(0);
-            model.addAttribute("type", joke.type());
-            model.addAttribute("setup", joke.setup());
-            model.addAttribute("delivery", joke.delivery());
-            model.addAttribute("joke", joke.joke());
+//            model.addAttribute("type", joke.type());
+//            model.addAttribute("setup", joke.setup());
+//            model.addAttribute("delivery", joke.delivery());
+//            model.addAttribute("joke", joke.joke());
+            model.addAttribute("jokeObj", joke);
         }
         List<String> categories = JokesList.getCategoriesFromApi();
         model.addAttribute("categories", categories);
@@ -55,8 +58,10 @@ public class Default {
     @GetMapping("/favourite")
     public String favourite(Model model) {
         List<String> categories = JokesList.getCategoriesFromApi();
+        List<Joke> favourites = JokesList.getJokesByIdsFromApi(new ArrayList(Arrays.asList(34, 234, 43)));
         model.addAttribute("categories", categories);
         model.addAttribute("searchFilter", currSearchFilter);
+        model.addAttribute("favourites", favourites);
         return "favourite";
     }
 
