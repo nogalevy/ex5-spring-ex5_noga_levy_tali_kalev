@@ -1,6 +1,5 @@
 package hac.utils;
 
-import hac.beans.JokeBean;
 import hac.beans.SearchFilter;
 import hac.records.Joke;
 import hac.records.JokeApiCategoriesResponse;
@@ -14,65 +13,44 @@ import java.util.Collections;
 import java.util.List;
 
 public class JokeApiHandler {
-    public static List<Joke> getJokesFromApi(SearchFilter s){//String uri){
+    final static String API_DOMAIN_URL = "https://v2.jokeapi.dev/joke";
+    final static String BLACKLIST_QUERY = "blacklistFlags=nsfw,religious,political,racist,sexist,explicit";
+    final static String CATEGORIES_URI = "https://v2.jokeapi.dev/categories";
+    final static String GET_BY_ID_URI_QUERY = API_DOMAIN_URL + "/Any?idRange=";
 
-        final String uri = getUri(s);
-        //        final String uri = "https://v2.jokeapi.dev/joke/Any?amount=4?format=json";
-        //        final String uri = "https://v2.jokeapi.dev/joke/Any";
-        //        final String uri = "https://v2.jokeapi.dev/joke/Any?blacklistFlags=nsfw,religious,political,racist,sexist,explicit&amount=2";
-//        final String uri = "https://v2.jokeapi.dev/joke/Any?blacklistFlags=nsfw,religious,political,racist,sexist,explicit";
+    private static  <T> ResponseEntity<T> GetRestExchange(String url, Class<T> resType){
         RestTemplate restTemplate = new RestTemplate();
-        List<Joke> jokes = null;
-
-        ResponseEntity<JokeApiResponse> responseEntity = restTemplate.exchange(
-                uri,
+        return restTemplate.exchange(
+                url,
                 HttpMethod.GET,
                 null,
-                JokeApiResponse.class
+                resType
         );
+    }
+
+    public static List<Joke> getJokesFromApi(SearchFilter sf){
+        final String uri = getUri(sf);
+        JokeApiResponse jokeApiResponse;
+        List<Joke> jokes = null;
+
+        ResponseEntity<JokeApiResponse> responseEntity = GetRestExchange( uri, JokeApiResponse.class);
 
         if (responseEntity.getStatusCode().is2xxSuccessful()) {
-            JokeApiResponse jokeApiResponse = responseEntity.getBody();
-            System.out.println(jokeApiResponse.error());
-            System.out.println(jokeApiResponse);
+            jokeApiResponse = responseEntity.getBody();
             if (jokeApiResponse != null && !jokeApiResponse.error()) {
                 jokes = jokeApiResponse.jokes();
-                if (jokes != null) {
-                    System.out.println("here............");
-                    for (hac.records.Joke joke : jokes) {
-                        if(joke.joke() != null){
-                            System.out.println("Printing one liner");
-                            System.out.println(joke.joke());
-                        }
-                        else{
-                            System.out.println("Printing two parter");
-                            System.out.println(joke.setup());
-                            System.out.println(joke.delivery());
-                        }
-                        System.out.println("-----");
-                    }
-                } else {
-                    System.out.println("No jokes found.");
-                }
+                //NOGA: I deleted the for loop that use to be here long time ago i hope that okay. okay?
             } else {
                 System.out.println("Error response received from the API.");
             }
-        } else {
-            System.out.println("Failed to fetch jokes from the API.");
+        } else{
+                System.out.println("Failed to fetch jokes from the API.");
         }
         return jokes;
     }
 
     public static List<String> getCategoriesFromApi() {
-        final String uri = "https://v2.jokeapi.dev/categories";
-        RestTemplate restTemplate = new RestTemplate();
-
-        ResponseEntity<JokeApiCategoriesResponse> responseEntity = restTemplate.exchange(
-                uri,
-                HttpMethod.GET,
-                null,
-                JokeApiCategoriesResponse.class
-        );
+        ResponseEntity<JokeApiCategoriesResponse> responseEntity = GetRestExchange( CATEGORIES_URI, JokeApiCategoriesResponse.class);
 
         if (responseEntity.getStatusCode().is2xxSuccessful()) {
             JokeApiCategoriesResponse categoriesResponse = responseEntity.getBody();
@@ -89,27 +67,18 @@ public class JokeApiHandler {
     }
 
     public static List<Joke> getJokesByIdsFromApi(ArrayList<Integer> ids){
-//        System.out.println("00000000000000000" + ids);
         List<Joke> jokes = new ArrayList<Joke>();
-        for ( Integer id : ids) {
+        for (Integer id : ids) {
             Joke joke = getJokeById(id);
             jokes.add(joke);
-            System.out.println("0000000000000 id is " + joke.id());
         }
         return jokes;
-//        return Collections.emptyList();
     }
 
     public static Joke getJokeById(Integer id){
-//        Integer requestedId = id -1;
-        final String uri = "https://v2.jokeapi.dev/joke/Any?idRange=" + id;
-        RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<JokeApiResponse> responseEntity = restTemplate.exchange(
-                uri,
-                HttpMethod.GET,
-                null,
-                JokeApiResponse.class
-        );
+//        Integer requestedId = id -1; //NOGA
+        final String uri = GET_BY_ID_URI_QUERY + id;
+        ResponseEntity<JokeApiResponse> responseEntity = GetRestExchange( uri, JokeApiResponse.class);
 
         if (responseEntity.getStatusCode().is2xxSuccessful()) {
             JokeApiResponse jokeApiResponse = responseEntity.getBody();
@@ -120,38 +89,37 @@ public class JokeApiHandler {
                 System.out.println(jokeApiResponse.error());
             }
         } else {
-            System.out.println("Failed to fetch categories from the API.");
+            System.out.println("Failed to fetch by id from the API.");
         }
         return null;
     }
 
-    //TODO : clean this function or something
-    public static String getUri(SearchFilter s){
-        String BLACKLIST = "?blacklistFlags=nsfw,religious,political,racist,sexist,explicit";
-//        SearchFilter s = new SearchFilter();
-        String u = "https://v2.jokeapi.dev/joke";
-        String catgrs = "/";
+    public static String getUri(SearchFilter sf){
+        String catgrs = buildCategoryQuery(sf.getSelectedCategories());
+        String op = buildOptionsQuery(sf.getSelectedOption());
+        return API_DOMAIN_URL + catgrs + op + BLACKLIST_QUERY;
+    }
 
-        int opInt = s.getSelectedOption();
-        String op = "?type=";
-
-        if(opInt == 0) op = "";
-        else if (opInt == 1) {
-            op = op + "single";
+    private static String buildCategoryQuery(String[] categories){
+        String query = "/";
+        if(categories.length == 0){query = "/Any";}
+        for ( int i = 0 ; i < categories.length; i++) {
+            String c = categories[i];
+            query = query.concat(c);
+            if(i < categories.length - 1) query = query + ",";
         }
-        else{
-            op = op + "twopart";
-        }
+        return query + '?';
+    }
 
-        if(s.getSelectedCategories().length == 0){catgrs = "/Any";}
-        for ( int i = 0 ; i < s.getSelectedCategories().length; i++) {
-            String c = s.getSelectedCategories()[i];
-            catgrs = catgrs.concat(c);
-            if(i < s.getSelectedCategories().length - 1) catgrs = catgrs + ",";
-        }
-        String x = u + catgrs + op + BLACKLIST;
-        System.out.println("---- uri: ----" + x);
+    private static String buildOptionsQuery(int op){
+        String opStr = "type=";
 
-        return x;
+        if (op == 1) {
+            return opStr + "single&";
+        }
+        else if(op == 2){
+            return opStr + "twopart&";
+        }
+        return "";
     }
 }
