@@ -5,6 +5,7 @@ import hac.beans.SearchFilter;
 import hac.records.Joke;
 import hac.records.JokeApiCategoriesResponse;
 import hac.records.JokeApiResponse;
+import hac.utils.JokeApiHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -33,7 +34,7 @@ public class Default {
 
     @GetMapping("/")
     public String index(Model model) {
-        List<Joke> jokes = JokesList.getJokesFromApi(currSearchFilter);
+        List<Joke> jokes = JokeApiHandler.getJokesFromApi(currSearchFilter);
 //        currSearchFilter.getUri();
         //NOGA: move to function ??
         if (jokes == null) {
@@ -46,7 +47,7 @@ public class Default {
 //            model.addAttribute("joke", joke.joke());
             model.addAttribute("jokeObj", joke);
         }
-        List<String> categories = JokesList.getCategoriesFromApi();
+        List<String> categories = JokeApiHandler.getCategoriesFromApi();
         model.addAttribute("categories", categories);
         model.addAttribute("searchFilter", currSearchFilter);
 
@@ -57,8 +58,8 @@ public class Default {
 
     @GetMapping("/favourite")
     public String favourite(Model model) {
-        List<String> categories = JokesList.getCategoriesFromApi();
-        List<Joke> favourites = JokesList.getJokesByIdsFromApi(new ArrayList(Arrays.asList(34, 234, 43)));
+        List<String> categories = JokeApiHandler.getCategoriesFromApi();
+        List<Joke> favourites = JokeApiHandler.getJokesByIdsFromApi(new ArrayList(Arrays.asList(34, 234, 43)));
         model.addAttribute("categories", categories);
         model.addAttribute("searchFilter", currSearchFilter);
         model.addAttribute("favourites", favourites);
@@ -67,7 +68,7 @@ public class Default {
 
     @GetMapping("/user")
     public String userProfile(Model model) {
-        List<String> categories = JokesList.getCategoriesFromApi();
+        List<String> categories = JokeApiHandler.getCategoriesFromApi();
         model.addAttribute("categories", categories);
         model.addAttribute("searchFilter", currSearchFilter);
         return "userProfile";
@@ -89,7 +90,7 @@ public class Default {
 
     @GetMapping("/getJokes")
     public ResponseEntity<String> getJokes() {
-        List<Joke> jokes = JokesList.getJokesFromApi(currSearchFilter); //NOGA: i dont knowwwwwwwwww
+        List<Joke> jokes = JokeApiHandler.getJokesFromApi(currSearchFilter); //NOGA: i dont knowwwwwwwwww
         if (jokes == null) {
             String errorResponse = "{\"error\": \"Something happened...no joke at the moment\"}";
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
