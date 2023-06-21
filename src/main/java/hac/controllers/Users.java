@@ -8,12 +8,14 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
 
 @Controller
 public class Users {
@@ -24,6 +26,8 @@ public class Users {
 
     @Autowired
     private UserInfoRepository userInfoRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @GetMapping("/users/login")
     public String login(Model model) {
@@ -35,7 +39,7 @@ public class Users {
         //retrieve login info from form
         //check if user exists in UserRepository
         UserInfo existingUser = userInfoRepository.findUserByEmail(email);
-        if(existingUser != null && existingUser.getPassword().equals(password)){
+        if(existingUser != null  && passwordEncoder.matches(password, existingUser.getPassword())){
             //if exists, set userSession to logged in
             currUserSession.setLoggedIn(true);
             currUserSession.setUserId(existingUser.getId());
@@ -68,13 +72,14 @@ public class Users {
             return "register";
         }
 
+        String encryptedPassword = passwordEncoder.encode(userInfo.getPassword());
 //        else, add user to UserRepository
-        UserInfo newUser = new UserInfo(userInfo.getFirstName(), userInfo.getLastName(), userInfo.getEmail(), userInfo.getPassword());
+        UserInfo newUser = new UserInfo(userInfo.getFirstName(), userInfo.getLastName(), userInfo.getEmail(), encryptedPassword);
         userInfoRepository.save(newUser);
         //set userSession to logged in
 //        currUserSession.setLoggedIn(true);
-        //redirect to index
 //        return "redirect:/";
         return "redirect:/users/login";
     }
+
 }

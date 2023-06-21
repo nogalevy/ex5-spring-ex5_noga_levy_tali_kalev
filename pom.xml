@@ -73,6 +73,11 @@
             <version>2.12.7.1</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-crypto</artifactId>
+            <version>6.0.2</version>
+        </dependency>
         <!-- uncomment this if you are using h2 (in memory database) and comment out the dependency com.mysql above -->
 <!--        <dependency>-->
 <!--            <groupId>com.h2database</groupId>-->
