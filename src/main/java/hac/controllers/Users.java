@@ -4,6 +4,7 @@ import hac.DTO.RegistrationForm;
 import hac.beans.UserSession;
 import hac.repo.UserInfo;
 import hac.repo.UserInfoRepository;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -74,6 +75,19 @@ public class Users {
 //        currUserSession.setLoggedIn(true);
         //redirect to index
 //        return "redirect:/";
+        return "redirect:/users/login";
+    }
+
+    @PostMapping("/users/logout")
+    public String logoutUser(HttpServletRequest request, Model model){
+        //set userSession to logged out
+        request.getSession().invalidate();
+//        currUserSession.setLoggedIn(false);
+//        currUserSession.setUserId(-1);
+
+        System.out.println("logging out user");
+        //todo: add message on successful logout
+        //redirect to login page
         return "redirect:/users/login";
     }
 

@@ -18,6 +18,9 @@
             <p>Last Name: <span th:text="${lastName}"></span></p>
             <p>Email: <span th:text="${email}"></span></p>
         </div>
+        <form th:action="@{/users/logout}" method="post">
+            <button type="submit" class="btn btn-danger">Logout</button>
+        </form>
     </div>
     <div th:insert="fragments/menu.html :: menu"> </div>
 </body>
