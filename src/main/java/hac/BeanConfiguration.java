@@ -5,6 +5,8 @@ import hac.beans.UserSession;
 import hac.beans.SearchFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.context.annotation.ApplicationScope;
 import org.springframework.web.context.annotation.SessionScope;
 
@@ -37,5 +39,10 @@ public class BeanConfiguration {
     @SessionScope
     public SearchFilter searchFilterSession () {
         return new SearchFilter();
+    }
+
+    @Bean
+    public PasswordEncoder encoder() {
+        return new BCryptPasswordEncoder();
     }
 }
