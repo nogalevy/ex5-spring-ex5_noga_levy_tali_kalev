@@ -18,13 +18,13 @@
             </div>
         </div>
 <!--        <div th:if="${param.success}">-->
-            <div>
-                <div class="alert alert-info">
-                    You have successfully registered our app!
-                </div>
-            </div>
+<!--            <div>-->
+<!--                <div class="alert alert-info">-->
+<!--                    You have successfully registered our app!-->
+<!--                </div>-->
+<!--            </div>-->
             <div class="card-body">
-                <form method="post" role="form" th:action="@{/users/register}" th:object="${registrationForm}">
+                <form method="post" role="form" th:action="@{/users/register}" th:object="${userInfo}">
                     <div class="form-group mb-3">
                         <label class="form-label">First Name</label>
                         <input class="form-control" id="firstName" name="firstName" placeholder="Enter first name"

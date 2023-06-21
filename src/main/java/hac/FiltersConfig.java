@@ -3,7 +3,7 @@ package hac;
 
 import hac.beans.UserSession;
 import hac.filters.AuthInterceptor;
-import hac.filters.LoggingInterceptor;
+import hac.filters.UnauthInterceptor;
 import jakarta.annotation.Resource;
 import org.springframework.context.annotation.Configuration;
 
@@ -33,7 +33,7 @@ public class FiltersConfig implements WebMvcConfigurer {
 //        registry.addInterceptor(new LoggingInterceptor(sessionUser)).addPathPatterns("/**");
 
         //Interceptor for unauth users
-        registry.addInterceptor(new LoggingInterceptor(sessionUser)).addPathPatterns("/users/**"); //TODO: changes name to unauth
+        registry.addInterceptor(new UnauthInterceptor(sessionUser)).addPathPatterns("/users/**"); //TODO: changes name to unauth
         //Interceptor for auth users (logged in)
         registry.addInterceptor(new AuthInterceptor(sessionUser)).addPathPatterns("/pages/**", "/");
 

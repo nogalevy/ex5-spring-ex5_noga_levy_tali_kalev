@@ -10,10 +10,10 @@ import jakarta.servlet.http.HttpServletResponse;
  * Interceptor responsible for authorizing users not logged in to
  * access login and registration pages.
  */
-public class LoggingInterceptor implements HandlerInterceptor {
+public class UnauthInterceptor implements HandlerInterceptor {
 
     private UserSession userSession;
-    public LoggingInterceptor(UserSession u) {
+    public UnauthInterceptor(UserSession u) {
         userSession = u;
     }
 
@@ -28,7 +28,6 @@ public class LoggingInterceptor implements HandlerInterceptor {
             System.out.println("Session bean in filter: " + userSession.isLoggedIn());
             //response.sendRedirect("/");
             //return false;
-
         }
         return true;
     }

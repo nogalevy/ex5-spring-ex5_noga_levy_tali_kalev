@@ -1,12 +1,10 @@
 package hac.controllers;
 
 import hac.DTO.RegistrationForm;
-import hac.beans.SearchFilter;
 import hac.beans.UserSession;
 import hac.repo.UserInfo;
-import hac.repo.UserRepository;
+import hac.repo.UserInfoRepository;
 import jakarta.validation.Valid;
-import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -24,7 +22,7 @@ public class Users {
     private UserSession currUserSession;
 
     @Autowired
-    private UserRepository userRepository;
+    private UserInfoRepository userInfoRepository;
 
     @GetMapping("/users/login")
     public String login(Model model) {
@@ -35,7 +33,7 @@ public class Users {
     public String loginUser(@RequestParam("email") String email, @RequestParam("password") String password, Model model){
         //retrieve login info from form
         //check if user exists in UserRepository
-        UserInfo existingUser = userRepository.findUserByEmail(email);
+        UserInfo existingUser = userInfoRepository.findUserByEmail(email);
         if(existingUser != null && existingUser.getPassword().equals(password)){
             //if exists, set userSession to logged in
             currUserSession.setLoggedIn(true);
@@ -50,32 +48,32 @@ public class Users {
 
     @GetMapping("/users/register")
     public String register(Model model) {
-        model.addAttribute(new RegistrationForm());
+        model.addAttribute(new UserInfo());
         return "register";
     }
 
     @PostMapping("/users/register")
-    public String registerUser(@Valid RegistrationForm registrationForm, BindingResult result, Model model) {
+    public String registerUser(@Valid UserInfo userInfo, BindingResult result, Model model) {
         //retrieve register info from form
         if (result.hasErrors()) {
             return "register";
         }
         //check if user exists in UserRepository
-        UserInfo existingUser = userRepository.findUserByEmail(registrationForm.getEmail());
-        if (existingUser != null && existingUser.getEmail().equals(registrationForm.getEmail())) {
+        UserInfo existingUser = userInfoRepository.findUserByEmail(userInfo.getEmail());
+        if (existingUser != null && existingUser.getEmail().equals(userInfo.getEmail())) {
 //            existingUser != null && existingUser.getEmail() != null && !existingUser.getEmail().isEmpty()
             //if exists, return error message
             result.rejectValue("email", null, "There is already an account registered with that email");
             return "register";
         }
-        System.out.println("email: " + registrationForm.getEmail());
-        System.out.println("password: " + registrationForm.getPassword());
-        System.out.println("firstname: " + registrationForm.getFirstName());
-        System.out.println("lastname: " + registrationForm.getLastName());
+        System.out.println("email: " + userInfo.getEmail());
+        System.out.println("password: " + userInfo.getPassword());
+        System.out.println("firstname: " + userInfo.getFirstName());
+        System.out.println("lastname: " + userInfo.getLastName());
 
-        //else, add user to UserRepository
-        UserInfo newUser = new UserInfo(registrationForm.getFirstName(), registrationForm.getLastName(), registrationForm.getEmail(), registrationForm.getPassword());
-        userRepository.save(newUser);
+//        else, add user to UserRepository
+        UserInfo newUser = new UserInfo(userInfo.getFirstName(), userInfo.getLastName(), userInfo.getEmail(), userInfo.getPassword());
+        userInfoRepository.save(newUser);
         //set userSession to logged in
         currUserSession.setLoggedIn(true);
         //redirect to index
