@@ -9,6 +9,7 @@ import hac.records.JokeApiResponse;
 import hac.repo.UserInfo;
 import hac.repo.UserInfoRepository;
 import hac.utils.JokeApiHandler;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -132,5 +133,18 @@ public class Default {
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
             }
         }
+    }
+
+    @PostMapping("/pages/logout")
+    public String logoutUser(HttpServletRequest request, Model model){
+        //set userSession to logged out
+        request.getSession().invalidate();
+//        currUserSession.setLoggedIn(false);
+//        currUserSession.setUserId(-1);
+
+        System.out.println("logging out user");
+        //todo: add message on successful logout
+        //redirect to login page
+        return "redirect:/users/login";
     }
 }

@@ -77,18 +77,4 @@ public class Users {
 //        return "redirect:/";
         return "redirect:/users/login";
     }
-
-    @PostMapping("/users/logout")
-    public String logoutUser(HttpServletRequest request, Model model){
-        //set userSession to logged out
-        request.getSession().invalidate();
-//        currUserSession.setLoggedIn(false);
-//        currUserSession.setUserId(-1);
-
-        System.out.println("logging out user");
-        //todo: add message on successful logout
-        //redirect to login page
-        return "redirect:/users/login";
-    }
-
 }

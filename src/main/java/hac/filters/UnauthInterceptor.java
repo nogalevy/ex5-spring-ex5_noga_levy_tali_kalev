@@ -26,8 +26,8 @@ public class UnauthInterceptor implements HandlerInterceptor {
 
         if(userSession.isLoggedIn()){
             System.out.println("Session bean in filter: " + userSession.isLoggedIn());
-            //response.sendRedirect("/");
-            //return false;
+            response.sendRedirect("/");
+            return false;
         }
         return true;
     }
