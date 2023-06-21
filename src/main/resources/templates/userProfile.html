@@ -13,6 +13,11 @@
     <div class="container">
         <header th:insert="fragments/header.html :: header"> </header>
         <h1>User Profile</h1>
+        <div>
+            <p>First Name: <span th:text="${firstName}"></span></p>
+            <p>Last Name: <span th:text="${lastName}"></span></p>
+            <p>Email: <span th:text="${email}"></span></p>
+        </div>
     </div>
     <div th:insert="fragments/menu.html :: menu"> </div>
 </body>

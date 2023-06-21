@@ -1,4 +1,5 @@
 package hac.DTO;
+//TALI : NO IN USE
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;

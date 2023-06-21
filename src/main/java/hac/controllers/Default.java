@@ -2,9 +2,12 @@ package hac.controllers;
 
 import hac.beans.JokesList;
 import hac.beans.SearchFilter;
+import hac.beans.UserSession;
 import hac.records.Joke;
 import hac.records.JokeApiCategoriesResponse;
 import hac.records.JokeApiResponse;
+import hac.repo.UserInfo;
+import hac.repo.UserInfoRepository;
 import hac.utils.JokeApiHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -31,6 +34,13 @@ public class Default {
     @Autowired
     @Qualifier("searchFilterSession")
     private SearchFilter currSearchFilter = new SearchFilter();
+
+    @Autowired
+    @Qualifier("sessionUser")
+    private UserSession currUserSession;
+    @Autowired
+    private UserInfoRepository userInfoRepository;
+
 
     @GetMapping("/")
     public String index(Model model) {
@@ -66,11 +76,27 @@ public class Default {
         return "favourite";
     }
 
-    @GetMapping("/pages/user")
+    @GetMapping("/pages/userprofile")
     public String userProfile(Model model) {
+        //for menu - todo: possible remove
         List<String> categories = JokeApiHandler.getCategoriesFromApi();
         model.addAttribute("categories", categories);
         model.addAttribute("searchFilter", currSearchFilter);
+
+        //retreive user id from user session
+        Long userId = currUserSession.getUserId();
+        //retrieve user first name, last name, email from userinfo repo
+        UserInfo userInfo = userInfoRepository.findById(userId).orElse(null);
+        if(userInfo == null){
+            System.out.println("user not found");
+        }
+        else{
+            //add user attributes to model
+            model.addAttribute("firstName", userInfo.getFirstName());
+            model.addAttribute("lastName", userInfo.getLastName());
+            model.addAttribute("email", userInfo.getEmail());
+        }
+
         return "userProfile";
     }
 

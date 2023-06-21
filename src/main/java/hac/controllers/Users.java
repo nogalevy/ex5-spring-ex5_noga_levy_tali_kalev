@@ -37,7 +37,7 @@ public class Users {
         if(existingUser != null && existingUser.getPassword().equals(password)){
             //if exists, set userSession to logged in
             currUserSession.setLoggedIn(true);
-            currUserSession.setUser_id(existingUser.getId());
+            currUserSession.setUserId(existingUser.getId());
             return "redirect:/";
         }else {
             //else return error message
@@ -66,18 +66,15 @@ public class Users {
             result.rejectValue("email", null, "There is already an account registered with that email");
             return "register";
         }
-        System.out.println("email: " + userInfo.getEmail());
-        System.out.println("password: " + userInfo.getPassword());
-        System.out.println("firstname: " + userInfo.getFirstName());
-        System.out.println("lastname: " + userInfo.getLastName());
 
 //        else, add user to UserRepository
         UserInfo newUser = new UserInfo(userInfo.getFirstName(), userInfo.getLastName(), userInfo.getEmail(), userInfo.getPassword());
         userInfoRepository.save(newUser);
         //set userSession to logged in
-        currUserSession.setLoggedIn(true);
+//        currUserSession.setLoggedIn(true);
         //redirect to index
-        return "redirect:/";
+//        return "redirect:/";
+        return "redirect:/users/login";
     }
 
 }
