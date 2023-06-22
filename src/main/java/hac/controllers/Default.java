@@ -1,22 +1,27 @@
 package hac.controllers;
 
+import hac.OffsetBasedPageRequest;
 import hac.beans.JokesList;
 import hac.beans.SearchFilter;
 import hac.beans.UserSession;
 import hac.records.Joke;
 import hac.records.JokeApiCategoriesResponse;
 import hac.records.JokeApiResponse;
+import hac.repo.Favourite;
+import hac.repo.FavouriteRepository;
 import hac.repo.UserInfo;
 import hac.repo.UserInfoRepository;
 import hac.utils.JokeApiHandler;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpMethod;
@@ -41,7 +46,8 @@ public class Default {
     private UserSession currUserSession;
     @Autowired
     private UserInfoRepository userInfoRepository;
-
+    @Autowired
+    private FavouriteRepository favouriteRepository;
 
     @GetMapping("/")
     public String index(Model model) {
@@ -70,11 +76,38 @@ public class Default {
     @GetMapping("/pages/favourite")
     public String favourite(Model model) {
         List<String> categories = JokeApiHandler.getCategoriesFromApi();
-        List<Joke> favourites = JokeApiHandler.getJokesByIdsFromApi(new ArrayList(Arrays.asList(34, 234, 43)));
+        //TODO :
+        List<Favourite> favouritesList = getAllFavourites(3, 0);
+        ArrayList<Long> jokeIds = new ArrayList<>();
+        for(Favourite fav : favouritesList){
+            System.out.println("@_@_@_@_@_@_@_@_@_@_@_@_@_@_@_@ joke id: " + fav.getJokeId());
+            jokeIds.add(fav.getJokeId());
+        }
+        List<Joke> favourites = JokeApiHandler.getJokesByIdsFromApi(jokeIds);
         model.addAttribute("categories", categories);
         model.addAttribute("searchFilter", currSearchFilter);
         model.addAttribute("favourites", favourites);
         return "favourite";
+    }
+
+    @GetMapping("/favourite")
+    public ResponseEntity<List<Joke>> favourite(@RequestParam Integer offset, Model model) {
+        List<Favourite> favouritesList = getAllFavourites(3, offset);
+
+        ArrayList<Long> jokeIds = new ArrayList<Long>();
+        for(Favourite fav : favouritesList){
+            System.out.println("@_@_@_@_@_@_@_@_@_@_@_@_@_@_@_@ joke id: " + fav.getJokeId());
+            jokeIds.add(fav.getJokeId());
+        }
+        List<Joke> favourites = JokeApiHandler.getJokesByIdsFromApi(jokeIds);
+        return ResponseEntity.ok(favourites);
+    }
+
+    public List<Favourite> getAllFavourites(int limit, int offset) {
+        System.out.println("Get all Employees with limit " + limit + " and offset " + offset);
+        Pageable pageable = new OffsetBasedPageRequest(limit, offset);
+//        return favouriteRepository.findAll(pageable).getContent();
+        return favouriteRepository.findFavouritesByUserInfo_Id(currUserSession.getUserId(), pageable);
     }
 
     @GetMapping("/pages/userprofile")

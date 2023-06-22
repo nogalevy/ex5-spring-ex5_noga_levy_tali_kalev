@@ -66,18 +66,18 @@ public class JokeApiHandler {
         return Collections.emptyList();
     }
 
-    public static List<Joke> getJokesByIdsFromApi(ArrayList<Integer> ids){
+    public static List<Joke> getJokesByIdsFromApi(ArrayList<Long> ids){
         List<Joke> jokes = new ArrayList<Joke>();
-        for (Integer id : ids) {
+        for (Long id : ids) {
             Joke joke = getJokeById(id);
             jokes.add(joke);
         }
         return jokes;
     }
 
-    public static Joke getJokeById(Integer id){
+    public static Joke getJokeById(Long id){
 //        Integer requestedId = id -1; //NOGA
-        final String uri = GET_BY_ID_URI_QUERY + id;
+        final String uri = GET_BY_ID_URI_QUERY + String.valueOf(id); //NOGA: delete valueof
         ResponseEntity<JokeApiResponse> responseEntity = GetRestExchange( uri, JokeApiResponse.class);
 
         if (responseEntity.getStatusCode().is2xxSuccessful()) {
