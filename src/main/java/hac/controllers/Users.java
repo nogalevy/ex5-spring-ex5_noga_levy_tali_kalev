@@ -34,7 +34,7 @@ public class Users {
     }
 
     @PostMapping("/users/login")
-    public String loginUser(@RequestParam("email") String email, @RequestParam("password") String password, Model model){
+    public synchronized String loginUser(@RequestParam("email") String email, @RequestParam("password") String password, Model model){
         //check if user exists in UserRepository
         UserInfo existingUser = userInfoRepository.findUserByEmail(email);
         if(existingUser != null  && passwordEncoder.matches(password, existingUser.getPassword())){
@@ -56,7 +56,7 @@ public class Users {
     }
 
     @PostMapping("/users/register")
-    public String registerUser(@Valid UserInfo userInfo, BindingResult result, Model model) {
+    public synchronized String registerUser(@Valid UserInfo userInfo, BindingResult result, Model model) {
         //retrieve register info from form and check if errors
         if (result.hasErrors()) {
             return "register";

@@ -78,7 +78,7 @@ public class Default {
     }
 
     @GetMapping("/pages/userprofile")
-    public String userProfile(Model model) {
+    public synchronized String userProfile(Model model) {
         //for menu - todo: possible remove
         List<String> categories = JokeApiHandler.getCategoriesFromApi();
         model.addAttribute("categories", categories);
