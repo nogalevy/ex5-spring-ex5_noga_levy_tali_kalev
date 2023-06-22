@@ -9,7 +9,7 @@
 </head>
 
 <body>
-  <br /><br />
+  <br /><br /><br /><br />
   <div class="container">
     <div class="row">
       <div class="col-md-6 offset-md-3">
@@ -17,6 +17,7 @@
         <div th:if="${error}">
           <div class="alert alert-danger">Invalid Email or Password</div>
         </div>
+        <!--TODO: deal with param or remove-->
         <div th:if="${param.logout}">
           <div class="alert alert-success"> You have been logged out.</div>
         </div>
@@ -38,9 +39,10 @@
                 <input type="password" id="password" name="password" class="form-control"
                   placeholder="Enter password" />
               </div>
-              <div class="form-group mb-3">
-                <button type="submit" class="btn btn-primary">Submit</button>
-                <span> Not registered ?
+              <div class="form-group mb-2">
+                <button type="submit" class="btn btn-primary mb-2 container-fluid">Submit</button>
+                <br/>
+                <span> Not registered?
                   <a th:href="@{/users/register}">Signup here</a>
                 </span>
               </div>

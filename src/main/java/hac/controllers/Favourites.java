@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.ui.Model;
@@ -28,7 +29,7 @@ public class Favourites {
     private UserInfoRepository userInfoRepository;
 
     @PostMapping("/favourites/add")
-    public ResponseEntity<Long> registerUser(@RequestBody Long jokeId) throws Exception {
+    public synchronized ResponseEntity<Long> addUserFavourite(@RequestBody Long jokeId) throws Exception {
         Favourite newFavourite = new Favourite(jokeId);
         long userId = currUserSession.getUserId();
 
@@ -38,5 +39,12 @@ public class Favourites {
         }).orElseThrow(() -> new Exception("sorry" ));
 
         return ResponseEntity.ok(jokeId);
+    }
+
+    @ExceptionHandler({Exception.class})
+    public String handleValidationExceptions(Exception ex, Model model) {
+        // we can insert the message into the model
+        model.addAttribute("error", ex.getMessage());
+        return "error";
     }
 }
