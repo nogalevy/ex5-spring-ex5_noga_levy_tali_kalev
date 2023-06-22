@@ -18,24 +18,24 @@ public class UserInfo implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotEmpty(message = "FIRST_NAME_MANDATORY")
+    @NotEmpty(message = "First name is mandatory")
     private String firstName;
 
-    @NotEmpty(message = "LAST_NAME_MANDATORY")
+    @NotEmpty(message = "Last name is mandatory")
     private String lastName;
 
-    @NotEmpty(message = "EMAIL_MANDATORY")
-//    @Email(message = "EMAIL_VALID")
+    @NotEmpty(message = "Email is mandatory")
+    @Email(message = "Email is not valid")
     private String email;
 
-    @NotEmpty(message = "PASSWORD_MANDATORY")
+    @NotEmpty(message = "Password is mandatory")
     private String password;
 
     public UserInfo(String firstName, String lastName, String email, String password) {
-        this.email = email;
-        this.password = password;
-        this.firstName = firstName;
-        this.lastName = lastName;
+        this.email = email.trim();
+        this.password = password.trim();
+        this.firstName = firstName.trim();
+        this.lastName = lastName.trim();
     }
 
     public UserInfo() {

@@ -1,6 +1,5 @@
 package hac.controllers;
 
-import hac.DTO.RegistrationForm;
 import hac.beans.UserSession;
 import hac.repo.UserInfo;
 import hac.repo.UserInfoRepository;
@@ -36,7 +35,6 @@ public class Users {
 
     @PostMapping("/users/login")
     public String loginUser(@RequestParam("email") String email, @RequestParam("password") String password, Model model){
-        //retrieve login info from form
         //check if user exists in UserRepository
         UserInfo existingUser = userInfoRepository.findUserByEmail(email);
         if(existingUser != null  && passwordEncoder.matches(password, existingUser.getPassword())){
@@ -59,27 +57,21 @@ public class Users {
 
     @PostMapping("/users/register")
     public String registerUser(@Valid UserInfo userInfo, BindingResult result, Model model) {
-        //retrieve register info from form
+        //retrieve register info from form and check if errors
         if (result.hasErrors()) {
             return "register";
         }
         //check if user exists in UserRepository
         UserInfo existingUser = userInfoRepository.findUserByEmail(userInfo.getEmail());
         if (existingUser != null && existingUser.getEmail().equals(userInfo.getEmail())) {
-//            existingUser != null && existingUser.getEmail() != null && !existingUser.getEmail().isEmpty()
             //if exists, return error message
             result.rejectValue("email", null, "There is already an account registered with that email");
             return "register";
         }
-
+        //if not, encrypt password and add user to repository
         String encryptedPassword = passwordEncoder.encode(userInfo.getPassword());
-//        else, add user to UserRepository
         UserInfo newUser = new UserInfo(userInfo.getFirstName(), userInfo.getLastName(), userInfo.getEmail(), encryptedPassword);
         userInfoRepository.save(newUser);
-        //set userSession to logged in
-//        currUserSession.setLoggedIn(true);
-//        return "redirect:/";
         return "redirect:/users/login";
     }
-
 }
