@@ -11,6 +11,8 @@
 </head>
 <script>
     document.addEventListener("DOMContentLoaded", () => {
+        let addBtn = document.getElementById("addFavourite");
+        addBtn.addEventListener("click", add);
         const card = document.getElementById('clickable');
         let cardbox = document.getElementById("cardBox");
         card.addEventListener('click', handleFlip)
@@ -36,6 +38,8 @@
                     const f = document.getElementById('front')
                     const b = document.getElementById('back')
                     cardbox.setAttribute("name", jsonData.id);
+                    addBtn.textContent = 'Add'; //NOGA : change icon + add listener
+                    addBtn.addEventListener('click', add);
                     if(f.classList.contains('flipped')){
                         f.classList.toggle('flipped')
                         b.classList.toggle('flipped')
@@ -57,8 +61,7 @@
                     console.log(error);
                 });
         });
-        let addBtn = document.getElementById("addFavourite");
-        addBtn.addEventListener("click", add);
+
         function add(){
             let jokeId = cardbox.getAttribute("name");
             fetch('/favourites/add', {
