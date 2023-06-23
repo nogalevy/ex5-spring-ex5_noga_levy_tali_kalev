@@ -12,6 +12,7 @@ function deleteJoke(jokeId) {
         .then(deletedJokeId => {
             console.log("here", deletedJokeId);
             if (deletedJokeId !== null) {
+                //NOGA: also need to offset -= 1 i think
                 const cardElement = document.getElementById(`card-${deletedJokeId}`);
                 if (cardElement) {
                     cardElement.remove();
