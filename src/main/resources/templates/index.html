@@ -31,10 +31,10 @@
 
         document.getElementById("generate").addEventListener("click", () => {
             fetch('/pages/getJokes')
-                .then(response =>
-                    response.json()
+                .then(response => response.json()
                 )
                 .then(jsonData => {
+                    console.log(jsonData);
                     const f = document.getElementById('front')
                     const b = document.getElementById('back')
                     cardbox.setAttribute("name", jsonData.id);
@@ -56,6 +56,8 @@
                         card.classList.remove('flip-btn')
                         card.classList.add('not-flip')
                     }
+                    //check if joke is in favourites -> add event listener if needed, else set text to 'added'
+                    console.log(jsonData.isFavourite);
                 })
                 .catch(error => {
                     console.log(error);

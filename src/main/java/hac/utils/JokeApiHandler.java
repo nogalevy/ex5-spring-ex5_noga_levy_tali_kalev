@@ -37,6 +37,7 @@ public class JokeApiHandler {
 
         if (responseEntity.getStatusCode().is2xxSuccessful()) {
             jokeApiResponse = responseEntity.getBody();
+            System.out.println("jokeApiResponse: " + jokeApiResponse);
             if (jokeApiResponse != null && !jokeApiResponse.error()) {
                 jokes = jokeApiResponse.jokes();
                 //NOGA: I deleted the for loop that use to be here long time ago i hope that okay. okay?

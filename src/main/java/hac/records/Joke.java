@@ -1,31 +1,41 @@
 package hac.records;
 
-public record Joke(String category, String type, String setup, String delivery, String joke, int id) { }
+public record Joke(String category, String type, String setup, String delivery, String joke, long id, boolean isFavourite, Joke jokeObj) {
 
+    public Joke(Joke joke, boolean isFavourite) {
+        this(joke.category(), joke.type(), joke.setup(), joke.delivery(), joke.joke(), joke.id(), isFavourite, joke);
+    }
+}
+
+//
 //public class Joke{
 //    private String category;
 //    private String type;
 //    private String setup;
 //    private String delivery;
 //    private String joke;
-////    private Flags flags;
-//    private int id;
-//    private boolean safe;
-//    private String lang;
-//
-//    public Joke() {
+//    private long id;
+//    private boolean isFavourite = false;
+//    public Joke(String category, String type, String setup, String delivery, String joke, long id, boolean b) {
 //    }
 //
-//    public Joke(String category, String type, String setup, String delivery, String joke, int id, boolean safe, String lang) {
+//    public Joke(Joke joke, boolean isFavourite){
+//        this(joke.getCategory(), joke.getType(), joke.getSetup(), joke.getDelivery(), joke.getJoke(), joke.getId(), isFavourite);
+////        this.category = joke.getCategory();
+////        this.type = joke.getType();
+////        this.setup = joke.getSetup();
+////        this.delivery = joke.getDelivery();
+////        this.joke = joke.getJoke();
+////        this.id = joke.getId();
+////        this.isFavourite = isFavourite;
+//    }
+//    public Joke(String category, String type, String setup, String delivery, String joke, long id) {
 //        this.category = category;
 //        this.type = type;
 //        this.setup = setup;
 //        this.delivery = delivery;
 //        this.joke = joke;
-////        this.flags = flags;
 //        this.id = id;
-//        this.safe = safe;
-//        this.lang = lang;
 //    }
 //
 //    public String getCategory() {
@@ -68,36 +78,18 @@ public record Joke(String category, String type, String setup, String delivery, 
 //        this.joke = joke;
 //    }
 //
-//
-////    public Flags getFlags() {
-////        return flags;
-////    }
-////
-////    public void setFlags(Flags flags) {
-////        this.flags = flags;
-////    }
-//
-//    public int getId() {
+//    public long getId() {
 //        return id;
 //    }
 //
-//    public void setId(int id) {
+//    public void setId(long id) {
 //        this.id = id;
 //    }
-//
-//    public boolean isSafe() {
-//        return safe;
+//    public boolean getIsFavourite() {
+//        return isFavourite;
+//    }
+//    public void setIsFavourite(boolean isFavourite) {
+//        this.isFavourite = isFavourite;
 //    }
 //
-//    public void setSafe(boolean safe) {
-//        this.safe = safe;
-//    }
-//
-//    public String getLang() {
-//        return lang;
-//    }
-//
-//    public void setLang(String lang) {
-//        this.lang = lang;
-//    }
 //}

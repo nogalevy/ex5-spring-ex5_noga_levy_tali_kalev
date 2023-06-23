@@ -1,5 +1,7 @@
 package hac.controllers;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import hac.OffsetBasedPageRequest;
 import hac.beans.JokesList;
 import hac.beans.SearchFilter;
@@ -31,8 +33,6 @@ import org.springframework.http.HttpStatus;
 
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 /** this is a test controller, delete/replace it when you start working on your project */
@@ -142,16 +142,22 @@ public class Default {
     }
 
     @GetMapping("/pages/getJokes")
-    public ResponseEntity<String> getJokes() {
+    public synchronized ResponseEntity<String> getJokes() {
         List<Joke> jokes = JokeApiHandler.getJokesFromApi(currSearchFilter); //NOGA: i dont knowwwwwwwwww
         if (jokes == null) {
             String errorResponse = "{\"error\": \"Something happened...no joke at the moment\"}";
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
         } else {
             Joke joke = jokes.get(0);
+            long userId = currUserSession.getUserId();
+            Favourite favourite = favouriteRepository.getFavouriteByJokeIdAndUserInfo_Id(joke.id(), userId);
+            boolean isFavourite = (favourite != null);
+
+            Joke responseJoke = new Joke(joke, isFavourite);
             ObjectMapper objectMapper = new ObjectMapper();
+
             try {
-                String jokeResponse = objectMapper.writeValueAsString(joke);
+                String jokeResponse = objectMapper.writeValueAsString(responseJoke);
                 return ResponseEntity.ok(jokeResponse);
             } catch (Exception e) {
                 e.printStackTrace();
