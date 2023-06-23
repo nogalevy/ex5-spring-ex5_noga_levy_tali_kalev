@@ -59,7 +59,7 @@ const cardsModule = (function () {
             newDiv.innerHTML = html;
 
             if(fav.type === 'twopart') addCardEvent(newDiv)
-            addDeleteButtonEvent(fav);
+            addDeleteButtonEvent(newDiv);
         })
 
     }
@@ -84,7 +84,7 @@ const cardsModule = (function () {
                     </div>
               </div>
             </div>
-            <button class="btn btn-primary delete-btn" th:data-joke-id="${fav.id}">delete</button>`
+            <button class="btn btn-primary delete-btn" data-joke-id="${fav.id}">delete</button>`
     }
 
     const deleteButtonEvent = function(button) {
