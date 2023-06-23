@@ -46,9 +46,25 @@ public class Favourites {
         return ResponseEntity.ok(jokeId);
     }
 
+    @PostMapping("/favourites/delete")
+    public synchronized ResponseEntity<Long> deleteUserFavourite(@RequestBody Long jokeId) {
+        long userId = currUserSession.getUserId();
+
+        Favourite favourite = favouriteRepository.getFavouriteByJokeIdAndUserInfo_Id(jokeId, userId);
+        if (favourite != null) {
+            favouriteRepository.delete(favourite);
+            return ResponseEntity.ok(jokeId);
+        } else {
+            System.out.println("Error deleting joke");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+
     @ExceptionHandler({Exception.class})
     public String handleValidationExceptions(Exception ex, Model model) {
         // we can insert the message into the model
+        System.out.println("Error: " + ex.getMessage());
         model.addAttribute("error", ex.getMessage());
         return "error";
     }

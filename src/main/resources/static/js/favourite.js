@@ -1,4 +1,31 @@
 
+function deleteJoke(jokeId) {
+    console.log('Deleting joke with id: ' + jokeId);
+    fetch('/favourites/delete', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: jokeId
+    })
+        .then(response => {console.log("here2", response); return response.json()})
+        .then(deletedJokeId => {
+            console.log("here", deletedJokeId);
+            if (deletedJokeId !== null) {
+                const cardElement = document.getElementById(`card-${deletedJokeId}`);
+                if (cardElement) {
+                    cardElement.remove();
+                }
+            } else {
+                //TODO: handle error
+                console.error('Error deleting joke');
+            }
+        })
+        .catch(error => {
+            console.error(error);
+        });
+}
+
 const cardsModule = (function () {
     let offset = 3; //TODO : const
 
@@ -32,6 +59,7 @@ const cardsModule = (function () {
             newDiv.innerHTML = html;
 
             if(fav.type === 'twopart') addCardEvent(newDiv)
+            addDeleteButtonEvent(fav);
         })
 
     }
@@ -56,14 +84,28 @@ const cardsModule = (function () {
                     </div>
               </div>
             </div>
-             <div>delete</div>`
+            <button class="btn btn-primary delete-btn" th:data-joke-id="${fav.id}">delete</button>`
+    }
+
+    const deleteButtonEvent = function(button) {
+        const jokeId = button.getAttribute('data-joke-id');
+        deleteJoke(jokeId);
+    }
+
+    const addDeleteButtonEvent = function(card) {
+        const deleteButton = card.querySelector('.delete-btn');
+        deleteButton.addEventListener('click', () => deleteButtonEvent(deleteButton));
     }
 
     return{
         loadMoreFavourites,
-        addCardEvent
+        addCardEvent,
+        addDeleteButtonEvent
     }
 })();
+
+
+
 
 
 // --------------------------------------------------------------
@@ -76,6 +118,7 @@ const cardsModule = (function () {
         document.querySelectorAll('.card-con').forEach(card => {
             if (card.getAttribute("type") === 'twopart')
                 cardsModule.addCardEvent(card);
+            cardsModule.addDeleteButtonEvent(card);
         });
         document.getElementById("loadMore").addEventListener('click', cardsModule.loadMoreFavourites);
     })
