@@ -84,7 +84,7 @@ const cardsModule = (function () {
                     </div>
               </div>
             </div>
-            <button class="btn btn-primary delete-btn" data-joke-id="${fav.id}">delete</button>`
+            <i class="fa-solid fa-trash delete-btn" data-joke-id="${fav.id}"></i>`
     }
 
     const deleteButtonEvent = function(button) {
