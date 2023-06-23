@@ -13,6 +13,7 @@ import hac.repo.UserInfo;
 import hac.repo.UserInfoRepository;
 import hac.utils.JokeApiHandler;
 import jakarta.servlet.http.HttpServletRequest;
+import org.hibernate.query.spi.Limit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Pageable;
@@ -37,6 +38,8 @@ import java.util.List;
 /** this is a test controller, delete/replace it when you start working on your project */
 @Controller
 public class Default {
+    final int LIMIT = 3; //NOGA: change file
+
     @Autowired
     @Qualifier("searchFilterSession")
     private SearchFilter currSearchFilter = new SearchFilter();
@@ -52,16 +55,11 @@ public class Default {
     @GetMapping("/")
     public String index(Model model) {
         List<Joke> jokes = JokeApiHandler.getJokesFromApi(currSearchFilter);
-//        currSearchFilter.getUri();
         //NOGA: move to function ??
         if (jokes == null) {
             model.addAttribute("joke", "Something happened...no joke at the moment");
         } else {
             Joke joke = jokes.get(0);
-//            model.addAttribute("type", joke.type());
-//            model.addAttribute("setup", joke.setup());
-//            model.addAttribute("delivery", joke.delivery());
-//            model.addAttribute("joke", joke.joke());
             model.addAttribute("jokeObj", joke);
         }
         List<String> categories = JokeApiHandler.getCategoriesFromApi();
@@ -76,37 +74,35 @@ public class Default {
     @GetMapping("/pages/favourite")
     public String favourite(Model model) {
         List<String> categories = JokeApiHandler.getCategoriesFromApi();
-        //TODO :
-        List<Favourite> favouritesList = getAllFavourites(3, 0);
-        ArrayList<Long> jokeIds = new ArrayList<>();
-        for(Favourite fav : favouritesList){
-            System.out.println("@_@_@_@_@_@_@_@_@_@_@_@_@_@_@_@ joke id: " + fav.getJokeId());
-            jokeIds.add(fav.getJokeId());
-        }
-        List<Joke> favourites = JokeApiHandler.getJokesByIdsFromApi(jokeIds);
+        List<Joke> favourites = getUserFavouritesJokes(LIMIT, 0);
+
         model.addAttribute("categories", categories);
         model.addAttribute("searchFilter", currSearchFilter);
         model.addAttribute("favourites", favourites);
         return "favourite";
     }
 
-    @GetMapping("/favourite")
-    public ResponseEntity<List<Joke>> favourite(@RequestParam Integer offset, Model model) {
-        List<Favourite> favouritesList = getAllFavourites(3, offset);
+    @GetMapping("/favourites")
+    public ResponseEntity<List<Joke>> favourite(@RequestParam int offset, Model model) {
+        List<Joke> favourites = getUserFavouritesJokes(LIMIT, offset);
+        return ResponseEntity.ok(favourites);
+    }
 
+    public List<Joke> getUserFavouritesJokes(int limit, int offset){
+        List<Favourite> favouritesList = getUserFavouritesData(limit, offset);
         ArrayList<Long> jokeIds = new ArrayList<Long>();
         for(Favourite fav : favouritesList){
             System.out.println("@_@_@_@_@_@_@_@_@_@_@_@_@_@_@_@ joke id: " + fav.getJokeId());
             jokeIds.add(fav.getJokeId());
         }
         List<Joke> favourites = JokeApiHandler.getJokesByIdsFromApi(jokeIds);
-        return ResponseEntity.ok(favourites);
+        return favourites;
     }
 
-    public List<Favourite> getAllFavourites(int limit, int offset) {
+    //NOGA: no 'XMapping' - move to services?
+    public List<Favourite> getUserFavouritesData(int limit, int offset) {
         System.out.println("Get all Employees with limit " + limit + " and offset " + offset);
         Pageable pageable = new OffsetBasedPageRequest(limit, offset);
-//        return favouriteRepository.findAll(pageable).getContent();
         return favouriteRepository.findFavouritesByUserInfo_Id(currUserSession.getUserId(), pageable);
     }
 
@@ -137,13 +133,10 @@ public class Default {
     //NOGA: maybe not need to be here but i needed the same 'currSearchFilter' like in the 'index' method
     @PostMapping("/pages/search")
     public String search(@ModelAttribute SearchFilter searchFilter, Model model) {
-        System.out.println("=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+="+searchFilter.getSelectedOption());
-
         currSearchFilter.setSelectedCategories(searchFilter.getSelectedCategories());
         currSearchFilter.setSelectedOption(searchFilter.getSelectedOption());
 
         model.addAttribute("searchFilter", searchFilter);
-//        List<Joke> jokes = JokesList.getJokesFromApi();
 
         return "redirect:/";
     }

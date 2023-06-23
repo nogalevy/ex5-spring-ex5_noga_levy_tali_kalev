@@ -53,6 +53,14 @@
     transform: perspective(1000px) rotateY(-180deg);
 }
 
+.not-flip .flip-msg{
+    display: none ;
+}
+
+.flip-btn .flip-msg{
+    display: block ;
+}
+
 /*====== START responsive card option 3===============*/
 
 /*body {*/

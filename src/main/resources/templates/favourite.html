@@ -9,36 +9,91 @@
     <link rel="stylesheet" href="../static/style.css">
 </head>
 <script>
+    //TODO: remove to js file
     document.addEventListener("DOMContentLoaded", () => {
+        let offset = 3; //TODO : const
         function handleFlip(f,b) {
             console.log("flip", f, b);
             f.classList.toggle('flipped')
             b.classList.toggle('flipped')
         }
-        const cards = document.querySelectorAll('.card-con');
-        cards.forEach(card => {
-            if((card.getAttribute("type") == 'single')) return;
+
+        function loadMoreFavourites(){
+            fetch('/favourites?offset=' + offset)
+                .then(response =>
+                    response.json()
+                )
+                .then(favourites => {
+                    offset += favourites.length;
+                    console.log(favourites);
+                    addCards(favourites);
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+        }
+
+        function addCards(data){
+            data.forEach((fav)=>{
+                let newDiv = document.createElement('div');
+                newDiv.id = 'card-' + fav.id;
+                newDiv.className =  "col card-con";
+                newDiv.setAttribute("type", fav.type);
+
+                let html = `
+                        <div>\
+                        <div class='card-container'>\
+                        <div id='clickable' class='joke-card ${fav.type === 'twopart' ? 'flip-btn' : 'not-flip'}' >\
+                            <div id="back" class="cardBack"> \
+                             <h3 id="backCardContent">${fav.delivery}</h3>\
+                            </div>\
+                          <div id="front" class="cardFront">\
+                              <h3 id="frontCardContent">${fav.type === 'twopart' ? fav.setup : fav.joke }</h3>
+                              <p class="flip-msg">Click to flip</p>
+                             </div>
+                        </div>
+                  </div>
+                </div>
+                 <div>delete</div>
+`
+                let container = document.getElementById("favouritesContainer");
+                container.appendChild(newDiv);
+                newDiv.innerHTML = html;
+
+                if(fav.type === 'twopart') addCardsEvent(newDiv)
+            })
+
+        }
+
+        function addCardsEvent(card){
             const f = document.querySelector('#' + card.id + ' #front');
             const b = document.querySelector('#' + card.id + ' #back');
             card.addEventListener('click', () => handleFlip(f,b))
+        }
+
+        const loadMoreBtn = document.getElementById("loadMore");
+        let cards = document.querySelectorAll('.card-con');
+
+        cards.forEach(card => {
+            if((card.getAttribute("type") === 'single')) return;
+            addCardsEvent(card)
         });
+        loadMoreBtn.addEventListener('click', loadMoreFavourites)
     });
 </script>
 <body>
     <div class="container-fluid">
         <header th:insert="fragments/header.html :: header"> </header>
         <h1>Favourite</h1>
-        <div class="row row-cols-1 row-cols-md-2 g-4 mx-3">
-<!--            <div " >-->
+        <div id="favouritesContainer" class="row row-cols-1 row-cols-md-2 g-4 mx-3">
                 <div th:each="jokeObj : ${favourites}" th:id="'card-' + ${jokeObj.id}" class="col card-con" th:type="${jokeObj.type}">
                     <div th:insert="fragments/card2.html :: card2" th:with="jokeObj=${jokeObj}"></div>
                     <div>delete</div>
                 </div>
-<!--            </div>-->
         </div>
 
         <!-- cards : -->
-        <div class="row row-cols-1 row-cols-md-2 g-4 mx-3">
+<!--        <div class="row row-cols-1 row-cols-md-2 g-4 mx-3">-->
 
 <!--            <div id="one" class="col card-con">-->
 <!--                <div th:insert="fragments/card2.html :: card2"></div>-->
@@ -70,12 +125,14 @@
             <!--            <div th:insert="fragments/card2.html :: card2" class="col"></div>-->
             <!--            <div th:insert="fragments/card2.html :: card2" class="col"></div>-->
             <!--            <div th:insert="fragments/card2.html :: card2" class="col"></div>-->
-        </div>
+<!--        </div>-->
         <div class="my-3 row justify-content-center">
-            <button class="btn btn-primary col-4">More</button>
+            <button id="loadMore" class="btn btn-primary col-4">More</button>
         </div>
     </div>
     <div th:insert="fragments/menu.html :: menu"> </div>
 </body>
+
+
 
 </html>

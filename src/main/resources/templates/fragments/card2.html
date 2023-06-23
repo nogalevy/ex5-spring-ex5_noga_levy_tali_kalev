@@ -6,44 +6,18 @@
   <title>Title</title>
 </head>
 <body>
-  <!--<div th:fragment="card2" class="boxesContainer">-->
   <div  th:fragment="card2" class="card-container">  <!--container-->
     <div th:object="${jokeObj}" id="clickable" th:class="*{type}=='twopart' ? 'flip-btn joke-card' : 'not-flip joke-card' ">
-<!--      <div id="clickable" th:if="*{type == 'twopart'}" class="flip-btn joke-card" >-->
-<!--      <div id="clickable" th:unless="*{type == 'twopart'}" class="not-flip joke-card" >-->
-
       <div id="back" class="cardBack">
         <h3 id="backCardContent" th:text="*{delivery}"></h3>
-<!--        <p>( LOL )</p>-->
       </div>
 
       <div id="front" class="cardFront">
         <h3 id="frontCardContent" th:text="*{type} == 'twopart' ? *{setup} : *{joke}"></h3>
-        <p>Click to flip</p>
+        <p class="flip-msg">Click to flip</p>
         <!--        <strong>&#x21bb;</strong>-->
       </div>
-
     </div>
   </div>
-  <!--</div>-->
 </body>
-
 </html>
-
-
-
-<!---------------------------------BEFORE CLICK------------------------------------------------->
-<!--<div th:fragment="card2" class="cardBox">-->
-<!--  <div class="card">-->
-<!--    <div class="front">-->
-<!--      <h3 id="frontCardContent" th:text="${type == 'twopart' ? setup : joke}"></h3>-->
-<!--      <p>Hover to flip</p>-->
-<!--      &lt;!&ndash;        <strong>&#x21bb;</strong>&ndash;&gt;-->
-<!--    </div>-->
-<!--    <div class="back">-->
-<!--      <h3 id="backCardContent" th:text="${delivery}"></h3>-->
-<!--      <p>( LOL )</p>-->
-<!--    </div>-->
-
-<!--  </div>-->
-<!--</div>-->
