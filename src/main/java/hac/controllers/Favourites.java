@@ -33,6 +33,11 @@ public class Favourites {
         Favourite newFavourite = new Favourite(jokeId);
         long userId = currUserSession.getUserId();
 
+        Favourite isExist = favouriteRepository.getFavouriteByJokeIdAndUserInfo_Id(jokeId, userId);
+
+        //checks if already exist in db
+        if(isExist != null) return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+
         Favourite favourite = userInfoRepository.findById(userId).map(user -> {
             newFavourite.setUserInfo(user);
             return favouriteRepository.save(newFavourite);

@@ -57,22 +57,26 @@
                     console.log(error);
                 });
         });
-
-        document.getElementById("addFavourite").addEventListener("click", () => {
+        let addBtn = document.getElementById("addFavourite");
+        addBtn.addEventListener("click", add);
+        function add(){
             let jokeId = cardbox.getAttribute("name");
             fetch('/favourites/add', {
-                method: "POST",
-                headers: {"Content-Type": "application/json"},
-                body: jokeId
+                    method: "POST",
+                    headers: {"Content-Type": "application/json"},
+                    body: jokeId
                 }
             )
-            .then(response =>
-                console.log(response)
-            )
-            .catch(error => {
-                console.log(error);
-            });
-        });
+                .then(response =>
+                {
+                    addBtn.textContent = 'Added'; //NOGA : change icon + remove listener
+                    addBtn.removeEventListener('click', add);
+                    console.log(response);
+                })
+                .catch(error => {
+                    console.log("could not add ", err);
+                });
+        }
     });
 </script>
 
@@ -80,26 +84,6 @@
     <div class="container-fluid">
         <header th:insert="fragments/header.html :: header"> </header>
 
-        <!--    OPTION 1-->
-        <!--    <div class="d-flex flex-column align-items-center justify-content-center align-self-center">-->
-        <!--    <div class="flip-card">-->
-        <!--        <div class="flip-card-inner">-->
-        <!--            <div class="flip-card-front">-->
-        <!--                <h1>A Joke</h1>-->
-        <!--            </div>-->
-        <!--            <div class="flip-card-back">-->
-        <!--                <h1>Laugh</h1>-->
-        <!--                <p>It's funny</p>-->
-        <!--            </div>-->
-        <!--        </div>-->
-        <!--    </div>-->
-        <!--        <button class="btn btn-primary mt-3">Generate New</button>-->
-        <!--    </div>-->
-
-        <!--    OPTION 2-->
-
-        <!--        <div class="artboard">-->
-        <!--            <div class="d-flex flex-column align-items-center justify-content-center align-self-center">-->
         <div class="d-flex flex-column align-items-center row">
 
             <div id="cardBox" th:name="${jokeObj.id}" th:insert="fragments/card2.html :: card2" class="col-md-6"></div>
@@ -108,8 +92,6 @@
                 <button id="addFavourite" class="btn mx-2 mt-3" style="background-color: #575761; color: white;">Add</button>
             </div>
         </div>
-        <!--            </div>-->
-        <!--        </div>-->
 
     </div>
     <div th:insert="fragments/menu.html :: menu"> </div>
