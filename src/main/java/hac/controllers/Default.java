@@ -38,7 +38,8 @@ import java.util.List;
 /** this is a test controller, delete/replace it when you start working on your project */
 @Controller
 public class Default {
-    final int LIMIT = 3; //NOGA: change file
+    final String LIMIT = "3"; //NOGA: change file
+    final String DEFAULT_OFFSET = "0"; //NOGA: change file
 
     @Autowired
     @Qualifier("searchFilterSession")
@@ -74,7 +75,7 @@ public class Default {
     @GetMapping("/pages/favourite")
     public String favourite(Model model) {
         List<String> categories = JokeApiHandler.getCategoriesFromApi();
-        List<Joke> favourites = getUserFavouritesJokes(LIMIT, 0);
+        List<Joke> favourites = getUserFavouritesJokes(Integer.parseInt(LIMIT), 0);
 
         model.addAttribute("categories", categories);
         model.addAttribute("searchFilter", currSearchFilter);
@@ -82,9 +83,10 @@ public class Default {
         return "favourite";
     }
 
-    @GetMapping("/favourites")
-    public ResponseEntity<List<Joke>> favourite(@RequestParam int offset, Model model) {
-        List<Joke> favourites = getUserFavouritesJokes(LIMIT, offset);
+    @GetMapping("/favourites/get")
+    public ResponseEntity<List<Joke>> favourite(@RequestParam(defaultValue = LIMIT) int limit,
+                                                @RequestParam(defaultValue = DEFAULT_OFFSET) int offset, Model model) {
+        List<Joke> favourites = getUserFavouritesJokes(limit, offset);
         return ResponseEntity.ok(favourites);
     }
 

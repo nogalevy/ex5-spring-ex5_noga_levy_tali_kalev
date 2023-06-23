@@ -1,32 +1,3 @@
-
-function deleteJoke(jokeId) {
-    console.log('Deleting joke with id: ' + jokeId);
-    fetch('/favourites/delete', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: jokeId
-    })
-        .then(response => {console.log("here2", response); return response.json()})
-        .then(deletedJokeId => {
-            console.log("here", deletedJokeId);
-            if (deletedJokeId !== null) {
-                //NOGA: also need to offset -= 1 i think
-                const cardElement = document.getElementById(`card-${deletedJokeId}`);
-                if (cardElement) {
-                    cardElement.remove();
-                }
-            } else {
-                //TODO: handle error
-                console.error('Error deleting joke');
-            }
-        })
-        .catch(error => {
-            console.error(error);
-        });
-}
-
 const cardsModule = (function () {
     let offset = 3; //TODO : const
 
@@ -35,8 +6,40 @@ const cardsModule = (function () {
         b.classList.toggle('flipped')
     }
 
-    const loadMoreFavourites = function (){
-        fetch('/favourites?offset=' + offset)
+    function deleteJoke(jokeId) {
+        console.log('Deleting joke with id: ' + jokeId);
+        fetch('/favourites/delete', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: jokeId
+        })
+            .then(response => {console.log("here2", response); return response.json()})
+            .then(deletedJokeId => {
+                console.log("here", deletedJokeId);
+                if (deletedJokeId !== null) {
+                    //NOGA: also need to offset -= 1 i think
+                    offset -= 1;
+                    const cardElement = document.getElementById(`card-${deletedJokeId}`);
+                    if (cardElement) {
+                        cardElement.remove();
+                    }
+                    loadMoreFavourites(true);
+                } else {
+                    //TODO: handle error
+                    console.error('Error deleting joke');
+                }
+            })
+            .catch(error => {
+                console.error(error);
+            });
+    }
+
+    const loadMoreFavourites = function (afterDelete = false){
+        let query = '?offset=' + offset;
+        if(afterDelete) query += '&limit=1';
+        fetch('/favourites/get' + query)
             .then(response => response.json() )
             .then(favourites => {
                 offset += favourites.length;
