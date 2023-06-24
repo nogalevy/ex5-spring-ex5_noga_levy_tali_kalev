@@ -39,7 +39,7 @@ const cardsModule = (function () {
             });
     }
 
-    const loadMoreFavourites = function (afterDelete = false) {
+    const loadMoreFavourites = function (afterDelete) {
         let query = '?offset=' + offset;
         if (afterDelete) query += '&limit=1';
         fetch('/favourites/get' + query)
@@ -126,6 +126,6 @@ const cardsModule = (function () {
                 cardsModule.addCardEvent(card);
             cardsModule.addDeleteButtonEvent(card);
         });
-        document.getElementById("loadMore").addEventListener('click', cardsModule.loadMoreFavourites);
+        document.getElementById("loadMore").addEventListener('click',() => cardsModule.loadMoreFavourites(false));
     })
 }());
