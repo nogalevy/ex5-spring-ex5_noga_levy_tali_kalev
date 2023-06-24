@@ -6,16 +6,17 @@
   <title>Title</title>
 </head>
 <body>
-  <div  th:fragment="card2" class="card-container">  <!--container-->
+  <div  th:fragment="card2" class="card-container ">  <!--container-->
     <div th:object="${jokeObj}" id="clickable" th:class="*{type}=='twopart' ? 'flip-btn joke-card' : 'not-flip joke-card' ">
-      <div id="back" class="cardBack">
+      <div id="back" class="cardBack  d-flex justify-content-center align-items-center">
         <h3 id="backCardContent" th:text="*{delivery}"></h3>
       </div>
 
-      <div id="front" class="cardFront">
-        <h3 id="frontCardContent" th:text="*{type} == 'twopart' ? *{setup} : *{joke}"></h3>
-        <p class="flip-msg">Click to flip</p>
-        <!--        <strong>&#x21bb;</strong>-->
+      <div id="front" class="cardFront d-flex justify-content-center align-items-center">
+        <div class="text-center">
+          <h3 class="row" id="frontCardContent" th:text="*{type} == 'twopart' ? *{setup} : *{joke}"></h3>
+          <p class="flip-msg">Click to flip</p>
+        </div>
       </div>
     </div>
   </div>

@@ -15,7 +15,7 @@
 <body>
     <div class="container-fluid">
         <header th:insert="fragments/header.html :: header"> </header>
-        <h1>Favourite</h1>
+        <h1 class="pt-4 d-flex justify-content-center align-items-center">Favourites</h1>
         <div id="favouritesContainer" class="row row-cols-1 row-cols-md-2 g-4 mx-3">
                 <div th:each="jokeObj : ${favourites}" th:id="'card-' + ${jokeObj.id}" class="col card-con" th:type="${jokeObj.type}">
                     <div th:insert="fragments/card2.html :: card2" th:with="jokeObj=${jokeObj}"></div>
