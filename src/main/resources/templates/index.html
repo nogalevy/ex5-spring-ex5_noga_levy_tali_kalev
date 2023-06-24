@@ -7,6 +7,7 @@
     <!--    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://kit.fontawesome.com/4e3daad3f4.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="../static/style.css">
 </head>
 <script>
@@ -15,16 +16,20 @@
         const card = document.getElementById('clickable');
         let cardbox = document.getElementById("cardBox");
         card.addEventListener('click', handleFlip)
+        const buttonIcon = document.getElementById("buttonIcon");
+        const isFavourite = addBtn.getAttribute("data-isFavourite");
 
-        // Function to handle the initial state of the button
+        handleInitialButtonState(isFavourite);
+        
         function handleInitialButtonState(isFavourite) {
+            addBtn.setAttribute("data-isFavourite", isFavourite);
             if (isFavourite) {
-                console.log("removing add event listener")
-                addBtn.textContent = 'Added';
+                buttonIcon.classList.remove("fa-regular");
+                buttonIcon.classList.add("fa-solid");
                 addBtn.removeEventListener('click', add);
             } else {
-                console.log("adding add event listener")
-                addBtn.textContent = 'Add';
+                buttonIcon.classList.remove("fa-solid");
+                buttonIcon.classList.add("fa-regular");
                 addBtn.addEventListener('click', add);
             }
         }
@@ -66,7 +71,6 @@
                         card.classList.remove('flip-btn')
                         card.classList.add('not-flip')
                     }
-                    //check if joke is in favourites -> add event listener if needed, else set text to 'added'
                     console.log(jsonData.isFavourite);
                     handleInitialButtonState(jsonData.isFavourite);
                 })
@@ -93,8 +97,23 @@
                 });
         }
 
-        const isFavourite = addBtn.getAttribute("data-isFavourite");
-        handleInitialButtonState(isFavourite === "true");
+        //Tali: trying to add here hover, once I removed if statement, then after clicking it was not solid but did not work with if statement ...
+        // addBtn.addEventListener('mouseenter', () => {
+        //     let isFavourite = addBtn.getAttribute("data-isFavourite");
+        //     console.log("is favourite: " + isFavourite);
+        //     if (isFavourite) return;
+        //     buttonIcon.classList.remove("fa-regular");
+        //     buttonIcon.classList.add("fa-solid");
+        // });
+        //
+        // addBtn.addEventListener('mouseleave', () => {
+        //     let isFavourite = addBtn.getAttribute("data-isFavourite");
+        //     console.log("is favourite: " + isFavourite);
+        //     if(isFavourite) return;
+        //     buttonIcon.classList.remove("fa-solid");
+        //     buttonIcon.classList.add("fa-regular");
+        // });
+
     });
 </script>
 
@@ -107,8 +126,12 @@
             <div id="cardBox" th:name="${jokeObj.id}" th:insert="fragments/card2.html :: card2" class="col-md-6"></div>
             <div class="d-flex justify-content-evenly">
                 <button id="generate" class="btn mx-2 mt-3" style="background-color: #575761; color: white;">Generate New</button>
-                <button id="addFavourite" class="btn mx-2 mt-3" th:data-isFavourite="${jokeObj.isFavourite}" th:text="${jokeObj.isFavourite} ? 'Added' : 'Add'" style="background-color: #575761; color: white;">
-                </button>
+<!--                <button id="addFavourite" class="btn mx-2 mt-3" th:data-isFavourite="${jokeObj.isFavourite}" th:text="${jokeObj.isFavourite} ? 'Added' : 'Add'" style="background-color: #575761; color: white;">-->
+<!--                </button>-->
+                <a id="addFavourite" class="btn mx-2 mt-3" href="#" th:data-isFavourite="${jokeObj.isFavourite}">
+                    <i id="buttonIcon" class="fa-regular fa-heart"></i>
+                </a>
+
             </div>
         </div>
 

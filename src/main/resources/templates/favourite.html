@@ -19,9 +19,9 @@
         <div id="favouritesContainer" class="row row-cols-1 row-cols-md-2 g-4 mx-3">
                 <div th:each="jokeObj : ${favourites}" th:id="'card-' + ${jokeObj.id}" class="col card-con" th:type="${jokeObj.type}">
                     <div th:insert="fragments/card2.html :: card2" th:with="jokeObj=${jokeObj}"></div>
-                    <i class="fa-solid fa-trash delete-btn" th:data-joke-id="${jokeObj.id}"></i>
-<!--                    <i class="fa-solid fa-trash"></i>-->
-<!--                    <i class="fa fa-cloud"></i>-->
+                   <div class="btn delete-btn" th:data-joke-id="${jokeObj.id}">
+                    <i class="fa-solid fa-trash"></i>
+                   </div>
                 </div>
         </div>
 
