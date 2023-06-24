@@ -12,7 +12,7 @@ import jakarta.servlet.http.HttpServletResponse;
  */
 public class UnauthInterceptor implements HandlerInterceptor {
 
-    private UserSession userSession;
+    private UserSession userSession; //NOGA: final ?
     public UnauthInterceptor(UserSession u) {
         userSession = u;
     }

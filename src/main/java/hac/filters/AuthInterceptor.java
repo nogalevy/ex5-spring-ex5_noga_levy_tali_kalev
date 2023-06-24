@@ -11,7 +11,7 @@ import jakarta.servlet.http.HttpServletResponse;
  * to home, favourites and userprofile pages.
  */
 public class AuthInterceptor implements HandlerInterceptor {
-    private UserSession userSession;
+    private UserSession userSession; //NOGA: final?
     public AuthInterceptor(UserSession u) {
         userSession = u;
     }

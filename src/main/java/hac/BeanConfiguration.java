@@ -23,18 +23,7 @@ public class BeanConfiguration {
     public UserSession sessionUser () {
         return new UserSession();
     }
-//
-//    @Bean
-//    @SessionScope
-//    public ShoppingCart sessionBeanCart () {
-//        ShoppingCart shpc = new ShoppingCart();
-//        return shpc;
-//    }
-//    @Bean
-//    @SessionScope
-//    public Messages sessionBeanExample () {
-//        return new Messages();
-//    }
+
     @Bean
     @SessionScope
     public SearchFilter searchFilterSession () {

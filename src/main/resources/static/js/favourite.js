@@ -6,7 +6,7 @@ const cardsModule = (function () {
         f.classList.toggle('flipped')
         b.classList.toggle('flipped')
     }
-
+    //NOGA: in general - add checkstatus function from last semester?
     const setNumOfFavourites = function (){
         fetch('/favourites/count')
             .then(response => {

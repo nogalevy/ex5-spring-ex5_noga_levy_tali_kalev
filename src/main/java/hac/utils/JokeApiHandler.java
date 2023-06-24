@@ -78,7 +78,7 @@ public class JokeApiHandler {
 
     public static Joke getJokeById(Long id){
 //        Integer requestedId = id -1; //NOGA
-        final String uri = GET_BY_ID_URI_QUERY + String.valueOf(id); //NOGA: delete valueof
+        final String uri = GET_BY_ID_URI_QUERY + id; //NOGA: delete valueof
         ResponseEntity<JokeApiResponse> responseEntity = GetRestExchange( uri, JokeApiResponse.class);
 
         if (responseEntity.getStatusCode().is2xxSuccessful()) {
@@ -114,7 +114,7 @@ public class JokeApiHandler {
 
     private static String buildOptionsQuery(int op){
         String opStr = "type=";
-
+        //NOGA: change to switch case?
         if (op == 1) {
             return opStr + "single&";
         }

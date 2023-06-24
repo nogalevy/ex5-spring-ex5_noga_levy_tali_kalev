@@ -1,21 +1,15 @@
 package hac.controllers;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import hac.OffsetBasedPageRequest;
-import hac.beans.JokesList;
 import hac.beans.SearchFilter;
 import hac.beans.UserSession;
 import hac.records.Joke;
-import hac.records.JokeApiCategoriesResponse;
-import hac.records.JokeApiResponse;
 import hac.repo.Favourite;
 import hac.repo.FavouriteRepository;
 import hac.repo.UserInfo;
 import hac.repo.UserInfoRepository;
 import hac.utils.JokeApiHandler;
 import jakarta.servlet.http.HttpServletRequest;
-import org.hibernate.query.spi.Limit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Pageable;
@@ -25,9 +19,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.HttpMethod;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -36,6 +28,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.util.ArrayList;
 import java.util.List;
 
+//NOGA: change class + file name ?
 /** this is a test controller, delete/replace it when you start working on your project */
 @Controller
 public class Default {
@@ -83,8 +76,7 @@ public class Default {
         List<String> categories = JokeApiHandler.getCategoriesFromApi();
         List<Joke> favourites = getUserFavouritesJokes(Integer.parseInt(LIMIT), 0);
         Integer numOfUserFavourites = favouriteRepository.countFavouritesByUserInfo_Id(currUserSession.getUserId());
-//        Boolean hasMoreFavourites = numOfUserFavourites > LIMIT;
-        System.out.println(numOfUserFavourites);
+
         model.addAttribute("categories", categories);
         model.addAttribute("searchFilter", currSearchFilter);
         model.addAttribute("favourites", favourites);
@@ -110,7 +102,7 @@ public class Default {
         return favourites;
     }
 
-    //NOGA: no 'XMapping' - move to services?
+    //NOGA: move to services?
     public synchronized List<Favourite> getUserFavouritesData(int limit, int offset) {
         System.out.println("Get all Employees with limit " + limit + " and offset " + offset);
         Pageable pageable = new OffsetBasedPageRequest(limit, offset);
@@ -153,6 +145,7 @@ public class Default {
         return "redirect:/";
     }
 
+    // NOGA: change url path ? not a page
     @GetMapping("/pages/getJokes")
     public synchronized ResponseEntity<String> getJokes() {
         List<Joke> jokes = JokeApiHandler.getJokesFromApi(currSearchFilter); //NOGA: i dont knowwwwwwwwww

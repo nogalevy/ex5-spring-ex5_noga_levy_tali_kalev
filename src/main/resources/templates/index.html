@@ -119,11 +119,11 @@
 
 <body>
     <div class="container-fluid">
-        <header th:insert="fragments/header.html :: header"> </header>
+        <header th:insert="~{fragments/header.html::header}"> </header>
 
         <div class="d-flex flex-column align-items-center row">
 
-            <div id="cardBox" th:name="${jokeObj.id}" th:insert="fragments/card2.html :: card2" class="col-md-6"></div>
+            <div id="cardBox" th:name="${jokeObj.id}" th:insert="~{fragments/card2.html::card2}" class="col-md-6"></div>
             <div class="d-flex justify-content-evenly">
                 <button id="generate" class="btn btn-secondary mx-2 mt-3" >Generate New</button>
 <!--                <button id="addFavourite" class="btn mx-2 mt-3" th:data-isFavourite="${jokeObj.isFavourite}" th:text="${jokeObj.isFavourite} ? 'Added' : 'Add'" style="background-color: #575761; color: white;">-->
@@ -136,7 +136,7 @@
         </div>
 
     </div>
-    <div th:insert="fragments/menu.html :: menu"> </div>
+    <div th:insert="~{fragments/menu.html::menu}"> </div>
 </body>
 
 </html>

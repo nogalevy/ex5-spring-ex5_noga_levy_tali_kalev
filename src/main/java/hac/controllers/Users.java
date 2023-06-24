@@ -3,7 +3,6 @@ package hac.controllers;
 import hac.beans.UserSession;
 import hac.repo.UserInfo;
 import hac.repo.UserInfoRepository;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -69,6 +68,7 @@ public class Users {
         UserInfo existingUser = userInfoRepository.findUserByEmail(userInfo.getEmail());
         if (existingUser != null && existingUser.getEmail().equals(userInfo.getEmail())) {
             //if exists, return error message
+            // NOGA: the null error (LOL?)
             result.rejectValue("email", null, "There is already an account registered with that email");
             return "register";
         }

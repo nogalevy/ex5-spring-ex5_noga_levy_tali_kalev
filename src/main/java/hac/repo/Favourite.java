@@ -14,14 +14,10 @@ public class Favourite {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-//    @NotEmpty(message = "FIRST_NAME_MANDATORY")
-//    private String userId;
-
     @PositiveOrZero(message = "JOKE_ID_MANDATORY") //NOGA : or zero ? need to check
     private Long jokeId;
 
-    public Favourite(/*String userId, */Long jokeId) {
-//        this.userId = userId;
+    public Favourite(Long jokeId) {
         this.jokeId = jokeId;
     }
 
@@ -34,15 +30,6 @@ public class Favourite {
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnore
     private UserInfo userInfo;
-
-    //getters and setters
-//    public String getUserId() {
-//        return userId;
-//    }
-//
-//    public void setUserId(String userId) {
-//        this.userId = userId;
-//    }
 
     public Long getJokeId() {
         return jokeId;
