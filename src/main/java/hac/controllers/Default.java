@@ -30,6 +30,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpMethod;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
 import java.util.ArrayList;
@@ -175,15 +176,12 @@ public class Default {
     }
 
     @PostMapping("/pages/logout")
-    public String logoutUser(HttpServletRequest request, Model model){
+    public String logoutUser(HttpServletRequest request,  RedirectAttributes redirectAttributes){
         //set userSession to logged out
         request.getSession().invalidate();
-//        currUserSession.setLoggedIn(false);
-//        currUserSession.setUserId(-1);
-
         System.out.println("logging out user");
-        //todo: add message on successful logout
-        //redirect to login page
+        redirectAttributes.addFlashAttribute("logoutMessage", "You have been logged out successfully");
+        // Redirect to the login page and pass the logoutMessage attribute
         return "redirect:/users/login";
     }
 }

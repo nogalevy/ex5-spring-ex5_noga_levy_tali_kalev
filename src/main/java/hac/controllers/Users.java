@@ -14,6 +14,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
 @Controller
@@ -33,8 +34,8 @@ public class Users {
         return "login";
     }
 
-    @PostMapping("/users/login")
-    public synchronized String loginUser(@RequestParam("email") String email, @RequestParam("password") String password, Model model){
+    @PostMapping("/users/login") //tali: should change to obj? with validation then check binding result? -> currently if empty returns Invalid email or password
+    public synchronized String loginUser(@RequestParam("email") String email, @RequestParam("password") String password, Model model, RedirectAttributes redirectAttributes) {
         //check if user exists in UserRepository
         UserInfo existingUser = userInfoRepository.findUserByEmail(email);
         if(existingUser != null  && passwordEncoder.matches(password, existingUser.getPassword())){
@@ -44,8 +45,11 @@ public class Users {
             return "redirect:/";
         }else {
             //else return error message
-            model.addAttribute("error", "Invalid email or password");
-            return "login";
+            //redirecting avoids resubmission upon refresh //tali: maybe add this in other places too?
+            redirectAttributes.addFlashAttribute("error", "Invalid email or password");
+            return "redirect:/users/login";
+//            model.addAttribute("error", "Invalid email or password");
+//            return "login";
         }
     }
 
