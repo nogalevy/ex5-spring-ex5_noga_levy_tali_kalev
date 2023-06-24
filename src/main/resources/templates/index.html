@@ -12,10 +12,22 @@
 <script>
     document.addEventListener("DOMContentLoaded", () => {
         let addBtn = document.getElementById("addFavourite");
-        addBtn.addEventListener("click", add);
         const card = document.getElementById('clickable');
         let cardbox = document.getElementById("cardBox");
         card.addEventListener('click', handleFlip)
+
+        // Function to handle the initial state of the button
+        function handleInitialButtonState(isFavourite) {
+            if (isFavourite) {
+                console.log("removing add event listener")
+                addBtn.textContent = 'Added';
+                addBtn.removeEventListener('click', add);
+            } else {
+                console.log("adding add event listener")
+                addBtn.textContent = 'Add';
+                addBtn.addEventListener('click', add);
+            }
+        }
 
         function handleFlip() {
             if(!card.classList.contains('flip-btn')) return;
@@ -38,8 +50,6 @@
                     const f = document.getElementById('front')
                     const b = document.getElementById('back')
                     cardbox.setAttribute("name", jsonData.id);
-                    addBtn.textContent = 'Add'; //NOGA : change icon + add listener
-                    addBtn.addEventListener('click', add);
                     if(f.classList.contains('flipped')){
                         f.classList.toggle('flipped')
                         b.classList.toggle('flipped')
@@ -58,6 +68,7 @@
                     }
                     //check if joke is in favourites -> add event listener if needed, else set text to 'added'
                     console.log(jsonData.isFavourite);
+                    handleInitialButtonState(jsonData.isFavourite);
                 })
                 .catch(error => {
                     console.log(error);
@@ -74,14 +85,16 @@
             )
                 .then(response =>
                 {
-                    addBtn.textContent = 'Added'; //NOGA : change icon + remove listener
-                    addBtn.removeEventListener('click', add);
+                    handleInitialButtonState(true);
                     console.log(response);
                 })
                 .catch(error => {
-                    console.log("could not add ", err);
+                    console.log("could not add ", error);
                 });
         }
+
+        const isFavourite = addBtn.getAttribute("data-isFavourite");
+        handleInitialButtonState(isFavourite === "true");
     });
 </script>
 
@@ -94,7 +107,8 @@
             <div id="cardBox" th:name="${jokeObj.id}" th:insert="fragments/card2.html :: card2" class="col-md-6"></div>
             <div class="d-flex justify-content-evenly">
                 <button id="generate" class="btn mx-2 mt-3" style="background-color: #575761; color: white;">Generate New</button>
-                <button id="addFavourite" class="btn mx-2 mt-3" style="background-color: #575761; color: white;">Add</button>
+                <button id="addFavourite" class="btn mx-2 mt-3" th:data-isFavourite="${jokeObj.isFavourite}" th:text="${jokeObj.isFavourite} ? 'Added' : 'Add'" style="background-color: #575761; color: white;">
+                </button>
             </div>
         </div>
 

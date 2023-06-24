@@ -61,7 +61,12 @@ public class Default {
             model.addAttribute("joke", "Something happened...no joke at the moment");
         } else {
             Joke joke = jokes.get(0);
-            model.addAttribute("jokeObj", joke);
+            long userId = currUserSession.getUserId();
+            Favourite favourite = favouriteRepository.getFavouriteByJokeIdAndUserInfo_Id(joke.id(), userId);
+            boolean isFavourite = (favourite != null);
+
+            Joke responseJoke = new Joke(joke, isFavourite);
+            model.addAttribute("jokeObj", responseJoke);
         }
         List<String> categories = JokeApiHandler.getCategoriesFromApi();
         model.addAttribute("categories", categories);
