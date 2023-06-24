@@ -54,7 +54,7 @@ public class Default {
     private FavouriteRepository favouriteRepository;
 
     @GetMapping("/")
-    public String index(Model model) {
+    public synchronized String index(Model model) {
         List<Joke> jokes = JokeApiHandler.getJokesFromApi(currSearchFilter);
         //NOGA: move to function ??
         if (jokes == null) {
@@ -107,7 +107,7 @@ public class Default {
     }
 
     //NOGA: no 'XMapping' - move to services?
-    public List<Favourite> getUserFavouritesData(int limit, int offset) {
+    public synchronized List<Favourite> getUserFavouritesData(int limit, int offset) {
         System.out.println("Get all Employees with limit " + limit + " and offset " + offset);
         Pageable pageable = new OffsetBasedPageRequest(limit, offset);
         return favouriteRepository.findFavouritesByUserInfo_Id(currUserSession.getUserId(), pageable);
