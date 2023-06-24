@@ -8,10 +8,12 @@ import hac.repo.UserInfoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.relational.core.sql.In;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.ui.Model;
@@ -58,6 +60,14 @@ public class Favourites {
             System.out.println("Error deleting joke");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
+    }
+
+    @GetMapping("/favourites/count")
+    public synchronized ResponseEntity<Integer> countUserFavourites() {
+        long userId = currUserSession.getUserId();
+
+        Integer numOfUserFavourites = favouriteRepository.countFavouritesByUserInfo_Id(userId);
+        return ResponseEntity.ok(numOfUserFavourites);
     }
 
 

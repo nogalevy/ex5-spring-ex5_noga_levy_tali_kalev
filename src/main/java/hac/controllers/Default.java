@@ -82,10 +82,13 @@ public class Default {
     public String favourite(Model model) {
         List<String> categories = JokeApiHandler.getCategoriesFromApi();
         List<Joke> favourites = getUserFavouritesJokes(Integer.parseInt(LIMIT), 0);
-
+        Integer numOfUserFavourites = favouriteRepository.countFavouritesByUserInfo_Id(currUserSession.getUserId());
+//        Boolean hasMoreFavourites = numOfUserFavourites > LIMIT;
+        System.out.println(numOfUserFavourites);
         model.addAttribute("categories", categories);
         model.addAttribute("searchFilter", currSearchFilter);
         model.addAttribute("favourites", favourites);
+        model.addAttribute("showLoadMoreBtn", numOfUserFavourites > Integer.parseInt(LIMIT));
         return "favourite";
     }
 

@@ -1,12 +1,27 @@
 const cardsModule = (function () {
     let offset = 3; //TODO : const
+    let totalNumOfFavourites = 0;
 
     const handleFlip = function (f, b) {
         f.classList.toggle('flipped')
         b.classList.toggle('flipped')
     }
 
-    function deleteJoke(jokeId) {
+    const setNumOfFavourites = function (){
+        fetch('/favourites/count')
+            .then(response => {
+                return response.json()
+            })
+            .then(data => {
+                console.log("count", data);
+                totalNumOfFavourites = data;
+            })
+            .catch(error => {
+                console.error(error);
+            });
+
+    }
+    const deleteJoke = function (jokeId) {
         console.log('Deleting joke with id: ' + jokeId);
         fetch('/favourites/delete', {
             method: 'POST',
@@ -22,12 +37,13 @@ const cardsModule = (function () {
             .then(deletedJokeId => {
                 console.log("here", deletedJokeId);
                 if (deletedJokeId !== null) {
-                    //NOGA: also need to offset -= 1 i think
                     offset -= 1;
+                    totalNumOfFavourites -= 1;
                     const cardElement = document.getElementById(`card-${deletedJokeId}`);
                     if (cardElement) {
                         cardElement.remove();
                     }
+                    checkRemoveLoadMoreBtn();
                     loadMoreFavourites(true);
                 } else {
                     //TODO: handle error
@@ -39,6 +55,13 @@ const cardsModule = (function () {
             });
     }
 
+    const checkRemoveLoadMoreBtn =  function (){
+        const element = document.getElementById("loadMoreContainer");
+        if(totalNumOfFavourites <= offset && element){
+            element.remove();
+        }
+    }
+
     const loadMoreFavourites = function (afterDelete) {
         let query = '?offset=' + offset;
         if (afterDelete) query += '&limit=1';
@@ -47,6 +70,7 @@ const cardsModule = (function () {
             .then(favourites => {
                 offset += favourites.length;
                 addCards(favourites);
+                checkRemoveLoadMoreBtn();
             })
             .catch(error => {
                 console.log(error);
@@ -109,7 +133,8 @@ const cardsModule = (function () {
     return {
         loadMoreFavourites,
         addCardEvent,
-        addDeleteButtonEvent
+        addDeleteButtonEvent,
+        setNumOfFavourites
     }
 })();
 
@@ -120,12 +145,16 @@ const cardsModule = (function () {
  */
 (function () {
     document.addEventListener("DOMContentLoaded", () => {
-
+        (function (){
+            cardsModule.setNumOfFavourites();
+        })();
+        let loadMoreBtn = document.getElementById("loadMore");
         document.querySelectorAll('.card-con').forEach(card => {
             if (card.getAttribute("type") === 'twopart')
                 cardsModule.addCardEvent(card);
             cardsModule.addDeleteButtonEvent(card);
         });
-        document.getElementById("loadMore").addEventListener('click',() => cardsModule.loadMoreFavourites(false));
+
+        if(loadMoreBtn) loadMoreBtn.addEventListener('click',() => cardsModule.loadMoreFavourites(false));
     })
 }());

@@ -17,9 +17,9 @@
         let cardbox = document.getElementById("cardBox");
         card.addEventListener('click', handleFlip)
         const buttonIcon = document.getElementById("buttonIcon");
-        const isFavourite = addBtn.getAttribute("data-isFavourite");
+        const isFavourite = addBtn.getAttribute("data-isFavourite"); //NOGA: we can check if contain specific classname
 
-        handleInitialButtonState(isFavourite);
+        handleInitialButtonState(isFavourite === "true"); //NOGA
 
         function handleInitialButtonState(isFavourite) {
             addBtn.setAttribute("data-isFavourite", isFavourite);
