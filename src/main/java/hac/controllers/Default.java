@@ -139,6 +139,7 @@ public class Default {
     }
 
     //NOGA: maybe not need to be here but i needed the same 'currSearchFilter' like in the 'index' method
+    //tali: do we need some sort of validation on searchFilter?
     @PostMapping("/pages/search")
     public String search(@ModelAttribute SearchFilter searchFilter, Model model) {
         currSearchFilter.setSelectedCategories(searchFilter.getSelectedCategories());

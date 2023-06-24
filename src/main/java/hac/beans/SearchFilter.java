@@ -8,7 +8,7 @@ import java.util.List;
 
 @Component
 public class SearchFilter implements Serializable {
-    private String[] selectedCategories = new String[0];
+    private String[] selectedCategories = new String[]{"Any"};
     private int selectedOption;
 
 

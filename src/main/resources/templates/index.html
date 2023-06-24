@@ -98,21 +98,21 @@
         }
 
         //Tali: trying to add here hover, once I removed if statement, then after clicking it was not solid but did not work with if statement ...
-        // addBtn.addEventListener('mouseenter', () => {
-        //     let isFavourite = addBtn.getAttribute("data-isFavourite");
-        //     console.log("is favourite: " + isFavourite);
-        //     if (isFavourite) return;
-        //     buttonIcon.classList.remove("fa-regular");
-        //     buttonIcon.classList.add("fa-solid");
-        // });
-        //
-        // addBtn.addEventListener('mouseleave', () => {
-        //     let isFavourite = addBtn.getAttribute("data-isFavourite");
-        //     console.log("is favourite: " + isFavourite);
-        //     if(isFavourite) return;
-        //     buttonIcon.classList.remove("fa-solid");
-        //     buttonIcon.classList.add("fa-regular");
-        // });
+        addBtn.addEventListener('mouseenter', () => {
+            // let isFavourite = addBtn.getAttribute("data-isFavourite");
+            // console.log("is favourite: " + isFavourite);
+            // if (isFavourite) return;
+            // buttonIcon.classList.remove("fa-regular");
+            buttonIcon.classList.add("fa-beat");
+        });
+
+        addBtn.addEventListener('mouseleave', () => {
+            // let isFavourite = addBtn.getAttribute("data-isFavourite");
+            // console.log("is favourite: " + isFavourite);
+            // if(isFavourite) return;
+            buttonIcon.classList.remove("fa-beat");
+            // buttonIcon.classList.add("fa-regular");
+        });
 
     });
 </script>

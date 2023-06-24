@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>Title</title>
+  <title>Search Menu</title>
 </head>
 
 <body>
@@ -11,19 +11,19 @@
   <div th:fragment="menu" class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasExample"
     aria-labelledby="offcanvasExampleLabel">
     <div class="offcanvas-header">
-      <h5 class="offcanvas-title" id="offcanvasExampleLabel">Menu</h5>
+      <h5 class="offcanvas-title mt-3 ms-3" id="offcanvasExampleLabel">Search Menu</h5>
       <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
     <div class="offcanvas-body">
-      <form action="#" th:action="@{/pages/search}" th:object="${searchFilter}" method="post">
+      <form class="ms-3 me-3" th:action="@{/pages/search}" th:object="${searchFilter}" method="post">
         <!-- Todo: change ids -->
         <div th:each="category: ${categories}" class="form-check">
           <input class="form-check-input" type="checkbox" th:value="${category}" th:id="'category-' + ${category}"
-            th:field="*{selectedCategories}" />
+            th:field="*{selectedCategories}"/>
           <label th:text="${category}" class="form-check-label" th:for="'category-' + ${category}">
           </label>
         </div>
-        <label>Type of Joke</label>
+        <label class="mt-3">Type of Joke</label>
         <select class="form-select" aria-label="Default select example" th:field="*{selectedOption}">
           <option selected="selected" value="0">All</option>
           <option value="1">One-liners</option>
