@@ -1,10 +1,16 @@
 const cardsModule = (function () {
     let offset = 3; //TODO : const
     let totalNumOfFavourites = 0;
+    let loader;
 
     const handleFlip = function (f, b) {
         f.classList.toggle('flipped')
         b.classList.toggle('flipped')
+    }
+
+    const initModule = function (){
+        loader = document.getElementById("pageLoader");
+        setNumOfFavourites()
     }
     //NOGA: in general - add checkstatus function from last semester?
     const setNumOfFavourites = function (){
@@ -23,6 +29,8 @@ const cardsModule = (function () {
     }
     const deleteJoke = function (jokeId) {
         console.log('Deleting joke with id: ' + jokeId);
+        let currLoader = document.getElementById("deleteLoader-" + jokeId)
+        showElement(currLoader, true)
         fetch('/favourites/delete', {
             method: 'POST',
             headers: {
@@ -35,7 +43,6 @@ const cardsModule = (function () {
                 return response.json()
             })
             .then(deletedJokeId => {
-                console.log("here", deletedJokeId);
                 if (deletedJokeId !== null) {
                     offset -= 1;
                     totalNumOfFavourites -= 1;
@@ -52,7 +59,9 @@ const cardsModule = (function () {
             })
             .catch(error => {
                 console.error(error);
-            });
+            }).finally(()=>{
+                showElement(currLoader, false)
+        })
     }
 
     const checkRemoveLoadMoreBtn =  function (){
@@ -62,9 +71,15 @@ const cardsModule = (function () {
         }
     }
 
+    const showElement = function (element, show){
+        if(show) element.classList.remove("visually-hidden");
+        else element.classList.add("visually-hidden");
+    }
+
     const loadMoreFavourites = function (afterDelete) {
         let query = '?offset=' + offset;
         if (afterDelete) query += '&limit=1';
+        showElement(loader, true);
         fetch('/favourites/get' + query)
             .then(response => response.json())
             .then(favourites => {
@@ -74,7 +89,10 @@ const cardsModule = (function () {
             })
             .catch(error => {
                 console.log(error);
-            });
+            })
+            .finally(()=>{
+                showElement(loader, false);
+            })
     }
 
     const addCards = function (data) {
@@ -108,7 +126,7 @@ const cardsModule = (function () {
                             <div id="back" class="cardBack overflow-x-hidden overflow-y-auto d-flex justify-content-center align-items-center"> 
                               <div class="text-center">
                                 <h4 id="backCardContent">${fav.delivery}</h4>
-                            </div>
+                               </div>
                             </div>
                             <div id="front" class="cardFront overflow-x-hidden overflow-y-auto d-flex justify-content-center align-items-center">
                               <div class="text-center">
@@ -118,8 +136,13 @@ const cardsModule = (function () {
                             </div>
                         </div>
                     </div>
-                    <div class="btn delete-btn" data-joke-id="${fav.id}">
-                         <i class="fa-solid fa-trash"></i>
+                   <div class="d-flex">
+                        <div id="deleteBtn" class="btn delete-btn" data-joke-id=${fav.id}>
+                             <i class="fa-solid fa-trash"></i>
+                       </div>
+                        <div id='deleteLoader-${fav.id}' class="visually-hidden">
+                            <div class="spinner-border text-dark" role="status"></div>
+                        </div>
                     </div>
                 </div>`
     }
@@ -138,7 +161,7 @@ const cardsModule = (function () {
         loadMoreFavourites,
         addCardEvent,
         addDeleteButtonEvent,
-        setNumOfFavourites
+        initModule
     }
 })();
 
@@ -150,7 +173,7 @@ const cardsModule = (function () {
 (function () {
     document.addEventListener("DOMContentLoaded", () => {
         (function (){
-            cardsModule.setNumOfFavourites();
+            cardsModule.initModule();
         })();
         let loadMoreBtn = document.getElementById("loadMore");
         document.querySelectorAll('.card-con').forEach(card => {
