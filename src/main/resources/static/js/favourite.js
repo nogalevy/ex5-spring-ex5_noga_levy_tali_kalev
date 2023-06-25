@@ -105,12 +105,16 @@ const cardsModule = (function () {
         return `<div>
                     <div class='card-container'>
                         <div id='clickable' class='joke-card ${fav.type === 'twopart' ? 'flip-btn' : 'not-flip'}' >
-                            <div id="back" class="cardBack"> 
-                                <h3 id="backCardContent">${fav.delivery}</h3>
+                            <div id="back" class="cardBack overflow-x-hidden overflow-y-auto d-flex justify-content-center align-items-center"> 
+                              <div class="text-center">
+                                <h4 id="backCardContent">${fav.delivery}</h4>
                             </div>
-                            <div id="front" class="cardFront">
-                              <h3 id="frontCardContent">${fav.type === 'twopart' ? fav.setup : fav.joke}</h3>
-                              <p class="flip-msg">Click to flip</p>
+                            </div>
+                            <div id="front" class="cardFront overflow-x-hidden overflow-y-auto d-flex justify-content-center align-items-center">
+                              <div class="text-center">
+                                  <h4 id="frontCardContent">${fav.type === 'twopart' ? fav.setup : fav.joke}</h4>
+                                  <p class="flip-msg">Click to flip</p>
+                            </div>
                             </div>
                         </div>
                     </div>
