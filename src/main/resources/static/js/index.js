@@ -1,3 +1,4 @@
+import toast from './toast.js';
 
 const mainModule = (function (){
     const handleInitialButtonState = function (isFavourite) {
@@ -49,6 +50,7 @@ const mainModule = (function (){
             handleInitialButtonState(jsonData.isFavourite);
         })
         .catch(error => {
+            toast("errorToast");
             console.log(error);
         });
     }
@@ -81,6 +83,7 @@ const mainModule = (function (){
             })
             .catch(error => {
                 console.log("could not add ", error);
+                toast("errorToast");
             });
     }
 

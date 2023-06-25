@@ -1,3 +1,5 @@
+import toast from './toast.js';
+
 const cardsModule = (function () {
     let offset = 3; //TODO : const
     let totalNumOfFavourites = 0;
@@ -12,6 +14,24 @@ const cardsModule = (function () {
         loader = document.getElementById("pageLoader");
         setNumOfFavourites()
     }
+
+    // /**
+    //  *  gets toast id and show it
+    //  * @param toastId toast id to show
+    //  */
+    // const toast = function (toastId){
+    //     if(!toastId) return;
+    //     const toastLiveExample = document.getElementById(toastId);
+    //     if(toastLiveExample){
+    //         toastLiveExample.classList.add("show");
+    //         toastLiveExample.classList.remove("hide");
+    //         setTimeout(()=>{
+    //             toastLiveExample.classList.add("hide");
+    //             toastLiveExample.classList.remove("show");
+    //         }, 2000)
+    //     }
+    // }
+
     //NOGA: in general - add checkstatus function from last semester?
     const setNumOfFavourites = function (){
         fetch('/favourites/count')
@@ -59,6 +79,7 @@ const cardsModule = (function () {
             })
             .catch(error => {
                 console.error(error);
+                toast("deleteErrorToast");
             }).finally(()=>{
                 showElement(currLoader, false)
         })
@@ -88,6 +109,7 @@ const cardsModule = (function () {
                 checkRemoveLoadMoreBtn();
             })
             .catch(error => {
+                toast("loadMoreErrorToast");
                 console.log(error);
             })
             .finally(()=>{
