@@ -6,8 +6,8 @@
   <title>Title</title>
 </head>
 <body>
-  <div  th:fragment="card2" class="card-container ">  <!--container-->
-    <div th:object="${jokeObj}" id="clickable" th:class="*{type}=='twopart' ? 'flip-btn joke-card' : 'not-flip joke-card' ">
+  <div  th:fragment="card" class="card-container p-3 pb-2">  <!--container-->
+    <div th:object="${jokeObj}" id="clickable" th:class="*{type}=='twopart' ? 'flip-btn joke-card text-break' : 'not-flip joke-card text-break' ">
       <div id="back" class="cardBack overflow-x-hidden overflow-y-auto d-flex justify-content-center align-items-center">
         <div class="text-center">
            <h4 id="backCardContent" th:text="*{delivery}"></h4>

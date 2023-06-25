@@ -32,7 +32,9 @@ const cardsModule = (function () {
     }
     const deleteJoke = function (jokeId) {
         let currLoader = document.getElementById("deleteLoader-" + jokeId)
+        let currDeleteBtn = document.getElementById("deleteBtn-" + jokeId)
         showElement(currLoader, true)
+        showElement(currDeleteBtn, false)
         fetch('/favourites/delete', {
             method: 'POST',
             headers: {
@@ -61,6 +63,8 @@ const cardsModule = (function () {
                 toast("deleteErrorToast");
             }).finally(()=>{
                 showElement(currLoader, false)
+                showElement(currDeleteBtn, true)
+
         })
     }
 
@@ -122,8 +126,8 @@ const cardsModule = (function () {
 
     const getCardHtml = function (fav) {
         return `<div>
-                    <div class='card-container'>
-                        <div id='clickable' class='joke-card ${fav.type === 'twopart' ? 'flip-btn' : 'not-flip'}' >
+                    <div class='card-container p-3 pb-2'>
+                        <div id='clickable' class='text-break joke-card ${fav.type === 'twopart' ? 'flip-btn' : 'not-flip'}' >
                             <div id="back" class="cardBack overflow-x-hidden overflow-y-auto d-flex justify-content-center align-items-center"> 
                               <div class="text-center">
                                 <h4 id="backCardContent">${fav.delivery}</h4>
@@ -137,8 +141,8 @@ const cardsModule = (function () {
                             </div>
                         </div>
                     </div>
-                   <div class="d-flex">
-                        <div id="deleteBtn" class="btn delete-btn" data-joke-id=${fav.id}>
+                   <div class="d-flex justify-content-center m-3 mt-0 rounded-bottom card-footer">
+                        <div id='deleteBtn-${fav.id}' class="btn delete-btn" data-joke-id=${fav.id}>
                              <i class="fa-solid fa-trash"></i>
                        </div>
                         <div id='deleteLoader-${fav.id}' class="visually-hidden">

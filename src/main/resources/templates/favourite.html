@@ -18,9 +18,9 @@
         <h1 class="pt-4 d-flex justify-content-center align-items-center">Favourites</h1>
         <div id="favouritesContainer" class="row row-cols-1 row-cols-md-2 g-4 mx-3">
                 <div th:each="jokeObj : ${favourites}" th:id="'card-' + ${jokeObj.id}" class="col card-con" th:type="${jokeObj.type}">
-                    <div th:insert="~{fragments/card2::card2}" th:with="jokeObj=${jokeObj}"></div>
-                    <div class="d-flex">
-                        <div id="deleteBtn" class="btn delete-btn" th:data-joke-id="${jokeObj.id}">
+                    <div th:insert="~{fragments/card::card}" th:with="jokeObj=${jokeObj}"></div>
+                    <div class="d-flex justify-content-center m-3 mt-0 rounded-bottom card-footer">
+                        <div th:id="'deleteBtn-' + ${jokeObj.id}" class="btn delete-btn" th:data-joke-id="${jokeObj.id}">
                              <i class="fa-solid fa-trash"></i>
                        </div>
                         <div th:id="'deleteLoader-' + ${jokeObj.id}" class="visually-hidden">

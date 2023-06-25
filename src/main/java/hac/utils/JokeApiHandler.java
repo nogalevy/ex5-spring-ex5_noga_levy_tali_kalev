@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -20,27 +21,34 @@ public class JokeApiHandler {
 
     private static  <T> ResponseEntity<T> GetRestExchange(String url, Class<T> resType){
         RestTemplate restTemplate = new RestTemplate();
+        try{
+
         return restTemplate.exchange(
                 url,
                 HttpMethod.GET,
                 null,
                 resType
         );
+        }
+        catch (Exception err){
+            return null;
+        }
     }
 
     public static List<Joke> getJokesFromApi(SearchFilter sf){
         final String uri = getUri(sf);
         JokeApiResponse jokeApiResponse;
-        List<Joke> jokes = null;
+        List<Joke> jokes = Arrays.asList(new Joke());
 
         ResponseEntity<JokeApiResponse> responseEntity = GetRestExchange( uri, JokeApiResponse.class);
 
-        if (responseEntity.getStatusCode().is2xxSuccessful()) {
+        if (responseEntity != null &&  responseEntity.getStatusCode().is2xxSuccessful()) {
             jokeApiResponse = responseEntity.getBody();
             System.out.println("jokeApiResponse: " + jokeApiResponse);
             if (jokeApiResponse != null && !jokeApiResponse.error()) {
                 jokes = jokeApiResponse.jokes();
-            } else {
+            }
+            else {
                 System.out.println("Error response received from the API.");
             }
         } else{
@@ -52,7 +60,7 @@ public class JokeApiHandler {
     public static List<String> getCategoriesFromApi() {
         ResponseEntity<JokeApiCategoriesResponse> responseEntity = GetRestExchange( CATEGORIES_URI, JokeApiCategoriesResponse.class);
 
-        if (responseEntity.getStatusCode().is2xxSuccessful()) {
+        if (responseEntity != null && responseEntity.getStatusCode().is2xxSuccessful()) {
             JokeApiCategoriesResponse categoriesResponse = responseEntity.getBody();
             if (categoriesResponse != null && !categoriesResponse.error()) {
                 return categoriesResponse.categories();
@@ -80,7 +88,7 @@ public class JokeApiHandler {
         final String uri = GET_BY_ID_URI_QUERY + id;
         ResponseEntity<JokeApiResponse> responseEntity = GetRestExchange( uri, JokeApiResponse.class);
 
-        if (responseEntity.getStatusCode().is2xxSuccessful()) {
+        if (responseEntity != null && responseEntity.getStatusCode().is2xxSuccessful()) {
             JokeApiResponse jokeApiResponse = responseEntity.getBody();
             if (jokeApiResponse != null && !jokeApiResponse.error()) {
                 return jokeApiResponse.jokes().get(0);
