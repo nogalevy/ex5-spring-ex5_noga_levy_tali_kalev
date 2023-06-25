@@ -40,7 +40,6 @@ public class JokeApiHandler {
             System.out.println("jokeApiResponse: " + jokeApiResponse);
             if (jokeApiResponse != null && !jokeApiResponse.error()) {
                 jokes = jokeApiResponse.jokes();
-                //NOGA: I deleted the for loop that use to be here long time ago i hope that okay. okay?
             } else {
                 System.out.println("Error response received from the API.");
             }
@@ -78,7 +77,7 @@ public class JokeApiHandler {
 
     public static Joke getJokeById(Long id){
 //        Integer requestedId = id -1; //NOGA
-        final String uri = GET_BY_ID_URI_QUERY + id; //NOGA: delete valueof
+        final String uri = GET_BY_ID_URI_QUERY + id;
         ResponseEntity<JokeApiResponse> responseEntity = GetRestExchange( uri, JokeApiResponse.class);
 
         if (responseEntity.getStatusCode().is2xxSuccessful()) {

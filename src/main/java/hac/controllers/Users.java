@@ -33,7 +33,7 @@ public class Users {
         return "login";
     }
 
-    @PostMapping("/users/login") //tali: should change to obj? with validation then check binding result? -> currently if empty returns Invalid email or password
+    @PostMapping("/users/login")
     public synchronized String loginUser(@RequestParam("email") String email, @RequestParam("password") String password, Model model, RedirectAttributes redirectAttributes) {
         //check if user exists in UserRepository
         UserInfo existingUser = userInfoRepository.findUserByEmail(email);
@@ -43,12 +43,9 @@ public class Users {
             currUserSession.setUserId(existingUser.getId());
             return "redirect:/";
         }else {
-            //else return error message
-            //redirecting avoids resubmission upon refresh //tali: maybe add this in other places too?
+            //else return error message, redirecting avoids resubmission upon refresh
             redirectAttributes.addFlashAttribute("error", "Invalid email or password");
             return "redirect:/users/login";
-//            model.addAttribute("error", "Invalid email or password");
-//            return "login";
         }
     }
 

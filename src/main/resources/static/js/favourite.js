@@ -15,23 +15,22 @@ const cardsModule = (function () {
         setNumOfFavourites()
     }
 
-    //NOGA: in general - add checkstatus function from last semester?
+    //NOGA: in general - add checkstatus function from last semester? yes
     const setNumOfFavourites = function (){
         fetch('/favourites/count')
             .then(response => {
                 return response.json()
             })
             .then(data => {
-                console.log("count", data);
                 totalNumOfFavourites = data;
             })
             .catch(error => {
+                //todo: handle error
                 console.error(error);
             });
 
     }
     const deleteJoke = function (jokeId) {
-        console.log('Deleting joke with id: ' + jokeId);
         let currLoader = document.getElementById("deleteLoader-" + jokeId)
         showElement(currLoader, true)
         fetch('/favourites/delete', {
@@ -41,10 +40,7 @@ const cardsModule = (function () {
             },
             body: jokeId
         })
-            .then(response => {
-                console.log("here2", response);
-                return response.json()
-            })
+            .then(response => response.json())
             .then(deletedJokeId => {
                 if (deletedJokeId !== null) {
                     offset -= 1;

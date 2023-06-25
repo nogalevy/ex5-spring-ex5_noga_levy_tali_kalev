@@ -25,13 +25,12 @@ const mainModule = (function (){
     const generateNew = function(){
         const card = document.getElementById('clickable');
         let cardBox = document.getElementById("cardBox");
-        let frontContent = document.getElementById('frontCardContent'); //NOGA
-        let backContent = document.getElementById('backCardContent'); //NOGA
+        let frontContent = document.getElementById('frontCardContent');
+        let backContent = document.getElementById('backCardContent');
 
         fetch('/pages/getJokes')
         .then(response => response.json())
         .then(jsonData => {
-            console.log(jsonData);
             cardBox.setAttribute("name", jsonData.id);
             flipCard();
             //TODO: add to constantnsnsts!
@@ -46,7 +45,6 @@ const mainModule = (function (){
                 card.classList.remove('flip-btn')
                 card.classList.add('not-flip')
             }
-            console.log(jsonData.isFavourite);
             handleInitialButtonState(jsonData.isFavourite);
         })
         .catch(error => {
@@ -79,7 +77,6 @@ const mainModule = (function (){
             .then(response =>
             {
                 handleInitialButtonState(true);
-                console.log(response);
             })
             .catch(error => {
                 console.log("could not add ", error);
@@ -106,21 +103,12 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById('clickable').addEventListener('click', mainModule.handleFlip);
     document.getElementById("generate").addEventListener("click", mainModule.generateNew);
 
-    //Tali: trying to add here hover, once I removed if statement, then after clicking it was not solid but did not work with if statement ...
     addBtn.addEventListener('mouseenter', () => {
-        // let isFavourite = addBtn.getAttribute("data-isFavourite");
-        // console.log("is favourite: " + isFavourite);
-        // if (isFavourite) return;
-        // buttonIcon.classList.remove("fa-regular");
         buttonIcon.classList.add("fa-beat");
     });
 
     addBtn.addEventListener('mouseleave', () => {
-        // let isFavourite = addBtn.getAttribute("data-isFavourite");
-        // console.log("is favourite: " + isFavourite);
-        // if(isFavourite) return;
         buttonIcon.classList.remove("fa-beat");
-        // buttonIcon.classList.add("fa-regular");
     });
 
 });

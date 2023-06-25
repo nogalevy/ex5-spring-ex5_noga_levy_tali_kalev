@@ -26,22 +26,10 @@ public class FiltersConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry){
-        // if you want to apply filter only for REST controller: change the "/**" pattern
-
-        // if we want to pass some bean to the filter
-//        registry.addInterceptor(new LoggingInterceptor(sessionUser)).addPathPatterns("/**").excludePathPatterns("/static/**");
-//        registry.addInterceptor(new LoggingInterceptor(sessionUser)).addPathPatterns("/**");
-
         //Interceptor for unauth users
-        registry.addInterceptor(new UnauthInterceptor(sessionUser)).addPathPatterns("/users/**"); //TODO: changes name to unauth
+        registry.addInterceptor(new UnauthInterceptor(sessionUser)).addPathPatterns("/users/**");
         //Interceptor for auth users (logged in)
         registry.addInterceptor(new AuthInterceptor(sessionUser)).addPathPatterns("/pages/**", "/");
-
-        // no args ctor
-//        registry.addInterceptor(new LoggingInterceptor()); //.addPathPatterns("/signup");
-
-        // excluding patterns
-        //registry.addInterceptor(new LoggingInterceptor()).addPathPatterns("/add-user/**").excludePathPatterns("/static/**");
     }
 
     @Override

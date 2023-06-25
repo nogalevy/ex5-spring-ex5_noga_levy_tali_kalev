@@ -11,7 +11,7 @@ import jakarta.servlet.http.HttpServletResponse;
  * to home, favourites and userprofile pages.
  */
 public class AuthInterceptor implements HandlerInterceptor {
-    private UserSession userSession; //NOGA: final?
+    private final UserSession userSession;
     public AuthInterceptor(UserSession u) {
         userSession = u;
     }
@@ -20,11 +20,7 @@ public class AuthInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
             throws Exception {
 
-        // filter can redirect response to a specific page
-        // response.sendRedirect("/error");
-
         if(!userSession.isLoggedIn()){
-            System.out.println("Session bean in filter: " + userSession.isLoggedIn());
             response.sendRedirect("/users/login");
             return false;
         }

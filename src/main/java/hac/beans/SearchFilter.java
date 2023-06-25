@@ -11,7 +11,6 @@ public class SearchFilter implements Serializable {
     private String[] selectedCategories = new String[]{"Any"};
     private int selectedOption;
 
-
     // Getters and setters for the members
     public String[] getSelectedCategories() {
         return selectedCategories;

@@ -54,7 +54,6 @@ public class Favourites {
             favouriteRepository.delete(favourite);
             return ResponseEntity.ok(jokeId);
         } else {
-            System.out.println("Error deleting joke");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
@@ -69,6 +68,7 @@ public class Favourites {
     }
 
 
+    //todo: return ResponseEntity not page
     @ExceptionHandler({Exception.class})
     public String handleValidationExceptions(Exception ex, Model model) {
         // we can insert the message into the model

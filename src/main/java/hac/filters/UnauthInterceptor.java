@@ -12,7 +12,7 @@ import jakarta.servlet.http.HttpServletResponse;
  */
 public class UnauthInterceptor implements HandlerInterceptor {
 
-    private UserSession userSession; //NOGA: final ?
+    private final UserSession userSession;
     public UnauthInterceptor(UserSession u) {
         userSession = u;
     }
@@ -20,12 +20,7 @@ public class UnauthInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
             throws Exception {
-
-        String requestPath = request.getRequestURI();
-        System.out.println("Request path: " + requestPath);
-
         if(userSession.isLoggedIn()){
-            System.out.println("Session bean in filter: " + userSession.isLoggedIn());
             response.sendRedirect("/");
             return false;
         }

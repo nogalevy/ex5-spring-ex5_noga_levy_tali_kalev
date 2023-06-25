@@ -29,11 +29,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 //NOGA: change class + file name ?
-/** this is a test controller, delete/replace it when you start working on your project */
 @Controller
 public class Default {
-    final String LIMIT = "3"; //NOGA: change file
-    final String DEFAULT_OFFSET = "0"; //NOGA: change file
+    private final String LIMIT = "3"; //NOGA: change file
+    private final String DEFAULT_OFFSET = "0"; //NOGA: change file
 
     @Autowired
     @Qualifier("searchFilterSession")
@@ -65,8 +64,6 @@ public class Default {
         model.addAttribute("categories", categories);
         model.addAttribute("searchFilter", currSearchFilter);
 
-        System.out.println(categories);
-
         return "index";
     }
 
@@ -94,7 +91,6 @@ public class Default {
         List<Favourite> favouritesList = getUserFavouritesData(limit, offset);
         ArrayList<Long> jokeIds = new ArrayList<Long>();
         for(Favourite fav : favouritesList){
-            System.out.println("@_@_@_@_@_@_@_@_@_@_@_@_@_@_@_@ joke id: " + fav.getJokeId());
             jokeIds.add(fav.getJokeId());
         }
         List<Joke> favourites = JokeApiHandler.getJokesByIdsFromApi(jokeIds);
@@ -103,14 +99,13 @@ public class Default {
 
     //NOGA: move to services?
     public synchronized List<Favourite> getUserFavouritesData(int limit, int offset) {
-        System.out.println("Get all Employees with limit " + limit + " and offset " + offset);
+        System.out.println("Get all favs with limit " + limit + " and offset " + offset);
         Pageable pageable = new OffsetBasedPageRequest(limit, offset);
         return favouriteRepository.findFavouritesByUserInfo_Id(currUserSession.getUserId(), pageable);
     }
 
     @GetMapping("/pages/userprofile")
     public synchronized String userProfile(Model model) {
-        //for menu - todo: possible remove
         List<String> categories = JokeApiHandler.getCategoriesFromApi();
         model.addAttribute("categories", categories);
         model.addAttribute("searchFilter", currSearchFilter);
@@ -121,6 +116,7 @@ public class Default {
         UserInfo userInfo = userInfoRepository.findById(userId).orElse(null);
         if(userInfo == null){
             System.out.println("user not found");
+            //todo: handle error
         }
         else{
             //add user attributes to model
@@ -172,11 +168,8 @@ public class Default {
 
     @PostMapping("/pages/logout")
     public String logoutUser(HttpServletRequest request,  RedirectAttributes redirectAttributes){
-        //set userSession to logged out
         request.getSession().invalidate();
-        System.out.println("logging out user");
         redirectAttributes.addFlashAttribute("logoutMessage", "You have been logged out successfully");
-        // Redirect to the login page and pass the logoutMessage attribute
         return "redirect:/users/login";
     }
 }
