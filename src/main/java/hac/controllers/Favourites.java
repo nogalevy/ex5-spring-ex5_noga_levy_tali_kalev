@@ -59,6 +59,7 @@ public class Favourites {
         }
     }
 
+    //TODO : throw error?
     @GetMapping("/favourites/count")
     public synchronized ResponseEntity<Integer> countUserFavourites() {
         long userId = currUserSession.getUserId();

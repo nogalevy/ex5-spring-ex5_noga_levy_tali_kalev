@@ -50,7 +50,6 @@ public class Default {
     @GetMapping("/")
     public synchronized String index(Model model) {
         List<Joke> jokes = JokeApiHandler.getJokesFromApi(currSearchFilter);
-        //NOGA: move to function ??
         if (jokes == null) {
             model.addAttribute("joke", "Something happened...no joke at the moment");
         } else {
@@ -129,7 +128,6 @@ public class Default {
             model.addAttribute("lastName", userInfo.getLastName());
             model.addAttribute("email", userInfo.getEmail());
         }
-
         return "userProfile";
     }
 
@@ -148,9 +146,9 @@ public class Default {
     // NOGA: change url path ? not a page
     @GetMapping("/pages/getJokes")
     public synchronized ResponseEntity<String> getJokes() {
-        List<Joke> jokes = JokeApiHandler.getJokesFromApi(currSearchFilter); //NOGA: i dont knowwwwwwwwww
+        List<Joke> jokes = JokeApiHandler.getJokesFromApi(currSearchFilter);
         if (jokes == null) {
-            String errorResponse = "{\"error\": \"Something happened...no joke at the moment\"}";
+            String errorResponse = "{\"error\": \"Something happened...no joke at the moment\"}"; //NOGA: final?
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
         } else {
             Joke joke = jokes.get(0);
@@ -166,7 +164,7 @@ public class Default {
                 return ResponseEntity.ok(jokeResponse);
             } catch (Exception e) {
                 e.printStackTrace();
-                String errorResponse = "{\"error\": \"Failed to process joke data\"}";
+                String errorResponse = "{\"error\": \"Failed to process joke data\"}"; //NOGA: final?
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
             }
         }

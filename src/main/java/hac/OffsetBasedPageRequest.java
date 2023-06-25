@@ -4,7 +4,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
 //NOGA : https://blog.felix-seifert.com/limit-and-offset-spring-data-jpa-repositories/
-
+//NOGA: check what we can delete from here or add to constant
 public class OffsetBasedPageRequest implements Pageable {
     private final int offset;
     private final int limit;

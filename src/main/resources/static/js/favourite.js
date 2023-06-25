@@ -15,23 +15,6 @@ const cardsModule = (function () {
         setNumOfFavourites()
     }
 
-    // /**
-    //  *  gets toast id and show it
-    //  * @param toastId toast id to show
-    //  */
-    // const toast = function (toastId){
-    //     if(!toastId) return;
-    //     const toastLiveExample = document.getElementById(toastId);
-    //     if(toastLiveExample){
-    //         toastLiveExample.classList.add("show");
-    //         toastLiveExample.classList.remove("hide");
-    //         setTimeout(()=>{
-    //             toastLiveExample.classList.add("hide");
-    //             toastLiveExample.classList.remove("show");
-    //         }, 2000)
-    //     }
-    // }
-
     //NOGA: in general - add checkstatus function from last semester?
     const setNumOfFavourites = function (){
         fetch('/favourites/count')
