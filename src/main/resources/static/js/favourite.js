@@ -1,7 +1,7 @@
 import toast from './toast.js';
 
 const cardsModule = (function () {
-    let offset = 3; //TODO : const
+    let offset = 6; //TODO : const
     let totalNumOfFavourites = 0;
     let loader;
 

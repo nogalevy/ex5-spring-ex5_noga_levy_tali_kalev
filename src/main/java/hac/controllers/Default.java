@@ -31,7 +31,7 @@ import java.util.List;
 //NOGA: change class + file name ?
 @Controller
 public class Default {
-    private final String LIMIT = "3"; //NOGA: change file
+    private final String LIMIT = "6"; //NOGA: change file
     private final String DEFAULT_OFFSET = "0"; //NOGA: change file
 
     @Autowired
