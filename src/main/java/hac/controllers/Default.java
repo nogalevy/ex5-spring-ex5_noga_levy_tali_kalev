@@ -1,18 +1,16 @@
 package hac.controllers;
 
-import hac.OffsetBasedPageRequest;
 import hac.beans.SearchFilter;
 import hac.beans.UserSession;
 import hac.records.Joke;
 import hac.repo.Favourite;
-import hac.repo.FavouriteRepository;
 import hac.repo.UserInfo;
+import hac.services.UserFavouritesService;
 import hac.services.UserInfoService;
 import hac.utils.JokeApiHandler;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,67 +39,82 @@ public class Default {
     @Autowired
     @Qualifier("sessionUser")
     private UserSession currUserSession;
-    @Autowired
-    private FavouriteRepository favouriteRepository;
+
     @Autowired
     private UserInfoService userInfoService;
 
+    @Autowired
+    private UserFavouritesService userFavouritesService;
+
     @GetMapping("/")
     public synchronized String index(Model model) {
-        List<Joke> jokes = JokeApiHandler.getJokesFromApi(currSearchFilter);
-        if (jokes == null) {
-            model.addAttribute("joke", "Something happened...no joke at the moment");
-        } else {
-            Joke joke = jokes.get(0);
-            long userId = currUserSession.getUserId();
-            Favourite favourite = favouriteRepository.getFavouriteByJokeIdAndUserInfo_Id(joke.id(), userId);
-            boolean isFavourite = (favourite != null);
+        try{
+            List<Joke> jokes = JokeApiHandler.getJokesFromApi(currSearchFilter);
+            if (jokes == null) {
+                model.addAttribute("joke", "Something happened...no joke at the moment");
+            } else {
+                Joke joke = jokes.get(0);
+                long userId = currUserSession.getUserId();
+                Boolean isFavourite = userFavouritesService.isFavourite(joke.id(), userId);
 
-            Joke responseJoke = new Joke(joke, isFavourite);
-            model.addAttribute("jokeObj", responseJoke);
+                Joke responseJoke = new Joke(joke, isFavourite);
+                model.addAttribute("jokeObj", responseJoke);
+            }
+            List<String> categories = JokeApiHandler.getCategoriesFromApi();
+            model.addAttribute("categories", categories);
+            model.addAttribute("searchFilter", currSearchFilter);
         }
-        List<String> categories = JokeApiHandler.getCategoriesFromApi();
-        model.addAttribute("categories", categories);
-        model.addAttribute("searchFilter", currSearchFilter);
-
+        catch (Exception err){
+            //TODO:
+        }
         return "index";
     }
 
     @GetMapping("/pages/favourite")
     public synchronized String favourite(Model model) {
-        List<String> categories = JokeApiHandler.getCategoriesFromApi();
-        List<Joke> favourites = getUserFavouritesJokes(Integer.parseInt(LIMIT), 0);
-        Integer numOfUserFavourites = favouriteRepository.countFavouritesByUserInfo_Id(currUserSession.getUserId());
+        try{
+            Long userId = currUserSession.getUserId();
+            List<String> categories = JokeApiHandler.getCategoriesFromApi();
+            List<Joke> favourites = getUserFavouritesJokes(Integer.parseInt(LIMIT), 0);
+            Integer numOfUserFavourites = userFavouritesService.getNumOfUserFavourites(userId);
 
-        model.addAttribute("categories", categories);
-        model.addAttribute("searchFilter", currSearchFilter);
-        model.addAttribute("favourites", favourites);
-        model.addAttribute("showLoadMoreBtn", numOfUserFavourites > Integer.parseInt(LIMIT));
+            model.addAttribute("categories", categories);
+            model.addAttribute("searchFilter", currSearchFilter);
+            model.addAttribute("favourites", favourites);
+            model.addAttribute("showLoadMoreBtn", numOfUserFavourites > Integer.parseInt(LIMIT));
+        }
+        catch (Exception err){
+            //TODO:
+        }
         return "favourite";
     }
 
     @GetMapping("/favourites/get")
     public ResponseEntity<List<Joke>> favourite(@RequestParam(defaultValue = LIMIT) int limit,
                                                 @RequestParam(defaultValue = DEFAULT_OFFSET) int offset, Model model) {
-        List<Joke> favourites = getUserFavouritesJokes(limit, offset);
-        return ResponseEntity.ok(favourites);
-    }
-
-    //NOGA: move to services?
-    public List<Joke> getUserFavouritesJokes(int limit, int offset){
-        List<Favourite> favouritesList = getUserFavouritesData(limit, offset);
-        ArrayList<Long> jokeIds = new ArrayList<Long>();
-        for(Favourite fav : favouritesList){
-            jokeIds.add(fav.getJokeId());
+        try{
+            List<Joke> favourites = getUserFavouritesJokes(limit, offset);
+            return ResponseEntity.ok(favourites);
         }
-        List<Joke> favourites = JokeApiHandler.getJokesByIdsFromApi(jokeIds);
-        return favourites;
+        catch(Exception err ){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
 
     //NOGA: move to services?
-    public synchronized List<Favourite> getUserFavouritesData(int limit, int offset) {
-        Pageable pageable = new OffsetBasedPageRequest(limit, offset);
-        return favouriteRepository.findFavouritesByUserInfo_Id(currUserSession.getUserId(), pageable);
+    public List<Joke> getUserFavouritesJokes(int limit, int offset) throws Exception{
+        try{
+            List<Favourite> favouritesList = userFavouritesService.getUserFavouritesData(limit, offset, currUserSession.getUserId());
+            ArrayList<Long> jokeIds = new ArrayList<Long>();
+            for(Favourite fav : favouritesList){
+                jokeIds.add(fav.getJokeId());
+            }
+            List<Joke> favourites = JokeApiHandler.getJokesByIdsFromApi(jokeIds);
+            return favourites;
+        }
+        catch (Exception err){
+            throw new Exception(err);
+        }
     }
 
     @GetMapping("/pages/userprofile")
@@ -140,27 +153,28 @@ public class Default {
     // NOGA: change url path ? not a page
     @GetMapping("/pages/getJokes")
     public synchronized ResponseEntity<String> getJokes() {
-        List<Joke> jokes = JokeApiHandler.getJokesFromApi(currSearchFilter);
-        if (jokes == null) {
-            String errorResponse = "{\"error\": \"Something happened...no joke at the moment\"}"; //NOGA: final?
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
-        } else {
-            Joke joke = jokes.get(0);
-            long userId = currUserSession.getUserId();
-            Favourite favourite = favouriteRepository.getFavouriteByJokeIdAndUserInfo_Id(joke.id(), userId);
-            boolean isFavourite = (favourite != null);
+        try {
+            List<Joke> jokes = JokeApiHandler.getJokesFromApi(currSearchFilter);
+            if (jokes == null) {
+                String errorResponse = "{\"error\": \"Something happened...no joke at the moment\"}"; //NOGA: final?
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
+            } else {
+                Joke joke = jokes.get(0);
+                long userId = currUserSession.getUserId();
+                Boolean isFavourite = userFavouritesService.isFavourite(joke.id(), userId);
 
-            Joke responseJoke = new Joke(joke, isFavourite);
-            ObjectMapper objectMapper = new ObjectMapper();
+                Joke responseJoke = new Joke(joke, isFavourite);
+                ObjectMapper objectMapper = new ObjectMapper();
 
-            try {
                 String jokeResponse = objectMapper.writeValueAsString(responseJoke);
                 return ResponseEntity.ok(jokeResponse);
-            } catch (Exception e) {
-                e.printStackTrace();
-                String errorResponse = "{\"error\": \"Failed to process joke data\"}"; //NOGA: final?
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
             }
+        }
+        catch (Exception err){
+            //TODO:
+            err.printStackTrace();
+            String errorResponse = "{\"error\": \"Failed to process joke data\"}"; //NOGA: final?
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
         }
     }
 
