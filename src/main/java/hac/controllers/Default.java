@@ -34,7 +34,7 @@ public class Default {
 
     @Autowired
     @Qualifier("searchFilterSession")
-    private SearchFilter currSearchFilter = new SearchFilter();
+    private SearchFilter currSearchFilter;
 
     @Autowired
     @Qualifier("sessionUser")
@@ -89,6 +89,7 @@ public class Default {
         return "favourite";
     }
 
+    //NOGA: remove to Favourite controller
     @GetMapping("/favourites/get")
     public ResponseEntity<List<Joke>> favourite(@RequestParam(defaultValue = LIMIT) int limit,
                                                 @RequestParam(defaultValue = DEFAULT_OFFSET) int offset, Model model) {
@@ -101,7 +102,8 @@ public class Default {
         }
     }
 
-    //NOGA: move to services?
+    //NOGA: move to JokeApiHandler
+    // NOGA: change url path ? not a page maybe api/....
     public List<Joke> getUserFavouritesJokes(int limit, int offset) throws Exception{
         try{
             List<Favourite> favouritesList = userFavouritesService.getUserFavouritesData(limit, offset, currUserSession.getUserId());
@@ -148,34 +150,6 @@ public class Default {
         model.addAttribute("searchFilter", searchFilter);
 
         return "redirect:/";
-    }
-
-    // NOGA: change url path ? not a page
-    @GetMapping("/pages/getJokes")
-    public synchronized ResponseEntity<String> getJokes() {
-        try {
-            List<Joke> jokes = JokeApiHandler.getJokesFromApi(currSearchFilter);
-            if (jokes == null) {
-                String errorResponse = "{\"error\": \"Something happened...no joke at the moment\"}"; //NOGA: final?
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
-            } else {
-                Joke joke = jokes.get(0);
-                long userId = currUserSession.getUserId();
-                Boolean isFavourite = userFavouritesService.isFavourite(joke.id(), userId);
-
-                Joke responseJoke = new Joke(joke, isFavourite);
-                ObjectMapper objectMapper = new ObjectMapper();
-
-                String jokeResponse = objectMapper.writeValueAsString(responseJoke);
-                return ResponseEntity.ok(jokeResponse);
-            }
-        }
-        catch (Exception err){
-            //TODO:
-            err.printStackTrace();
-            String errorResponse = "{\"error\": \"Failed to process joke data\"}"; //NOGA: final?
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
-        }
     }
 
     @PostMapping("/pages/logout")
