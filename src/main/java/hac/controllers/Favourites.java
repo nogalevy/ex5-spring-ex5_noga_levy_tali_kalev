@@ -1,7 +1,6 @@
 package hac.controllers;
 
 import hac.beans.UserSession;
-import hac.repo.Favourite;
 import hac.repo.FavouriteRepository;
 import hac.repo.UserInfoRepository;
 import hac.services.UserFavouritesService;
@@ -23,41 +22,29 @@ public class Favourites {
     private UserSession currUserSession;
 
     @Autowired
-    private FavouriteRepository favouriteRepository;
-    @Autowired
     private UserFavouritesService userFavouritesService;
-
-    @Autowired
-    private UserInfoRepository userInfoRepository;
 
     @PostMapping("/favourites/add")
     public synchronized ResponseEntity<Long> addUserFavourite(@RequestBody Long jokeId) throws Exception {
-        Favourite newFavourite = new Favourite(jokeId);
-        long userId = currUserSession.getUserId();
-
-        Favourite isExist = favouriteRepository.getFavouriteByJokeIdAndUserInfo_Id(jokeId, userId);
-
-        //checks if already exist in db
-        if(isExist != null) return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-
-        //todo: user user service
-        Favourite favourite = userInfoRepository.findById(userId).map(user -> {
-            newFavourite.setUserInfo(user);
-            return favouriteRepository.save(newFavourite);
-        }).orElseThrow(() -> new Exception("sorry" ));
-
-        return ResponseEntity.ok(jokeId);
+        try {
+            long userId = currUserSession.getUserId();
+            userFavouritesService.saveUserFavourite(jokeId, userId);
+            return ResponseEntity.ok(jokeId);
+        }
+        catch (Exception err){
+          return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
 
     @PostMapping("/favourites/delete")
     public synchronized ResponseEntity<Long> deleteUserFavourite(@RequestBody Long jokeId) {
-        long userId = currUserSession.getUserId();
 
-        Favourite favourite = favouriteRepository.getFavouriteByJokeIdAndUserInfo_Id(jokeId, userId);
-        if (favourite != null) {
-            favouriteRepository.delete(favourite);
+        try {
+            long userId = currUserSession.getUserId();
+            userFavouritesService.deleteUserFavourite(jokeId, userId);
             return ResponseEntity.ok(jokeId);
-        } else {
+
+        } catch (Exception err) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
@@ -65,10 +52,14 @@ public class Favourites {
     //TODO : throw error?
     @GetMapping("/favourites/count")
     public synchronized ResponseEntity<Integer> countUserFavourites() {
-        long userId = currUserSession.getUserId();
-
-        Integer numOfUserFavourites = favouriteRepository.countFavouritesByUserInfo_Id(userId);
-        return ResponseEntity.ok(numOfUserFavourites);
+        try{
+            long userId = currUserSession.getUserId();
+            Integer numOfUserFavourites = userFavouritesService.getNumOfUserFavourites(userId);
+            return ResponseEntity.ok(numOfUserFavourites);
+        }
+        catch (Exception err){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(0);
+        }
     }
 
 
