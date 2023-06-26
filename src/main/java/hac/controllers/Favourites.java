@@ -37,6 +37,7 @@ public class Favourites {
         //checks if already exist in db
         if(isExist != null) return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
 
+        //todo: user user service
         Favourite favourite = userInfoRepository.findById(userId).map(user -> {
             newFavourite.setUserInfo(user);
             return favouriteRepository.save(newFavourite);

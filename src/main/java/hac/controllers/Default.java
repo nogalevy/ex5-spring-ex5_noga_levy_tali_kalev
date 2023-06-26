@@ -7,7 +7,7 @@ import hac.records.Joke;
 import hac.repo.Favourite;
 import hac.repo.FavouriteRepository;
 import hac.repo.UserInfo;
-import hac.repo.UserInfoRepository;
+import hac.services.UserInfoService;
 import hac.utils.JokeApiHandler;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,9 +42,9 @@ public class Default {
     @Qualifier("sessionUser")
     private UserSession currUserSession;
     @Autowired
-    private UserInfoRepository userInfoRepository;
-    @Autowired
     private FavouriteRepository favouriteRepository;
+    @Autowired
+    private UserInfoService userInfoService;
 
     @GetMapping("/")
     public synchronized String index(Model model) {
@@ -112,17 +112,15 @@ public class Default {
 
         //retreive user id from user session
         Long userId = currUserSession.getUserId();
-        //retrieve user first name, last name, email from userinfo repo
-        UserInfo userInfo = userInfoRepository.findById(userId).orElse(null);
-        if(userInfo == null){
-            System.out.println("user not found");
-            //todo: handle error
-        }
-        else{
-            //add user attributes to model
+        try{
+            UserInfo userInfo = userInfoService.getUserById(userId);
             model.addAttribute("firstName", userInfo.getFirstName());
             model.addAttribute("lastName", userInfo.getLastName());
             model.addAttribute("email", userInfo.getEmail());
+
+        }catch (Exception error){
+            //todo - handle error
+            System.out.println(error.getMessage());
         }
         return "userProfile";
     }

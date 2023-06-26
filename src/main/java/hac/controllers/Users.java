@@ -2,11 +2,10 @@ package hac.controllers;
 
 import hac.beans.UserSession;
 import hac.repo.UserInfo;
-import hac.repo.UserInfoRepository;
+import hac.services.UserInfoService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -15,36 +14,32 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-
 @Controller
 public class Users {
-
     @Autowired
     @Qualifier("sessionUser")
     private UserSession currUserSession;
 
     @Autowired
-    private UserInfoRepository userInfoRepository;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private UserInfoService userInfoService;
 
     @GetMapping("/users/login")
-    public String login(Model model) {
+    public String login() {
         return "login";
     }
 
     @PostMapping("/users/login")
-    public synchronized String loginUser(@RequestParam("email") String email, @RequestParam("password") String password, Model model, RedirectAttributes redirectAttributes) {
-        //check if user exists in UserRepository
-        UserInfo existingUser = userInfoRepository.findUserByEmail(email);
-        if(existingUser != null  && passwordEncoder.matches(password, existingUser.getPassword())){
-            //if exists, set userSession to logged in
+    public synchronized String loginUser(@RequestParam("email") String email, @RequestParam("password") String password, RedirectAttributes redirectAttributes) {
+        Long existingUserId;
+        try{
+            existingUserId = userInfoService.findUser(email, password);
             currUserSession.setLoggedIn(true);
-            currUserSession.setUserId(existingUser.getId());
+            currUserSession.setUserId(existingUserId);
             return "redirect:/";
-        }else {
-            //else return error message, redirecting avoids resubmission upon refresh
-            redirectAttributes.addFlashAttribute("error", "Invalid email or password");
+        }catch (Exception error){
+            //tali: instead of catch here, add exception handler for controller
+            //tali: create Exception type for this, the rest of error returns different?
+            redirectAttributes.addFlashAttribute("error", error.getMessage());
             return "redirect:/users/login";
         }
     }
@@ -61,18 +56,14 @@ public class Users {
         if (result.hasErrors()) {
             return "register";
         }
-        //check if user exists in UserRepository
-        UserInfo existingUser = userInfoRepository.findUserByEmail(userInfo.getEmail());
-        if (existingUser != null && existingUser.getEmail().equals(userInfo.getEmail())) {
-            //if exists, return error message
+        try{
+            userInfoService.registerUser(userInfo);
+            return "redirect:/users/login";
+        }catch (Exception error){
+            //tali: currently catches existing user error -> add more error types
             // NOGA: the null error (LOL?)
-            result.rejectValue("email", null, "There is already an account registered with that email");
+            result.rejectValue("email", null, error.getMessage());
             return "register";
         }
-        //if not, encrypt password and add user to repository
-        String encryptedPassword = passwordEncoder.encode(userInfo.getPassword());
-        UserInfo newUser = new UserInfo(userInfo.getFirstName(), userInfo.getLastName(), userInfo.getEmail(), encryptedPassword);
-        userInfoRepository.save(newUser);
-        return "redirect:/users/login";
     }
 }
