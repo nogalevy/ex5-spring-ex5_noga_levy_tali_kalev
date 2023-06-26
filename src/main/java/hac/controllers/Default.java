@@ -68,7 +68,7 @@ public class Default {
     }
 
     @GetMapping("/pages/favourite")
-    public String favourite(Model model) {
+    public synchronized String favourite(Model model) {
         List<String> categories = JokeApiHandler.getCategoriesFromApi();
         List<Joke> favourites = getUserFavouritesJokes(Integer.parseInt(LIMIT), 0);
         Integer numOfUserFavourites = favouriteRepository.countFavouritesByUserInfo_Id(currUserSession.getUserId());
@@ -87,6 +87,7 @@ public class Default {
         return ResponseEntity.ok(favourites);
     }
 
+    //NOGA: move to services?
     public List<Joke> getUserFavouritesJokes(int limit, int offset){
         List<Favourite> favouritesList = getUserFavouritesData(limit, offset);
         ArrayList<Long> jokeIds = new ArrayList<Long>();
@@ -99,7 +100,6 @@ public class Default {
 
     //NOGA: move to services?
     public synchronized List<Favourite> getUserFavouritesData(int limit, int offset) {
-        System.out.println("Get all favs with limit " + limit + " and offset " + offset);
         Pageable pageable = new OffsetBasedPageRequest(limit, offset);
         return favouriteRepository.findFavouritesByUserInfo_Id(currUserSession.getUserId(), pageable);
     }
