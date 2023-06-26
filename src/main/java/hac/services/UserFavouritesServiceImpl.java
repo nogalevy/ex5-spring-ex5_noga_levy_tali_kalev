@@ -58,9 +58,8 @@ public class UserFavouritesServiceImpl implements UserFavouritesService {
     }
 
     @Override
-    public Boolean isFavourite(Long jokeId, Long userId) throws Exception {
+    public Boolean isFavourite(Long jokeId, Long userId) {
         Favourite favourite = favouriteRepository.getFavouriteByJokeIdAndUserInfo_Id(jokeId, userId);
         return favourite != null;
-
     }
 }

@@ -36,20 +36,15 @@ public class Jokes {
     public synchronized ResponseEntity<String> getJokes() {
         try {
             List<Joke> jokes = JokeApiHandler.getJokesFromApi(currSearchFilter);
-            if (jokes == null) {
-                String errorResponse = "{\"error\": \"Something happened...no joke at the moment\"}"; //NOGA: final?
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
-            } else {
-                Joke joke = jokes.get(0);
-                long userId = currUserSession.getUserId();
-                Boolean isFavourite = userFavouritesService.isFavourite(joke.id(), userId);
+            Joke joke = jokes.get(0);
+            long userId = currUserSession.getUserId();
+            Boolean isFavourite = userFavouritesService.isFavourite(joke.id(), userId);
 
-                Joke responseJoke = new Joke(joke, isFavourite);
-                ObjectMapper objectMapper = new ObjectMapper();
+            Joke responseJoke = new Joke(joke, isFavourite);
+            ObjectMapper objectMapper = new ObjectMapper();
 
-                String jokeResponse = objectMapper.writeValueAsString(responseJoke);
-                return ResponseEntity.ok(jokeResponse);
-            }
+            String jokeResponse = objectMapper.writeValueAsString(responseJoke);
+            return ResponseEntity.ok(jokeResponse);
         }
         catch (Exception err){
             //TODO:

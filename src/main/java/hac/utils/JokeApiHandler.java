@@ -48,11 +48,6 @@ public class JokeApiHandler {
             if (jokeApiResponse != null && !jokeApiResponse.error()) {
                 jokes = jokeApiResponse.jokes();
             }
-            else {
-                System.out.println("Error response received from the API.");
-            }
-        } else{
-                System.out.println("Failed to fetch jokes from the API.");
         }
         return jokes;
     }
@@ -64,12 +59,7 @@ public class JokeApiHandler {
             JokeApiCategoriesResponse categoriesResponse = responseEntity.getBody();
             if (categoriesResponse != null && !categoriesResponse.error()) {
                 return categoriesResponse.categories();
-            } else {
-                System.out.println("Error response received from the API.");
-                System.out.println(categoriesResponse.error());
             }
-        } else {
-            System.out.println("Failed to fetch categories from the API.");
         }
         return Collections.emptyList();
     }
@@ -78,6 +68,7 @@ public class JokeApiHandler {
         List<Joke> jokes = new ArrayList<Joke>();
         for (Long id : ids) {
             Joke joke = getJokeById(id);
+            if(joke == null)continue;
             jokes.add(joke);
         }
         return jokes;
@@ -92,12 +83,7 @@ public class JokeApiHandler {
             JokeApiResponse jokeApiResponse = responseEntity.getBody();
             if (jokeApiResponse != null && !jokeApiResponse.error()) {
                 return jokeApiResponse.jokes().get(0);
-            } else {
-                System.out.println("Error response received from the API.");
-                System.out.println(jokeApiResponse.error());
             }
-        } else {
-            System.out.println("Failed to fetch by id from the API.");
         }
         return null;
     }

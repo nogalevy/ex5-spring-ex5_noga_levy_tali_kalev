@@ -48,25 +48,20 @@ public class Default {
 
     @GetMapping("/")
     public synchronized String index(Model model) {
-        try{
-            List<Joke> jokes = JokeApiHandler.getJokesFromApi(currSearchFilter);
-            if (jokes == null) {
-                model.addAttribute("joke", "Something happened...no joke at the moment");
-            } else {
-                Joke joke = jokes.get(0);
-                long userId = currUserSession.getUserId();
-                Boolean isFavourite = userFavouritesService.isFavourite(joke.id(), userId);
+        List<Joke> jokes = JokeApiHandler.getJokesFromApi(currSearchFilter);
+        if (jokes == null) {
+            model.addAttribute("joke", "Something happened...no joke at the moment");
+        } else {
+            Joke joke = jokes.get(0);
+            long userId = currUserSession.getUserId();
+            Boolean isFavourite = userFavouritesService.isFavourite(joke.id(), userId);
 
-                Joke responseJoke = new Joke(joke, isFavourite);
-                model.addAttribute("jokeObj", responseJoke);
-            }
-            List<String> categories = JokeApiHandler.getCategoriesFromApi();
-            model.addAttribute("categories", categories);
-            model.addAttribute("searchFilter", currSearchFilter);
+            Joke responseJoke = new Joke(joke, isFavourite);
+            model.addAttribute("jokeObj", responseJoke);
         }
-        catch (Exception err){
-            //TODO:
-        }
+        List<String> categories = JokeApiHandler.getCategoriesFromApi();
+        model.addAttribute("categories", categories);
+        model.addAttribute("searchFilter", currSearchFilter);
         return "index";
     }
 
@@ -140,6 +135,7 @@ public class Default {
         return "userProfile";
     }
 
+    //todo change path
     //NOGA: maybe not need to be here but i needed the same 'currSearchFilter' like in the 'index' method
     //tali: do we need some sort of validation on searchFilter?
     @PostMapping("/pages/search")
