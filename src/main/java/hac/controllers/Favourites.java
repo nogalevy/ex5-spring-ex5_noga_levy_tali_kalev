@@ -4,6 +4,7 @@ import hac.beans.UserSession;
 import hac.repo.Favourite;
 import hac.repo.FavouriteRepository;
 import hac.repo.UserInfoRepository;
+import hac.services.UserFavouritesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
@@ -23,6 +24,8 @@ public class Favourites {
 
     @Autowired
     private FavouriteRepository favouriteRepository;
+    @Autowired
+    private UserFavouritesService userFavouritesService;
 
     @Autowired
     private UserInfoRepository userInfoRepository;
