@@ -23,7 +23,7 @@ public class UserInfoServiceImpl implements  UserInfoService{
      */
     @Override
     public Long findUser(String email, String password) throws Exception {
-        UserInfo existingUser = userInfoRepository.findUserByEmail(email);
+        UserInfo existingUser = userInfoRepository.findUserByEmail(email.trim());
         if(existingUser == null || !passwordEncoder.matches(password, existingUser.getPassword())) {
             throw new Exception("Invalid email or password");
         }
@@ -37,7 +37,7 @@ public class UserInfoServiceImpl implements  UserInfoService{
      */
     @Override
     public void registerUser(UserInfo userInfo) throws Exception {
-        UserInfo existingUser = userInfoRepository.findUserByEmail(userInfo.getEmail());
+        UserInfo existingUser = userInfoRepository.findUserByEmail(userInfo.getEmail().trim());
         if(existingUser != null){
             throw new Exception("There is already an account registered with that email");
         }
