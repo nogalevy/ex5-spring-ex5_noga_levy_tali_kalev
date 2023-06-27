@@ -142,7 +142,7 @@ const cardsModule = (function () {
                         </div>
                     </div>
                    <div class="d-flex justify-content-center m-3 mt-0 rounded-bottom card-footer">
-                        <div id='deleteBtn-${fav.id}' class="btn delete-btn" data-joke-id=${fav.id}>
+                        <div id='deleteBtn-${fav.id}' class="w-100 btn delete-btn" data-joke-id=${fav.id}>
                              <i class="fa-solid fa-trash"></i>
                        </div>
                         <div id='deleteLoader-${fav.id}' class="visually-hidden">
