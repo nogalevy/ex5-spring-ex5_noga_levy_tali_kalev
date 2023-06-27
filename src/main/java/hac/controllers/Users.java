@@ -11,10 +11,12 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
+@RequestMapping(value = "/users")
 public class Users {
     @Autowired
     @Qualifier("sessionUser")
@@ -23,12 +25,12 @@ public class Users {
     @Autowired
     private UserInfoService userInfoService;
 
-    @GetMapping("/users/login")
+    @GetMapping("/login")
     public String login() {
         return "login";
     }
 
-    @PostMapping("/users/login")
+    @PostMapping("/login")
     public synchronized String loginUser(@RequestParam("email") String email, @RequestParam("password") String password, RedirectAttributes redirectAttributes) {
         Long existingUserId;
         try{
@@ -44,14 +46,14 @@ public class Users {
         }
     }
 
-    @GetMapping("/users/register")
+    @GetMapping("/register")
     public String register(Model model) {
         model.addAttribute(new UserInfo());
         return "register";
     }
 
     //TODO: delete model
-    @PostMapping("/users/register")
+    @PostMapping("/register")
     public synchronized String registerUser(@Valid UserInfo userInfo, BindingResult result, Model model) {
         //retrieve register info from form and check if errors
         if (result.hasErrors()) {

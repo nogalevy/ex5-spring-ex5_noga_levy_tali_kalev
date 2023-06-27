@@ -18,7 +18,7 @@ const cardsModule = (function () {
 
     //NOGA: in general - add checkstatus function from last semester? yes
     const setNumOfFavourites = function (){
-        fetch('/favourites/count')
+        fetch('/api/favourites/count')
             .then(checkStatus)
             .then(response => {
                 return response.json()
@@ -37,7 +37,7 @@ const cardsModule = (function () {
         let currDeleteBtn = document.getElementById("deleteBtn-" + jokeId)
         showElement(currLoader, true)
         showElement(currDeleteBtn, false)
-        fetch('/favourites/delete', {
+        fetch('/api/favourites/delete', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -87,7 +87,7 @@ const cardsModule = (function () {
         let query = '?offset=' + offset;
         if (afterDelete) query += '&limit=1';
         showElement(loader, true);
-        fetch('/favourites/get' + query)
+        fetch('/api/favourites/get' + query)
             .then(checkStatus)
             .then(response => response.json())
             .then(favourites => {

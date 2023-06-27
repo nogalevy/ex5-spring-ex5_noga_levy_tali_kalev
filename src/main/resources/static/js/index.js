@@ -71,7 +71,7 @@ const mainModule = (function (){
     const add = function (){
         let cardBox = document.getElementById("cardBox");
         let jokeId = cardBox.getAttribute("name");
-        fetch('/favourites/add', {
+        fetch('/api/favourites/add', {
                 method: "POST",
                 headers: {"Content-Type": "application/json"},
                 body: jokeId

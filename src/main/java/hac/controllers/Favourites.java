@@ -19,6 +19,7 @@ import static hac.utils.Constants.DEFAULT_OFFSET;
 import static hac.utils.Constants.LIMIT;
 
 @Controller
+@RequestMapping(value = "/api/favourites")
 public class Favourites {
     @Autowired
     @Qualifier("sessionUser")
@@ -27,7 +28,7 @@ public class Favourites {
     @Autowired
     private UserFavouritesService userFavouritesService;
 
-    @GetMapping("/favourites/get")
+    @GetMapping("/get")
     public ResponseEntity<List<Joke>> favourite(@RequestParam(defaultValue = LIMIT) int limit,
                                                 @RequestParam(defaultValue = DEFAULT_OFFSET) int offset, Model model) {
         try{
@@ -40,7 +41,7 @@ public class Favourites {
         }
     }
 
-    @PostMapping("/favourites/add")
+    @PostMapping("/add")
     public synchronized ResponseEntity<Long> addUserFavourite(@RequestBody Long jokeId) throws Exception {
         try {
             long userId = currUserSession.getUserId();
@@ -52,7 +53,7 @@ public class Favourites {
         }
     }
 
-    @PostMapping("/favourites/delete")
+    @PostMapping("/delete")
     public synchronized ResponseEntity<Long> deleteUserFavourite(@RequestBody Long jokeId) {
         try {
             long userId = currUserSession.getUserId();
@@ -65,7 +66,7 @@ public class Favourites {
     }
 
     //TODO : throw error?
-    @GetMapping("/favourites/count")
+    @GetMapping("/count")
     public synchronized ResponseEntity<Integer> countUserFavourites() {
         try{
             long userId = currUserSession.getUserId();
