@@ -26,12 +26,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.util.ArrayList;
 import java.util.List;
 
+import static hac.utils.Constants.LIMIT;
+
 //NOGA: change class + file name ?
 @Controller
 public class Default {
-    private final String LIMIT = "6"; //NOGA: change file
-    private final String DEFAULT_OFFSET = "0"; //NOGA: change file
-
     @Autowired
     @Qualifier("searchFilterSession")
     private SearchFilter currSearchFilter;
@@ -70,7 +69,9 @@ public class Default {
         try{
             Long userId = currUserSession.getUserId();
             List<String> categories = JokeApiHandler.getCategoriesFromApi();
-            List<Joke> favourites = getUserFavouritesJokes(Integer.parseInt(LIMIT), 0);
+            List<Favourite> favouritesList = userFavouritesService.getUserFavouritesData(Integer.parseInt(LIMIT), 0, currUserSession.getUserId());
+            List<Joke> favourites = JokeApiHandler.getUserFavouritesJokes(favouritesList);
+
             Integer numOfUserFavourites = userFavouritesService.getNumOfUserFavourites(userId);
 
             model.addAttribute("categories", categories);
@@ -82,36 +83,6 @@ public class Default {
             //TODO:
         }
         return "favourite";
-    }
-
-    //NOGA: remove to Favourite controller
-    @GetMapping("/favourites/get")
-    public ResponseEntity<List<Joke>> favourite(@RequestParam(defaultValue = LIMIT) int limit,
-                                                @RequestParam(defaultValue = DEFAULT_OFFSET) int offset, Model model) {
-        try{
-            List<Joke> favourites = getUserFavouritesJokes(limit, offset);
-            return ResponseEntity.ok(favourites);
-        }
-        catch(Exception err ){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-        }
-    }
-
-    //NOGA: move to JokeApiHandler
-    // NOGA: change url path ? not a page maybe api/....
-    public List<Joke> getUserFavouritesJokes(int limit, int offset) throws Exception{
-        try{
-            List<Favourite> favouritesList = userFavouritesService.getUserFavouritesData(limit, offset, currUserSession.getUserId());
-            ArrayList<Long> jokeIds = new ArrayList<Long>();
-            for(Favourite fav : favouritesList){
-                jokeIds.add(fav.getJokeId());
-            }
-            List<Joke> favourites = JokeApiHandler.getJokesByIdsFromApi(jokeIds);
-            return favourites;
-        }
-        catch (Exception err){
-            throw new Exception(err);
-        }
     }
 
     @GetMapping("/pages/userprofile")

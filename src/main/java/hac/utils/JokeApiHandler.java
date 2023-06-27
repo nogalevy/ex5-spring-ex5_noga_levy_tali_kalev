@@ -4,6 +4,7 @@ import hac.beans.SearchFilter;
 import hac.records.Joke;
 import hac.records.JokeApiCategoriesResponse;
 import hac.records.JokeApiResponse;
+import hac.repo.Favourite;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
@@ -32,6 +33,19 @@ public class JokeApiHandler {
         }
         catch (Exception err){
             return null;
+        }
+    }
+
+    public static List<Joke> getUserFavouritesJokes(List<Favourite> favouritesList) throws Exception {
+        try {
+            ArrayList<Long> jokeIds = new ArrayList<Long>();
+            for (Favourite fav : favouritesList) {
+                jokeIds.add(fav.getJokeId());
+            }
+            List<Joke> favourites = JokeApiHandler.getJokesByIdsFromApi(jokeIds);
+            return favourites;
+        } catch (Exception err) {
+            throw new Exception(err);
         }
     }
 

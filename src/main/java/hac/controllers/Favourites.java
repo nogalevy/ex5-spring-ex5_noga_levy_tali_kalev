@@ -1,19 +1,25 @@
 package hac.controllers;
 
 import hac.beans.UserSession;
+import hac.records.Joke;
+import hac.repo.Favourite;
 import hac.repo.FavouriteRepository;
 import hac.repo.UserInfoRepository;
 import hac.services.UserFavouritesService;
+import hac.utils.Constants;
+import hac.utils.JokeApiHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.ui.Model;
+
+import java.util.List;
+
+import static hac.utils.Constants.DEFAULT_OFFSET;
+import static hac.utils.Constants.LIMIT;
 
 @Controller
 public class Favourites {
@@ -23,6 +29,19 @@ public class Favourites {
 
     @Autowired
     private UserFavouritesService userFavouritesService;
+
+    @GetMapping("/favourites/get")
+    public ResponseEntity<List<Joke>> favourite(@RequestParam(defaultValue = LIMIT) int limit,
+                                                @RequestParam(defaultValue = DEFAULT_OFFSET) int offset, Model model) {
+        try{
+            List<Favourite> favouritesList = userFavouritesService.getUserFavouritesData(limit, offset, currUserSession.getUserId());
+            List<Joke> favourites = JokeApiHandler.getUserFavouritesJokes(favouritesList);
+            return ResponseEntity.ok(favourites);
+        }
+        catch(Exception err ){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
 
     @PostMapping("/favourites/add")
     public synchronized ResponseEntity<Long> addUserFavourite(@RequestBody Long jokeId) throws Exception {
