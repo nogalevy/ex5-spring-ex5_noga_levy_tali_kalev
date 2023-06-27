@@ -106,19 +106,6 @@ public class Default {
         return "userProfile";
     }
 
-    //todo change path
-    //NOGA: maybe not need to be here but i needed the same 'currSearchFilter' like in the 'index' method
-    //tali: do we need some sort of validation on searchFilter?
-    @PostMapping("/pages/search")
-    public String search(@ModelAttribute SearchFilter searchFilter, Model model) {
-        currSearchFilter.setSelectedCategories(searchFilter.getSelectedCategories());
-        currSearchFilter.setSelectedOption(searchFilter.getSelectedOption());
-
-        model.addAttribute("searchFilter", searchFilter);
-
-        return "redirect:/";
-    }
-
     @PostMapping("/pages/logout")
     public String logoutUser(HttpServletRequest request,  RedirectAttributes redirectAttributes){
         request.getSession().invalidate();

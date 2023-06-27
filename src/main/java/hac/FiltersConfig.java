@@ -29,7 +29,7 @@ public class FiltersConfig implements WebMvcConfigurer {
         //Interceptor for unauth users
         registry.addInterceptor(new UnauthInterceptor(sessionUser)).addPathPatterns("/users/**");
         //Interceptor for auth users (logged in)
-        registry.addInterceptor(new AuthInterceptor(sessionUser)).addPathPatterns("/pages/**", "/");
+        registry.addInterceptor(new AuthInterceptor(sessionUser)).addPathPatterns("/pages/**","/api/**", "/");
     }
 
     @Override

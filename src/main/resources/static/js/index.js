@@ -1,4 +1,4 @@
-import toast from './toast.js';
+import {toast, checkStatus} from './utils.js';
 
 const mainModule = (function (){
     const handleInitialButtonState = function (isFavourite) {
@@ -28,7 +28,8 @@ const mainModule = (function (){
         let frontContent = document.getElementById('frontCardContent');
         let backContent = document.getElementById('backCardContent');
 
-        fetch('/pages/getJokes')
+        fetch('/api/getJokes')
+        .then(checkStatus)
         .then(response => response.json())
         .then(jsonData => {
             cardBox.setAttribute("name", jsonData.id);
@@ -74,6 +75,7 @@ const mainModule = (function (){
                 headers: {"Content-Type": "application/json"},
                 body: jokeId
             })
+            .then(checkStatus)
             .then(response =>
             {
                 handleInitialButtonState(true);

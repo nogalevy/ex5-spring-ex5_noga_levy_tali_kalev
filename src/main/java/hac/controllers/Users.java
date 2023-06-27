@@ -61,7 +61,6 @@ public class Users {
             return "redirect:/users/login";
         }catch (Exception error){
             //tali: currently catches existing user error -> add more error types
-            // NOGA: the null error (LOL?)
             result.rejectValue("email", null, error.getMessage());
             return "register";
         }

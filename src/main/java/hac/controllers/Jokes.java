@@ -4,21 +4,23 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import hac.beans.SearchFilter;
 import hac.beans.UserSession;
 import hac.records.Joke;
-import hac.repo.Favourite;
 import hac.services.UserFavouritesService;
-import hac.services.UserFavouritesServiceImpl;
 import hac.utils.JokeApiHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
+@RequestMapping(value = "/api")
 public class Jokes {
     @Autowired
     @Qualifier("searchFilterSession")
@@ -31,8 +33,7 @@ public class Jokes {
     @Autowired
     private UserFavouritesService userFavouritesService;
 
-    // NOGA: change url path ? not a page maybe api/....
-    @GetMapping("/pages/getJokes")
+    @GetMapping("/getJokes")
     public synchronized ResponseEntity<String> getJokes() {
         try {
             List<Joke> jokes = JokeApiHandler.getJokesFromApi(currSearchFilter);
@@ -52,5 +53,16 @@ public class Jokes {
             String errorResponse = "{\"error\": \"Failed to process joke data\"}"; //NOGA: final?
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
         }
+    }
+
+    //tali: do we need some sort of validation on searchFilter?
+    @PostMapping("/search")
+    public String search(@ModelAttribute SearchFilter searchFilter, Model model) {
+        currSearchFilter.setSelectedCategories(searchFilter.getSelectedCategories());
+        currSearchFilter.setSelectedOption(searchFilter.getSelectedOption());
+
+        model.addAttribute("searchFilter", searchFilter);
+
+        return "redirect:/";
     }
 }

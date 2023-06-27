@@ -1,4 +1,4 @@
-import toast from './toast.js';
+import {toast, checkStatus} from './utils.js';
 
 const cardsModule = (function () {
     let offset = 6; //TODO : const
@@ -18,6 +18,7 @@ const cardsModule = (function () {
     //NOGA: in general - add checkstatus function from last semester? yes
     const setNumOfFavourites = function (){
         fetch('/favourites/count')
+            .then(checkStatus)
             .then(response => {
                 return response.json()
             })
@@ -42,6 +43,7 @@ const cardsModule = (function () {
             },
             body: jokeId
         })
+            .then(checkStatus)
             .then(response => response.json())
             .then(deletedJokeId => {
                 if (deletedJokeId !== null) {
@@ -85,6 +87,7 @@ const cardsModule = (function () {
         if (afterDelete) query += '&limit=1';
         showElement(loader, true);
         fetch('/favourites/get' + query)
+            .then(checkStatus)
             .then(response => response.json())
             .then(favourites => {
                 offset += favourites.length;
