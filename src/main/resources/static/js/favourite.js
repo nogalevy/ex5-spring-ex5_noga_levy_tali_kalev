@@ -132,12 +132,12 @@ const cardsModule = (function () {
                     <div class='card-container p-3 pb-2'>
                         <div id='clickable' class='text-break joke-card ${fav.type === 'twopart' ? 'flip-btn' : 'not-flip'}' >
                             <div id="back" class="cardBack overflow-x-hidden overflow-y-auto d-flex justify-content-center align-items-center"> 
-                              <div class="text-center">
+                              <div class="text-center mh-100">
                                 <h4 id="backCardContent">${fav.delivery}</h4>
                                </div>
                             </div>
                             <div id="front" class="cardFront overflow-x-hidden overflow-y-auto d-flex justify-content-center align-items-center">
-                              <div class="text-center">
+                              <div class="text-center mh-100">
                                   <h4 id="frontCardContent">${fav.type === 'twopart' ? fav.setup : fav.joke}</h4>
                                   <p class="flip-msg">Click to flip</p>
                             </div>
