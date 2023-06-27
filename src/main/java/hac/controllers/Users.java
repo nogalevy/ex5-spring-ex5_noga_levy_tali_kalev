@@ -50,6 +50,7 @@ public class Users {
         return "register";
     }
 
+    //TODO: delete model
     @PostMapping("/users/register")
     public synchronized String registerUser(@Valid UserInfo userInfo, BindingResult result, Model model) {
         //retrieve register info from form and check if errors

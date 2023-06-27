@@ -1,4 +1,5 @@
 import {toast, checkStatus} from './utils.js';
+import {TWO_PART_TYPE} from "./consts.js";
 
 const mainModule = (function (){
     const handleInitialButtonState = function (isFavourite) {
@@ -35,7 +36,7 @@ const mainModule = (function (){
             cardBox.setAttribute("name", jsonData.id);
             flipCard();
             //TODO: add to constantnsnsts!
-            if (jsonData.type === "twopart") {
+            if (jsonData.type === TWO_PART_TYPE) {
                 frontContent.innerHTML = jsonData.setup;
                 backContent.innerHTML = jsonData.delivery;
                 card.classList.add('flip-btn');

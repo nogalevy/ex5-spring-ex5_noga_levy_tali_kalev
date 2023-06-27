@@ -3,9 +3,10 @@ package hac.beans;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
+/**
+ * save the search filter form data
+ */
 @Component
 public class SearchFilter implements Serializable {
     private String[] selectedCategories = new String[]{"Any"};

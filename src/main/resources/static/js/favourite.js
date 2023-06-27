@@ -1,4 +1,5 @@
 import {toast, checkStatus} from './utils.js';
+import {TWO_PART_TYPE} from "./consts.js";
 
 const cardsModule = (function () {
     let offset = 6; //TODO : const
@@ -115,7 +116,7 @@ const cardsModule = (function () {
             container.appendChild(newDiv);
             newDiv.innerHTML = html;
 
-            if (fav.type === 'twopart') addCardEvent(newDiv)
+            if (fav.type === TWO_PART_TYPE) addCardEvent(newDiv)
             addDeleteButtonEvent(newDiv);
         })
 
@@ -130,7 +131,7 @@ const cardsModule = (function () {
     const getCardHtml = function (fav) {
         return `<div>
                     <div class='card-container p-3 pb-2'>
-                        <div id='clickable' class='text-break joke-card ${fav.type === 'twopart' ? 'flip-btn' : 'not-flip'}' >
+                        <div id='clickable' class='text-break joke-card ${fav.type === TWO_PART_TYPE ? 'flip-btn' : 'not-flip'}' >
                             <div id="back" class="cardBack overflow-x-hidden overflow-y-auto d-flex justify-content-center align-items-center"> 
                               <div class="text-center mh-100">
                                 <h4 id="backCardContent">${fav.delivery}</h4>
@@ -138,7 +139,7 @@ const cardsModule = (function () {
                             </div>
                             <div id="front" class="cardFront overflow-x-hidden overflow-y-auto d-flex justify-content-center align-items-center">
                               <div class="text-center mh-100">
-                                  <h4 id="frontCardContent">${fav.type === 'twopart' ? fav.setup : fav.joke}</h4>
+                                  <h4 id="frontCardContent">${fav.type === TWO_PART_TYPE ? fav.setup : fav.joke}</h4>
                                   <p class="flip-msg">Click to flip</p>
                             </div>
                             </div>

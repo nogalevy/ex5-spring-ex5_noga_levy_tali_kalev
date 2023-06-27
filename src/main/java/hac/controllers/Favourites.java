@@ -3,10 +3,7 @@ package hac.controllers;
 import hac.beans.UserSession;
 import hac.records.Joke;
 import hac.repo.Favourite;
-import hac.repo.FavouriteRepository;
-import hac.repo.UserInfoRepository;
 import hac.services.UserFavouritesService;
-import hac.utils.Constants;
 import hac.utils.JokeApiHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -57,7 +54,6 @@ public class Favourites {
 
     @PostMapping("/favourites/delete")
     public synchronized ResponseEntity<Long> deleteUserFavourite(@RequestBody Long jokeId) {
-
         try {
             long userId = currUserSession.getUserId();
             userFavouritesService.deleteUserFavourite(jokeId, userId);
@@ -80,7 +76,6 @@ public class Favourites {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(0);
         }
     }
-
 
     //todo: return ResponseEntity not page
     @ExceptionHandler({Exception.class})
