@@ -3,14 +3,12 @@ package hac.utils;
 import hac.beans.SearchFilter;
 import hac.records.Joke;
 import hac.records.JokeApiCategoriesResponse;
-import hac.records.JokeApiResponse;
 import hac.repo.Favourite;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -42,28 +40,25 @@ public class JokeApiHandler {
             for (Favourite fav : favouritesList) {
                 jokeIds.add(fav.getJokeId());
             }
-            List<Joke> favourites = JokeApiHandler.getJokesByIdsFromApi(jokeIds);
-            return favourites;
+            return JokeApiHandler.getJokesByIdsFromApi(jokeIds);
         } catch (Exception err) {
             throw new Exception(err);
         }
     }
 
-    public static List<Joke> getJokesFromApi(SearchFilter sf){
+    public static Joke getJokesFromApi(SearchFilter sf){
         final String uri = getUri(sf);
-        JokeApiResponse jokeApiResponse;
-        List<Joke> jokes = Arrays.asList(new Joke());
 
-        ResponseEntity<JokeApiResponse> responseEntity = GetRestExchange( uri, JokeApiResponse.class);
+        ResponseEntity<Joke> responseEntity = GetRestExchange( uri, Joke.class);
 
         if (responseEntity != null &&  responseEntity.getStatusCode().is2xxSuccessful()) {
-            jokeApiResponse = responseEntity.getBody();
-            System.out.println("jokeApiResponse: " + jokeApiResponse);
-            if (jokeApiResponse != null && !jokeApiResponse.error()) {
-                jokes = jokeApiResponse.jokes();
+            Joke newJoke = responseEntity.getBody();
+            System.out.println("newJoke: " + newJoke);
+            if (newJoke != null && !newJoke.error()) {
+                return newJoke;
             }
         }
-        return jokes;
+        return new Joke();
     }
 
     public static List<String> getCategoriesFromApi() {
@@ -89,14 +84,13 @@ public class JokeApiHandler {
     }
 
     public static Joke getJokeById(Long id){
-//        Integer requestedId = id -1; //NOGA
         final String uri = GET_BY_ID_URI_QUERY + id;
-        ResponseEntity<JokeApiResponse> responseEntity = GetRestExchange( uri, JokeApiResponse.class);
+        ResponseEntity<Joke> responseEntity = GetRestExchange( uri, Joke.class);
 
         if (responseEntity != null && responseEntity.getStatusCode().is2xxSuccessful()) {
-            JokeApiResponse jokeApiResponse = responseEntity.getBody();
-            if (jokeApiResponse != null && !jokeApiResponse.error()) {
-                return jokeApiResponse.jokes().get(0);
+            Joke newJoke = responseEntity.getBody();
+            if (newJoke != null && !newJoke.error()) {
+                return newJoke;
             }
         }
         return null;

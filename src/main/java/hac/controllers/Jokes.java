@@ -40,8 +40,7 @@ public class Jokes {
     @GetMapping("/getJokes")
     public synchronized ResponseEntity<String> getJokes() {
         try {
-            List<Joke> jokes = JokeApiHandler.getJokesFromApi(currSearchFilter);
-            Joke joke = jokes.get(0);
+            Joke joke = JokeApiHandler.getJokesFromApi(currSearchFilter);
             long userId = currUserSession.getUserId();
             Boolean isFavourite = userFavouritesService.isFavourite(joke.id(), userId);
 
