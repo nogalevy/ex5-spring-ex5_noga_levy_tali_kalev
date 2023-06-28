@@ -4,6 +4,7 @@ import { TWO_PART_TYPE } from "./consts.js";
 const mainModule = (function () {
     let isGenerate = false;
     let generateNewLoader;
+
     const handleInitialButtonState = function (isFavourite) {
         generateNewLoader = document.getElementById("gengenerateNewLoader")
         const buttonIcon = document.getElementById("buttonIcon");
@@ -25,6 +26,7 @@ const mainModule = (function () {
         if (!card.classList.contains('flip-btn')) return;
         flipCard(true);
     }
+
     const displayGenerateNewLoader = function (display = false) {
         if (display) generateNewLoader.classList.remove("visually-hidden");
         else generateNewLoader.classList.add("visually-hidden");

@@ -34,8 +34,8 @@ const cardsModule = (function () {
         if (totalNumOfFavourites !== 0) return;
         const msg = document.getElementById("emptyList");
         msg.classList.remove("d-none")
-
     }
+
     const deleteJoke = function (jokeId) {
         let currLoader = document.getElementById("deleteLoader-" + jokeId)
         let currDeleteBtn = document.getElementById("deleteBtn-" + jokeId)
@@ -120,7 +120,6 @@ const cardsModule = (function () {
             if (fav.type === TWO_PART_TYPE) addCardEvent(newDiv)
             addDeleteButtonEvent(newDiv);
         })
-
     }
 
     const addCardEvent = function (card) {
