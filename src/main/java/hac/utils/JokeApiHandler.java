@@ -15,10 +15,10 @@ import java.util.Collections;
 import java.util.List;
 
 public class JokeApiHandler {
-    final static String API_DOMAIN_URL = "https://v2.jokeapi.dev/joke";
-    final static String BLACKLIST_QUERY = "blacklistFlags=nsfw,religious,political,racist,sexist,explicit";
-    final static String CATEGORIES_URI = "https://v2.jokeapi.dev/categories";
-    final static String GET_BY_ID_URI_QUERY = API_DOMAIN_URL + "/Any?idRange=";
+    private final static String API_DOMAIN_URL = "https://v2.jokeapi.dev/joke";
+    private final static String BLACKLIST_QUERY = "blacklistFlags=nsfw,religious,political,racist,sexist,explicit";
+    private final static String CATEGORIES_URI = "https://v2.jokeapi.dev/categories";
+    private final static String GET_BY_ID_URI_QUERY = API_DOMAIN_URL + "/Any?idRange=";
 
     private static  <T> ResponseEntity<T> GetRestExchange(String url, Class<T> resType){
         RestTemplate restTemplate = new RestTemplate();
