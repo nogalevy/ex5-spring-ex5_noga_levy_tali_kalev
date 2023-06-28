@@ -28,8 +28,7 @@
             <form method="post" role="form" th:action="@{/users/login}" class="form-horizontal">
               <div class="form-group mb-3">
                 <label class="control-label"> Email</label>
-                <input type="text" id="email" name="email" class="form-control"
-                  placeholder="Enter email address" />
+                <input type="text" id="email" name="email" class="form-control" placeholder="Enter email address" />
               </div>
 
               <div class="form-group mb-3">
@@ -39,7 +38,7 @@
               </div>
               <div class="form-group mb-2">
                 <button type="submit" class="btn btn-primary mb-2 container-fluid">Submit</button>
-                <br/>
+                <br />
                 <span> Not registered?
                   <a th:href="@{/users/register}">Signup here</a>
                 </span>

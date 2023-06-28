@@ -17,7 +17,7 @@
       <form class="ms-3 me-3" th:action="@{/api/search}" th:object="${searchFilter}" method="post">
         <div th:each="category: ${categories}" class="form-check">
           <input class="form-check-input" type="checkbox" th:value="${category}" th:id="'category-' + ${category}"
-            th:field="*{selectedCategories}"/>
+            th:field="*{selectedCategories}" />
           <label th:text="${category}" class="form-check-label" th:for="'category-' + ${category}">
           </label>
         </div>
