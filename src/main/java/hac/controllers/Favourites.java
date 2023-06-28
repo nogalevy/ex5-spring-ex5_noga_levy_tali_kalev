@@ -6,6 +6,8 @@ import hac.records.Joke;
 import hac.repo.Favourite;
 import hac.services.UserFavouritesService;
 import hac.utils.JokeApiHandler;
+import jakarta.servlet.http.HttpServletRequest;
+import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
@@ -38,33 +40,25 @@ public class Favourites {
      */
     @GetMapping("/get")
     public ResponseEntity<List<Joke>> getFavourites(@RequestParam(defaultValue = LIMIT) int limit,
-                                                @RequestParam(defaultValue = DEFAULT_OFFSET) int offset) {
-        try{
-            List<Favourite> favouritesList = userFavouritesService.getUserFavouritesData(limit, offset, currUserSession.getUserId());
-            List<Joke> favourites = JokeApiHandler.getUserFavouritesJokes(favouritesList);
-            return ResponseEntity.ok(favourites);
-        }
-        catch(Exception err ){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-        }
+                                                @RequestParam(defaultValue = DEFAULT_OFFSET) int offset) throws Exception {
+        List<Favourite> favouritesList = userFavouritesService.getUserFavouritesData(limit, offset, currUserSession.getUserId());
+        List<Joke> favourites = JokeApiHandler.getUserFavouritesJokes(favouritesList);
+        return ResponseEntity.ok(favourites);
     }
 
     /**
      * saves joke id as favourite of the current user
      * @param jokeId joke id we want to add as user favourite
      * @return jokeId on success else error code
-     * @throws Exception
+     * @throws Exception if joke id is already in user favourites or user id is not found
      */
     @PostMapping("/add")
     public synchronized ResponseEntity<Long> addUserFavourite(@RequestBody Long jokeId) throws Exception {
-        try {
-            long userId = currUserSession.getUserId();
-            userFavouritesService.saveUserFavourite(jokeId, userId);
-            return ResponseEntity.ok(jokeId);
-        }
-        catch (Exception err){
-          return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-        }
+
+        long userId = currUserSession.getUserId();
+        userFavouritesService.saveUserFavourite(jokeId, userId);
+        return ResponseEntity.ok(jokeId);
+
     }
 
     /**
@@ -73,15 +67,10 @@ public class Favourites {
      * @return jokeId on success else error code
      */
     @PostMapping("/delete")
-    public synchronized ResponseEntity<Long> deleteUserFavourite(@RequestBody Long jokeId) {
-        try {
-            long userId = currUserSession.getUserId();
-            userFavouritesService.deleteUserFavourite(jokeId, userId);
-            return ResponseEntity.ok(jokeId);
-
-        } catch (Exception err) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-        }
+    public synchronized ResponseEntity<Long> deleteUserFavourite(@RequestBody Long jokeId) throws Exception{
+        long userId = currUserSession.getUserId();
+        userFavouritesService.deleteUserFavourite(jokeId, userId);
+        return ResponseEntity.ok(jokeId);
     }
 
     /**
@@ -90,27 +79,19 @@ public class Favourites {
      */
     @GetMapping("/count")
     public synchronized ResponseEntity<Integer> countUserFavourites() {
-        try{
-            long userId = currUserSession.getUserId();
-            Integer numOfUserFavourites = userFavouritesService.getNumOfUserFavourites(userId);
-            return ResponseEntity.ok(numOfUserFavourites);
-        }
-        catch (Exception err){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(0);
-        }
+        long userId = currUserSession.getUserId();
+        Integer numOfUserFavourites = userFavouritesService.getNumOfUserFavourites(userId);
+        return ResponseEntity.ok(numOfUserFavourites);
     }
 
-    //todo: return ResponseEntity not page
-    @ExceptionHandler({Exception.class})
-    public String handleValidationExceptions(Exception ex, Model model) {
-        // we can insert the message into the model
-        System.out.println("Error: " + ex.getMessage());
-        model.addAttribute("error", ex.getMessage());
-        return "error";
+    @ExceptionHandler({UserNotFound.class})
+    public ResponseEntity<String> handleUserNotFoundExceptions(UserNotFound e, HttpServletRequest request) {
+        request.getSession().invalidate();
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
     }
-//    @ExceptionHandler({UserNotFound.class})
-//    public String handleUserNotFoundExceptions(UserNotFound e, RedirectAttributes redirectAttributes) {
-//        redirectAttributes.addFlashAttribute("error", e.getMessage());
-//        return "redirect:/users/login";
-//    }
+
+    @ExceptionHandler({Exception.class})
+    public ResponseEntity<String> handleValidationExceptions(Exception e) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+    }
 }

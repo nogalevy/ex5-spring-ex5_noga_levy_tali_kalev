@@ -59,7 +59,6 @@ const mainModule = (function (){
             handleInitialButtonState(jsonData.isFavourite);
         })
         .catch(error => {
-            toast("errorToast");
             console.log(error);
         })
         .finally(()=> {
@@ -94,7 +93,6 @@ const mainModule = (function (){
                 handleInitialButtonState(true);
             })
             .catch(error => {
-                console.log("could not add ", error);
                 toast("errorToast");
             });
     }

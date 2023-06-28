@@ -52,7 +52,7 @@ public class UserFavouritesServiceImpl implements UserFavouritesService {
         Favourite favourite = userInfoRepository.findById(userId).map(user -> {
             newFavourite.setUserInfo(user);
             return favouriteRepository.save(newFavourite);
-        }).orElseThrow(() -> new UserNotFound("sorry"));
+        }).orElseThrow(() -> new UserNotFound());
     }
 
     public synchronized List<Favourite> getUserFavouritesData(int limit, int offset, Long userId) throws Exception {

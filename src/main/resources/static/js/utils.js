@@ -23,8 +23,9 @@ export function toast (toastId){
 export function checkStatus (response) {
     if (response.status >= 200 && response.status < 300) {
         return Promise.resolve(response);
+    } else if (response.status === 401) {
+        location.href = '/'
     } else {
-        return Promise.reject(new Error(response.statusText));
+        return Promise.reject(new Error(response.status));
     }
 }
-
