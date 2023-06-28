@@ -51,10 +51,7 @@ public class Jokes {
             return ResponseEntity.ok(jokeResponse);
         }
         catch (Exception err){
-            //TODO:
-            err.printStackTrace();
-            String errorResponse = "{\"error\": \"Failed to process joke data\"}"; //NOGA: final?
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(err.getMessage());
         }
     }
 
@@ -64,7 +61,6 @@ public class Jokes {
      * @param model model
      * @return redirect to '/'
      */
-    //tali: do we need some sort of validation on searchFilter?
     @PostMapping("/search")
     public String search(@ModelAttribute SearchFilter searchFilter, Model model) {
         currSearchFilter.setSelectedCategories(searchFilter.getSelectedCategories());

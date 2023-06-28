@@ -16,7 +16,6 @@ const cardsModule = (function () {
         setNumOfFavourites()
     }
 
-    //NOGA: in general - add checkstatus function from last semester? yes
     const setNumOfFavourites = function () {
         fetch('/api/favourites/count')
             .then(checkStatus)

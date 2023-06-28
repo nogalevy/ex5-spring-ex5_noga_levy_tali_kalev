@@ -16,7 +16,7 @@ public class Favourite {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @PositiveOrZero(message = JOKE_ID_MANDATORY) //NOGA : or zero ? need to check
+    @PositiveOrZero(message = JOKE_ID_MANDATORY)
     private Long jokeId;
 
     public Favourite(Long jokeId) {

@@ -6,7 +6,7 @@ import java.io.Serializable;
 
 @Component
 public class UserSession implements Serializable {
-    private long userId; // NOGA: Long class? (userId = Long type in repo)
+    private long userId;
     private boolean loggedIn;
 
 public UserSession() {

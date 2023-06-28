@@ -115,7 +115,6 @@ public class JokeApiHandler {
 
     private static String buildOptionsQuery(int op){
         String opStr = "type=";
-        //NOGA: change to switch case?
         if (op == 1) {
             return opStr + "single&";
         }

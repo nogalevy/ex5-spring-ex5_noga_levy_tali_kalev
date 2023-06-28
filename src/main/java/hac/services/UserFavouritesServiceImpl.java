@@ -36,7 +36,6 @@ public class UserFavouritesServiceImpl implements UserFavouritesService {
 
     @Override
     public Integer getNumOfUserFavourites(Long userId) {
-        //NOGA: when to throw Exception ?
         return favouriteRepository.countFavouritesByUserInfo_Id(userId);
 
     }
