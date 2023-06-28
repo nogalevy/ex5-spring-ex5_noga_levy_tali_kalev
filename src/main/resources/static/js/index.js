@@ -111,8 +111,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const buttonIcon = document.getElementById("buttonIcon");
 
     (function (){
-        const isFavourite = addBtn.getAttribute("data-isFavourite"); //NOGA: we can check if contain specific classname
-        mainModule.handleInitialButtonState(isFavourite === "true"); //NOGA
+        const isFavourite = addBtn.getAttribute("data-isFavourite");
+        mainModule.handleInitialButtonState(isFavourite === "true");
     })();
 
     document.getElementById('clickable').addEventListener('click', mainModule.handleFlip);

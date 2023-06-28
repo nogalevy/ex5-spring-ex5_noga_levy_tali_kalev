@@ -28,6 +28,12 @@ public class Favourites {
     @Autowired
     private UserFavouritesService userFavouritesService;
 
+    /**
+     * find the user favourites joke ids and fetch them from joke API
+     * @param limit num of jokes (default = 6)
+     * @param offset num of jokes to skip (default = 0)
+     * @return list of jokes instance
+     */
     @GetMapping("/get")
     public ResponseEntity<List<Joke>> getFavourites(@RequestParam(defaultValue = LIMIT) int limit,
                                                 @RequestParam(defaultValue = DEFAULT_OFFSET) int offset) {
@@ -41,6 +47,12 @@ public class Favourites {
         }
     }
 
+    /**
+     * saves joke id as favourite of the current user
+     * @param jokeId joke id we want to add as user favourite
+     * @return jokeId on success else error code
+     * @throws Exception
+     */
     @PostMapping("/add")
     public synchronized ResponseEntity<Long> addUserFavourite(@RequestBody Long jokeId) throws Exception {
         try {
@@ -53,6 +65,11 @@ public class Favourites {
         }
     }
 
+    /**
+     * delete from favourite the joke id of the current user
+     * @param jokeId int
+     * @return jokeId on success else error code
+     */
     @PostMapping("/delete")
     public synchronized ResponseEntity<Long> deleteUserFavourite(@RequestBody Long jokeId) {
         try {
@@ -65,7 +82,10 @@ public class Favourites {
         }
     }
 
-    //TODO : throw error?
+    /**
+     * count number of user favourites
+     * @return number of favourites on success else error code
+     */
     @GetMapping("/count")
     public synchronized ResponseEntity<Integer> countUserFavourites() {
         try{

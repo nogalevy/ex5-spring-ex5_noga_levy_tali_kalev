@@ -21,7 +21,6 @@ import java.util.List;
 
 import static hac.utils.Constants.LIMIT;
 
-//NOGA: change class + file name ?
 @Controller
 public class Pages {
     @Autowired

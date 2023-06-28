@@ -8,27 +8,25 @@ import java.io.Serializable;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 
-/**
- * a purchase is a record of a user buying a product. You should not need to edit this file
- * but if you feel like you need to, please get in touch with the teacher.
- */
+import static hac.utils.Constants.*;
+
 @Entity
 public class UserInfo implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotEmpty(message = "First name is mandatory")
+    @NotEmpty(message = FIRST_NAME_MANDATORY)
     private String firstName;
 
-    @NotEmpty(message = "Last name is mandatory")
+    @NotEmpty(message = LAST_NAME_MANDATORY)
     private String lastName;
 
-    @NotEmpty(message = "Email is mandatory")
-    @Email(message = "Email is not valid")
+    @NotEmpty(message = EMAIL_MANDATORY)
+    @Email(message = EMAIL_NOT_VALID)
     private String email;
 
-    @NotEmpty(message = "Password is mandatory")
+    @NotEmpty(message = PASSWORD_MANDATORY)
     private String password;
 
     public UserInfo(String firstName, String lastName, String email, String password) {
