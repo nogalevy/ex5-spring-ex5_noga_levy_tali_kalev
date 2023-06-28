@@ -8,13 +8,15 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.data.relational.core.sql.In;
 
+import static hac.utils.Constants.JOKE_ID_MANDATORY;
+
 @Entity
 public class Favourite {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @PositiveOrZero(message = "JOKE_ID_MANDATORY") //NOGA : or zero ? need to check
+    @PositiveOrZero(message = JOKE_ID_MANDATORY) //NOGA : or zero ? need to check
     private Long jokeId;
 
     public Favourite(Long jokeId) {

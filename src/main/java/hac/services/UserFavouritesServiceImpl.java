@@ -6,9 +6,6 @@ import hac.repo.FavouriteRepository;
 import hac.repo.UserInfoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jdbc.core.JdbcAggregateOperations;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,6 +18,12 @@ public class UserFavouritesServiceImpl implements UserFavouritesService {
     @Autowired
     private UserInfoRepository userInfoRepository;
 
+    /**
+     * delete row in table by joke id and user id
+     * @param jokeId long
+     * @param userId long
+     * @throws Exception if favourite not found
+     */
     @Override
     public void deleteUserFavourite(Long jokeId, Long userId) throws Exception {
         Favourite favourite = favouriteRepository.getFavouriteByJokeIdAndUserInfo_Id(jokeId, userId);

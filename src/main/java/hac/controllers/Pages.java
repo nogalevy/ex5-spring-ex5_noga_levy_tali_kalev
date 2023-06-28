@@ -22,7 +22,6 @@ import java.util.List;
 
 import static hac.utils.Constants.LIMIT;
 
-//NOGA: change class + file name ?
 @Controller
 public class Pages {
     @Autowired
@@ -41,17 +40,15 @@ public class Pages {
 
     @GetMapping("/")
     public synchronized String index(Model model) {
-        List<Joke> jokes = JokeApiHandler.getJokesFromApi(currSearchFilter);
-        if (jokes == null) {
-            model.addAttribute("joke", "Something happened...no joke at the moment");
-        } else {
-            Joke joke = jokes.get(0);
-            long userId = currUserSession.getUserId();
-            Boolean isFavourite = userFavouritesService.isFavourite(joke.id(), userId);
+        Joke joke = JokeApiHandler.getJokesFromApi(currSearchFilter);
 
-            Joke responseJoke = new Joke(joke, isFavourite);
-            model.addAttribute("jokeObj", responseJoke);
-        }
+        long userId = currUserSession.getUserId();
+        Boolean isFavourite = userFavouritesService.isFavourite(joke.id(), userId);
+
+        Joke responseJoke = new Joke(joke, isFavourite);
+        System.out.println("=========" + responseJoke);
+        model.addAttribute("jokeObj", responseJoke);
+
         List<String> categories = JokeApiHandler.getCategoriesFromApi();
         model.addAttribute("categories", categories);
         model.addAttribute("searchFilter", currSearchFilter);

@@ -33,11 +33,14 @@ public class Jokes {
     @Autowired
     private UserFavouritesService userFavouritesService;
 
+    /**
+     * get joke from api
+     * @return joke object as string on success else error code
+     */
     @GetMapping("/getJokes")
     public synchronized ResponseEntity<String> getJokes() {
         try {
-            List<Joke> jokes = JokeApiHandler.getJokesFromApi(currSearchFilter);
-            Joke joke = jokes.get(0);
+            Joke joke = JokeApiHandler.getJokesFromApi(currSearchFilter);
             long userId = currUserSession.getUserId();
             Boolean isFavourite = userFavouritesService.isFavourite(joke.id(), userId);
 
@@ -55,6 +58,12 @@ public class Jokes {
         }
     }
 
+    /**
+     * set the search filter object
+     * @param searchFilter search form inputs
+     * @param model model
+     * @return redirect to '/'
+     */
     //tali: do we need some sort of validation on searchFilter?
     @PostMapping("/search")
     public String search(@ModelAttribute SearchFilter searchFilter, Model model) {
