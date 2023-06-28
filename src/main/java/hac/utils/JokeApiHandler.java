@@ -34,16 +34,12 @@ public class JokeApiHandler {
         }
     }
 
-    public static List<Joke> getUserFavouritesJokes(List<Favourite> favouritesList) throws Exception {
-        try {
-            ArrayList<Long> jokeIds = new ArrayList<Long>();
-            for (Favourite fav : favouritesList) {
-                jokeIds.add(fav.getJokeId());
-            }
-            return JokeApiHandler.getJokesByIdsFromApi(jokeIds);
-        } catch (Exception err) {
-            throw new Exception(err);
+    public static List<Joke> getUserFavouritesJokes(List<Favourite> favouritesList){
+        ArrayList<Long> jokeIds = new ArrayList<Long>();
+        for (Favourite fav : favouritesList) {
+            jokeIds.add(fav.getJokeId());
         }
+        return JokeApiHandler.getJokesByIdsFromApi(jokeIds);
     }
 
     public static Joke getJokesFromApi(SearchFilter sf){

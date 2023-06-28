@@ -36,9 +36,7 @@ public class UserFavouritesServiceImpl implements UserFavouritesService {
 
     @Override
     public Integer getNumOfUserFavourites(Long userId) {
-        //NOGA: when to throw Exception ?
         return favouriteRepository.countFavouritesByUserInfo_Id(userId);
-
     }
 
     @Override
@@ -55,11 +53,9 @@ public class UserFavouritesServiceImpl implements UserFavouritesService {
         }).orElseThrow(() -> new UserNotFound());
     }
 
-    public synchronized List<Favourite> getUserFavouritesData(int limit, int offset, Long userId) throws Exception {
+    public synchronized List<Favourite> getUserFavouritesData(int limit, int offset, Long userId) {
         Pageable pageable = new OffsetBasedPageRequest(limit, offset);
-        List<Favourite> userFavourtieData = favouriteRepository.findFavouritesByUserInfo_Id(userId, pageable);
-        if(userFavourtieData == null) throw new Exception("No favourites found");
-        return userFavourtieData;
+        return favouriteRepository.findFavouritesByUserInfo_Id(userId, pageable);
     }
 
     @Override

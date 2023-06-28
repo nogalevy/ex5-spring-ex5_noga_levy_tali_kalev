@@ -40,7 +40,7 @@ public class Favourites {
      */
     @GetMapping("/get")
     public ResponseEntity<List<Joke>> getFavourites(@RequestParam(defaultValue = LIMIT) int limit,
-                                                @RequestParam(defaultValue = DEFAULT_OFFSET) int offset) throws Exception {
+                                                @RequestParam(defaultValue = DEFAULT_OFFSET) int offset){
         List<Favourite> favouritesList = userFavouritesService.getUserFavouritesData(limit, offset, currUserSession.getUserId());
         List<Joke> favourites = JokeApiHandler.getUserFavouritesJokes(favouritesList);
         return ResponseEntity.ok(favourites);
