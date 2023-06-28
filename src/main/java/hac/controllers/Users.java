@@ -1,18 +1,17 @@
 package hac.controllers;
 
 import hac.beans.UserSession;
+import hac.exceptions.UserNotFound;
 import hac.repo.UserInfo;
 import hac.services.UserInfoService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
@@ -31,19 +30,12 @@ public class Users {
     }
 
     @PostMapping("/login")
-    public synchronized String loginUser(@RequestParam("email") String email, @RequestParam("password") String password, RedirectAttributes redirectAttributes) {
+    public synchronized String loginUser(@RequestParam("email") String email, @RequestParam("password") String password) throws UserNotFound {
         Long existingUserId;
-        try{
-            existingUserId = userInfoService.findUser(email, password);
-            currUserSession.setLoggedIn(true);
-            currUserSession.setUserId(existingUserId);
-            return "redirect:/";
-        }catch (Exception error){
-            //tali: instead of catch here, add exception handler for controller
-            //tali: create Exception type for this, the rest of error returns different?
-            redirectAttributes.addFlashAttribute("error", error.getMessage());
-            return "redirect:/users/login";
-        }
+        existingUserId = userInfoService.findUser(email, password);
+        currUserSession.setLoggedIn(true);
+        currUserSession.setUserId(existingUserId);
+        return "redirect:/";
     }
 
     @GetMapping("/register")
@@ -54,7 +46,7 @@ public class Users {
 
     //TODO: delete model
     @PostMapping("/register")
-    public synchronized String registerUser(@Valid UserInfo userInfo, BindingResult result, Model model) {
+    public synchronized String registerUser(@Valid UserInfo userInfo, BindingResult result) throws Exception{
         //retrieve register info from form and check if errors
         if (result.hasErrors()) {
             return "register";
@@ -62,10 +54,23 @@ public class Users {
         try{
             userInfoService.registerUser(userInfo);
             return "redirect:/users/login";
-        }catch (Exception error){
-            //tali: currently catches existing user error -> add more error types
+        }catch (IllegalArgumentException error){
             result.rejectValue("email", null, error.getMessage());
             return "register";
+        }catch (Exception e){
+            throw e;
         }
+    }
+
+    @ExceptionHandler({UserNotFound.class})
+    public String handleUserNotFoundExceptions(UserNotFound e, RedirectAttributes redirectAttributes) {
+        redirectAttributes.addFlashAttribute("error", e.getMessage());
+        return "redirect:/users/login";
+    }
+
+    @ExceptionHandler({Exception.class})
+    public String handleExceptions(Exception e, RedirectAttributes redirectAttributes){
+        redirectAttributes.addFlashAttribute("error","An unexpected error occured: " + e.getMessage());
+        return "redirect:/error";
     }
 }

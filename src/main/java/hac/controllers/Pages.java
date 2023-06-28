@@ -2,6 +2,7 @@ package hac.controllers;
 
 import hac.beans.SearchFilter;
 import hac.beans.UserSession;
+import hac.exceptions.UserNotFound;
 import hac.records.Joke;
 import hac.repo.Favourite;
 import hac.repo.UserInfo;
@@ -9,12 +10,12 @@ import hac.services.UserFavouritesService;
 import hac.services.UserInfoService;
 import hac.utils.JokeApiHandler;
 import jakarta.servlet.http.HttpServletRequest;
+import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
@@ -79,23 +80,18 @@ public class Pages {
     }
 
     @GetMapping("/pages/userprofile")
-    public synchronized String userProfile(Model model) {
+    public synchronized String userProfile(Model model) throws UserNotFound {
         List<String> categories = JokeApiHandler.getCategoriesFromApi();
         model.addAttribute("categories", categories);
         model.addAttribute("searchFilter", currSearchFilter);
 
         //retreive user id from user session
         Long userId = currUserSession.getUserId();
-        try{
-            UserInfo userInfo = userInfoService.getUserById(userId);
-            model.addAttribute("firstName", userInfo.getFirstName());
-            model.addAttribute("lastName", userInfo.getLastName());
-            model.addAttribute("email", userInfo.getEmail());
+        UserInfo userInfo = userInfoService.getUserById(userId);
+        model.addAttribute("firstName", userInfo.getFirstName());
+        model.addAttribute("lastName", userInfo.getLastName());
+        model.addAttribute("email", userInfo.getEmail());
 
-        }catch (Exception error){
-            //todo - handle error
-            System.out.println(error.getMessage());
-        }
         return "userProfile";
     }
 
@@ -104,5 +100,18 @@ public class Pages {
         request.getSession().invalidate();
         redirectAttributes.addFlashAttribute("logoutMessage", "You have been logged out successfully");
         return "redirect:/users/login";
+    }
+
+    @ExceptionHandler({UserNotFound.class})
+    public String handleUserNotFoundExceptions(UserNotFound e,HttpServletRequest request, RedirectAttributes redirectAttributes) {
+        request.getSession().invalidate();
+        redirectAttributes.addFlashAttribute("logoutMessage", e.getMessage() + " please try again later");
+        return "redirect:/users/login";
+    }
+
+    @ExceptionHandler({Exception.class})
+    public String handleExceptions(Exception e, RedirectAttributes redirectAttributes){
+        redirectAttributes.addFlashAttribute("error","An unexpected error occured: " + e.getMessage());
+        return "redirect:/error";
     }
 }

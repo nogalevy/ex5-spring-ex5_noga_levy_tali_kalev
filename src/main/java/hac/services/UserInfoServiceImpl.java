@@ -1,7 +1,9 @@
 package hac.services;
 
+import hac.exceptions.UserNotFound;
 import hac.repo.UserInfo;
 import hac.repo.UserInfoRepository;
+import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -19,13 +21,13 @@ public class UserInfoServiceImpl implements  UserInfoService{
      * @param email string
      * @param password string
      * @return id of user if found
-     * @throws Exception if user not found
+     * @throws UserNotFound if user not found
      */
     @Override
-    public Long findUser(String email, String password) throws Exception {
+    public Long findUser(String email, String password) throws UserNotFound {
         UserInfo existingUser = userInfoRepository.findUserByEmail(email.trim());
         if(existingUser == null || !passwordEncoder.matches(password, existingUser.getPassword())) {
-            throw new Exception("Invalid email or password");
+            throw new UserNotFound("Invalid email or password");
         }
         return existingUser.getId();
     }
@@ -33,13 +35,13 @@ public class UserInfoServiceImpl implements  UserInfoService{
     /**
      * registers user
      * @param userInfo object
-     * @throws Exception if user already exists
+     * @throws IllegalArgumentException if user already exists
      */
     @Override
-    public void registerUser(UserInfo userInfo) throws Exception {
+    public void registerUser(UserInfo userInfo) throws IllegalArgumentException {
         UserInfo existingUser = userInfoRepository.findUserByEmail(userInfo.getEmail().trim());
         if(existingUser != null){
-            throw new Exception("There is already an account registered with that email");
+            throw new IllegalArgumentException("There is already an account registered with that email");
         }
         userInfo.setPassword(passwordEncoder.encode(userInfo.getPassword()));
         userInfoRepository.save(userInfo);
@@ -49,13 +51,13 @@ public class UserInfoServiceImpl implements  UserInfoService{
      * gets user by id
      * @param id long
      * @return user object
-     * @throws Exception if user not found
+     * @throws UserNotFound if user not found
      */
     @Override
-    public UserInfo getUserById(Long id) throws Exception {
+    public UserInfo getUserById(Long id) throws UserNotFound {
         UserInfo existingUser = userInfoRepository.findById(id).orElse(null);
         if(existingUser == null){
-            throw new Exception("User does not exist");
+            throw new UserNotFound();
         }
         return existingUser;
     }
