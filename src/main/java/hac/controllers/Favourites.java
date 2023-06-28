@@ -54,11 +54,9 @@ public class Favourites {
      */
     @PostMapping("/add")
     public synchronized ResponseEntity<Long> addUserFavourite(@RequestBody Long jokeId) throws Exception {
-
         long userId = currUserSession.getUserId();
         userFavouritesService.saveUserFavourite(jokeId, userId);
         return ResponseEntity.ok(jokeId);
-
     }
 
     /**
