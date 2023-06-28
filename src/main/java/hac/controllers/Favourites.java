@@ -1,6 +1,7 @@
 package hac.controllers;
 
 import hac.beans.UserSession;
+import hac.exceptions.UserNotFound;
 import hac.records.Joke;
 import hac.repo.Favourite;
 import hac.services.UserFavouritesService;
@@ -12,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.ui.Model;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -106,4 +108,9 @@ public class Favourites {
         model.addAttribute("error", ex.getMessage());
         return "error";
     }
+//    @ExceptionHandler({UserNotFound.class})
+//    public String handleUserNotFoundExceptions(UserNotFound e, RedirectAttributes redirectAttributes) {
+//        redirectAttributes.addFlashAttribute("error", e.getMessage());
+//        return "redirect:/users/login";
+//    }
 }

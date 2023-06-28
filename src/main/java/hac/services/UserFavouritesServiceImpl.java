@@ -1,6 +1,7 @@
 package hac.services;
 
 import hac.OffsetBasedPageRequest;
+import hac.exceptions.UserNotFound;
 import hac.repo.Favourite;
 import hac.repo.FavouriteRepository;
 import hac.repo.UserInfoRepository;
@@ -51,7 +52,7 @@ public class UserFavouritesServiceImpl implements UserFavouritesService {
         Favourite favourite = userInfoRepository.findById(userId).map(user -> {
             newFavourite.setUserInfo(user);
             return favouriteRepository.save(newFavourite);
-        }).orElseThrow(() -> new Exception("sorry"));
+        }).orElseThrow(() -> new UserNotFound("sorry"));
     }
 
     public synchronized List<Favourite> getUserFavouritesData(int limit, int offset, Long userId) throws Exception {

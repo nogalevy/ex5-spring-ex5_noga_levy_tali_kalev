@@ -29,7 +29,6 @@ public class UserInfo implements Serializable {
     @Email(message = EMAIL_NOT_VALID)
     private String email;
 
-    @Size(min = 2 ,max = 30, message = STRING_LENGTH_2_TO_30)
     @NotEmpty(message = PASSWORD_MANDATORY)
     private String password;
 
