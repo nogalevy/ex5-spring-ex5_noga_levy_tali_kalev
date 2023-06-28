@@ -57,22 +57,16 @@ public class Pages {
 
     @GetMapping("/pages/favourite")
     public synchronized String favourite(Model model) {
-        try{
-            Long userId = currUserSession.getUserId();
-            List<String> categories = JokeApiHandler.getCategoriesFromApi();
-            List<Favourite> favouritesList = userFavouritesService.getUserFavouritesData(Integer.parseInt(LIMIT), 0, currUserSession.getUserId());
-            List<Joke> favourites = JokeApiHandler.getUserFavouritesJokes(favouritesList);
+        Long userId = currUserSession.getUserId();
+        Integer numOfUserFavourites = userFavouritesService.getNumOfUserFavourites(userId);
+        List<String> categories = JokeApiHandler.getCategoriesFromApi();
+        List<Favourite> favouritesList = userFavouritesService.getUserFavouritesData(Integer.parseInt(LIMIT), 0, currUserSession.getUserId());
+        List<Joke> favourites = JokeApiHandler.getUserFavouritesJokes(favouritesList);
 
-            Integer numOfUserFavourites = userFavouritesService.getNumOfUserFavourites(userId);
-
-            model.addAttribute("categories", categories);
-            model.addAttribute("searchFilter", currSearchFilter);
-            model.addAttribute("favourites", favourites);
-            model.addAttribute("showLoadMoreBtn", numOfUserFavourites > Integer.parseInt(LIMIT));
-        }
-        catch (Exception err){
-            //TODO:
-        }
+        model.addAttribute("categories", categories);
+        model.addAttribute("searchFilter", currSearchFilter);
+        model.addAttribute("showLoadMoreBtn", numOfUserFavourites > Integer.parseInt(LIMIT));
+        model.addAttribute("favourites", favourites);
         return "favourite";
     }
 

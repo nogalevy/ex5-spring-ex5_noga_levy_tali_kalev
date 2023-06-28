@@ -39,8 +39,8 @@ public class Favourites {
      * @return list of jokes instance
      */
     @GetMapping("/get")
-    public synchronized ResponseEntity<List<Joke>> getFavourites(@RequestParam(defaultValue = LIMIT) int limit,
-                                                @RequestParam(defaultValue = DEFAULT_OFFSET) int offset) throws Exception {
+    public ResponseEntity<List<Joke>> getFavourites(@RequestParam(defaultValue = LIMIT) int limit,
+                                                @RequestParam(defaultValue = DEFAULT_OFFSET) int offset){
         List<Favourite> favouritesList = userFavouritesService.getUserFavouritesData(limit, offset, currUserSession.getUserId());
         List<Joke> favourites = JokeApiHandler.getUserFavouritesJokes(favouritesList);
         return ResponseEntity.ok(favourites);
