@@ -23,7 +23,7 @@ import static hac.utils.Constants.LIMIT;
 
 //NOGA: change class + file name ?
 @Controller
-public class Default {
+public class Pages {
     @Autowired
     @Qualifier("searchFilterSession")
     private SearchFilter currSearchFilter;
