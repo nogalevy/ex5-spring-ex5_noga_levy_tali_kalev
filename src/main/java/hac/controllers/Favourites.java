@@ -39,7 +39,7 @@ public class Favourites {
      * @return list of jokes instance
      */
     @GetMapping("/get")
-    public ResponseEntity<List<Joke>> getFavourites(@RequestParam(defaultValue = LIMIT) int limit,
+    public synchronized ResponseEntity<List<Joke>> getFavourites(@RequestParam(defaultValue = LIMIT) int limit,
                                                 @RequestParam(defaultValue = DEFAULT_OFFSET) int offset) throws Exception {
         List<Favourite> favouritesList = userFavouritesService.getUserFavouritesData(limit, offset, currUserSession.getUserId());
         List<Joke> favourites = JokeApiHandler.getUserFavouritesJokes(favouritesList);
@@ -54,11 +54,9 @@ public class Favourites {
      */
     @PostMapping("/add")
     public synchronized ResponseEntity<Long> addUserFavourite(@RequestBody Long jokeId) throws Exception {
-
         long userId = currUserSession.getUserId();
         userFavouritesService.saveUserFavourite(jokeId, userId);
         return ResponseEntity.ok(jokeId);
-
     }
 
     /**
