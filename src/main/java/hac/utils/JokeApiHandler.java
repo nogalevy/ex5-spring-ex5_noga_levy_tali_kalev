@@ -49,7 +49,6 @@ public class JokeApiHandler {
 
         if (responseEntity != null &&  responseEntity.getStatusCode().is2xxSuccessful()) {
             Joke newJoke = responseEntity.getBody();
-            System.out.println("newJoke: " + newJoke);
             if (newJoke != null && !newJoke.error()) {
                 return newJoke;
             }

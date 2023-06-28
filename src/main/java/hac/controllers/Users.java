@@ -44,7 +44,6 @@ public class Users {
         return "register";
     }
 
-    //TODO: delete model
     @PostMapping("/register")
     public synchronized String registerUser(@Valid UserInfo userInfo, BindingResult result) throws Exception{
         //retrieve register info from form and check if errors
@@ -54,10 +53,10 @@ public class Users {
         try{
             userInfoService.registerUser(userInfo);
             return "redirect:/users/login";
-        }catch (IllegalArgumentException error){
+        } catch (IllegalArgumentException error){
             result.rejectValue("email", null, error.getMessage());
             return "register";
-        }catch (Exception e){
+        } catch (Exception e){
             throw e;
         }
     }

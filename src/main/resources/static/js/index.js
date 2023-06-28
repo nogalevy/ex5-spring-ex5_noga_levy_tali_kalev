@@ -59,7 +59,7 @@ const mainModule = (function () {
                 handleInitialButtonState(jsonData.isFavourite);
             })
             .catch(error => {
-                console.log(error);
+                toast("errorToast");
             })
             .finally(() => {
                 displayGenerateNewLoader(false);

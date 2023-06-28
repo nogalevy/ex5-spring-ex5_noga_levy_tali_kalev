@@ -46,7 +46,6 @@ public class Pages {
         Boolean isFavourite = userFavouritesService.isFavourite(joke.id(), userId);
 
         Joke responseJoke = new Joke(joke, isFavourite);
-        System.out.println("=========" + responseJoke);
         model.addAttribute("jokeObj", responseJoke);
 
         List<String> categories = JokeApiHandler.getCategoriesFromApi();

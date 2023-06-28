@@ -1,8 +1,8 @@
 import { toast, checkStatus } from './utils.js';
-import { TWO_PART_TYPE } from "./consts.js";
+import {DEFAULT_OFFSET, TWO_PART_TYPE} from "./consts.js";
 
 const cardsModule = (function () {
-    let offset = 6; //TODO : const
+    let offset = DEFAULT_OFFSET;
     let totalNumOfFavourites = 0;
     let loader;
 
@@ -26,8 +26,7 @@ const cardsModule = (function () {
                 totalNumOfFavourites = data;
             })
             .catch(error => {
-                //todo: handle error
-                console.error(error);
+                toast("loadMoreErrorToast");
             });
     }
 
@@ -56,20 +55,16 @@ const cardsModule = (function () {
                     offset -= 1;
                     totalNumOfFavourites -= 1;
                     const cardElement = document.getElementById(`card-${deletedJokeId}`);
-                    if (cardElement) {
-                        cardElement.remove();
-                    }
+                    if (cardElement) cardElement.remove();
                     checkRemoveLoadMoreBtn();
                     checkEmptyList();
                     loadMoreFavourites(true);
-
-                } else {
-                    //TODO: handle error
-                    console.error('Error deleting joke');
+                }
+                else {
+                    toast("deleteErrorToast");
                 }
             })
             .catch(error => {
-                console.error(error);
                 toast("deleteErrorToast");
             }).finally(() => {
                 showElement(currLoader, false)
@@ -104,7 +99,6 @@ const cardsModule = (function () {
             })
             .catch(error => {
                 toast("loadMoreErrorToast");
-                console.log(error);
             })
             .finally(() => {
                 showElement(loader, false);
