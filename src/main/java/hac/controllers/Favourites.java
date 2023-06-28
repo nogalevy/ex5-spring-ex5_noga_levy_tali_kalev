@@ -29,8 +29,8 @@ public class Favourites {
     private UserFavouritesService userFavouritesService;
 
     @GetMapping("/get")
-    public ResponseEntity<List<Joke>> favourite(@RequestParam(defaultValue = LIMIT) int limit,
-                                                @RequestParam(defaultValue = DEFAULT_OFFSET) int offset, Model model) {
+    public ResponseEntity<List<Joke>> getFavourites(@RequestParam(defaultValue = LIMIT) int limit,
+                                                @RequestParam(defaultValue = DEFAULT_OFFSET) int offset) {
         try{
             List<Favourite> favouritesList = userFavouritesService.getUserFavouritesData(limit, offset, currUserSession.getUserId());
             List<Joke> favourites = JokeApiHandler.getUserFavouritesJokes(favouritesList);
