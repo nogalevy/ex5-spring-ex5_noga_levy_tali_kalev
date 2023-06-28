@@ -1,5 +1,5 @@
-import {toast, checkStatus} from './utils.js';
-import {TWO_PART_TYPE} from "./consts.js";
+import { toast, checkStatus } from './utils.js';
+import { TWO_PART_TYPE } from "./consts.js";
 
 const cardsModule = (function () {
     let offset = 6; //TODO : const
@@ -11,13 +11,13 @@ const cardsModule = (function () {
         b.classList.toggle('flipped')
     }
 
-    const initModule = function (){
+    const initModule = function () {
         loader = document.getElementById("pageLoader");
         setNumOfFavourites()
     }
 
     //NOGA: in general - add checkstatus function from last semester? yes
-    const setNumOfFavourites = function (){
+    const setNumOfFavourites = function () {
         fetch('/api/favourites/count')
             .then(checkStatus)
             .then(response => {
@@ -30,6 +30,12 @@ const cardsModule = (function () {
                 //todo: handle error
                 console.error(error);
             });
+    }
+
+    const checkEmptyList = function () {
+        if (totalNumOfFavourites !== 0) return;
+        const msg = document.getElementById("emptyList");
+        msg.classList.remove("d-none")
 
     }
     const deleteJoke = function (jokeId) {
@@ -55,7 +61,9 @@ const cardsModule = (function () {
                         cardElement.remove();
                     }
                     checkRemoveLoadMoreBtn();
+                    checkEmptyList();
                     loadMoreFavourites(true);
+
                 } else {
                     //TODO: handle error
                     console.error('Error deleting joke');
@@ -64,22 +72,22 @@ const cardsModule = (function () {
             .catch(error => {
                 console.error(error);
                 toast("deleteErrorToast");
-            }).finally(()=>{
+            }).finally(() => {
                 showElement(currLoader, false)
                 showElement(currDeleteBtn, true)
 
-        })
+            })
     }
 
-    const checkRemoveLoadMoreBtn =  function (){
+    const checkRemoveLoadMoreBtn = function () {
         const element = document.getElementById("loadMoreContainer");
-        if(totalNumOfFavourites <= offset && element){
+        if (totalNumOfFavourites <= offset && element) {
             element.remove();
         }
     }
 
-    const showElement = function (element, show){
-        if(show) element.classList.remove("visually-hidden");
+    const showElement = function (element, show) {
+        if (show) element.classList.remove("visually-hidden");
         else element.classList.add("visually-hidden");
     }
 
@@ -99,7 +107,7 @@ const cardsModule = (function () {
                 toast("loadMoreErrorToast");
                 console.log(error);
             })
-            .finally(()=>{
+            .finally(() => {
                 showElement(loader, false);
             })
     }
@@ -181,7 +189,7 @@ const cardsModule = (function () {
  */
 (function () {
     document.addEventListener("DOMContentLoaded", () => {
-        (function (){
+        (function () {
             cardsModule.initModule();
         })();
         let loadMoreBtn = document.getElementById("loadMore");
@@ -191,6 +199,6 @@ const cardsModule = (function () {
             cardsModule.addDeleteButtonEvent(card);
         });
 
-        if(loadMoreBtn) loadMoreBtn.addEventListener('click',() => cardsModule.loadMoreFavourites(false));
+        if (loadMoreBtn) loadMoreBtn.addEventListener('click', () => cardsModule.loadMoreFavourites(false));
     })
 }());

@@ -10,20 +10,31 @@
     <script src="https://kit.fontawesome.com/4e3daad3f4.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="/static/style.css">
 </head>
+
 <body>
     <header th:insert="~{fragments/header::header}"> </header>
     <div class="container">
         <h1 class="pt-4 d-flex justify-content-center align-items-center">Favourites</h1>
-        <div id="favouritesContainer" class="row row-cols-1 row-cols-md-2 g-4 mx-3">
-                <div th:each="jokeObj : ${favourites}" th:id="'card-' + ${jokeObj.id}" class="col card-con" th:type="${jokeObj.type}">
-                    <div th:insert="~{fragments/card::card}" th:with="jokeObj=${jokeObj}"></div>
-                    <div class="d-flex justify-content-center m-3 mt-0 rounded-bottom card-footer">
-                        <div th:id="'deleteBtn-' + ${jokeObj.id}" class="w-100 btn delete-btn" th:data-joke-id="${jokeObj.id}">
-                             <i class="fa-solid fa-trash"></i>
-                       </div>
-                        <div th:replace="~{fragments/loader.html::loader(id='deleteLoader-' + ${jokeObj.id})}"></div>
+
+        <div id="emptyList"
+            th:class="${not #lists.isEmpty(favourites)} ? 'd-none text-center mt-4' : 'text-center mt-4'">
+            <p>Do you not like jokes ?</p>
+            <a th:href="@{/}">Go like some</a>
+        </div>
+
+        <div th:if="${not #lists.isEmpty(favourites)}" id="favouritesContainer"
+            class="row row-cols-1 row-cols-md-2 g-4 mx-3">
+            <div th:each="jokeObj : ${favourites}" th:id="'card-' + ${jokeObj.id}" class="col card-con"
+                th:type="${jokeObj.type}">
+                <div th:insert="~{fragments/card::card}" th:with="jokeObj=${jokeObj}"></div>
+                <div class="d-flex justify-content-center m-3 mt-0 rounded-bottom card-footer">
+                    <div th:id="'deleteBtn-' + ${jokeObj.id}" class="w-100 btn delete-btn"
+                        th:data-joke-id="${jokeObj.id}">
+                        <i class="fa-solid fa-trash"></i>
                     </div>
+                    <div th:replace="~{fragments/loader.html::loader(id='deleteLoader-' + ${jokeObj.id})}"></div>
                 </div>
+            </div>
         </div>
 
         <div th:replace="~{fragments/loader.html::loader(id='pageLoader')}"></div>
@@ -33,8 +44,11 @@
         </div>
     </div>
     <div th:insert="~{fragments/menu.html::menu}"> </div>
-    <div th:insert="~{fragments/toast.html::toast(id='deleteErrorToast', msg='could not delete, try again later')}"></div>
-    <div th:insert="~{fragments/toast.html::toast(id='loadMoreErrorToast', msg='could not load more, try again later')}"></div>
+    <div th:insert="~{fragments/toast.html::toast(id='deleteErrorToast', msg='could not delete, try again later')}">
+    </div>
+    <div
+        th:insert="~{fragments/toast.html::toast(id='loadMoreErrorToast', msg='could not load more, try again later')}">
+    </div>
 </body>
 
 

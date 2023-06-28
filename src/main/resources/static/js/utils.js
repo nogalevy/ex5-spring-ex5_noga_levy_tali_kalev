@@ -2,13 +2,13 @@
  *  gets utils id and show it
  * @param toastId utils id to show
  */
-export function toast (toastId){
-    if(!toastId) return;
+export function toast(toastId) {
+    if (!toastId) return;
     const toastLiveExample = document.getElementById(toastId);
-    if(toastLiveExample){
+    if (toastLiveExample) {
         toastLiveExample.classList.add("show");
         toastLiveExample.classList.remove("hide");
-        setTimeout(()=>{
+        setTimeout(() => {
             toastLiveExample.classList.add("hide");
             toastLiveExample.classList.remove("show");
         }, 4000)
@@ -20,7 +20,7 @@ export function toast (toastId){
  * @param response a response from fetching that data we want to check its status
  * @returns {Promise} error if statuscode > 200 else the response
  */
-export function checkStatus (response) {
+export function checkStatus(response) {
     if (response.status >= 200 && response.status < 300) {
         return Promise.resolve(response);
     } else if (response.status === 401) {
