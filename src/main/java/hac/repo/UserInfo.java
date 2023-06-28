@@ -7,6 +7,7 @@ import jakarta.persistence.Id;
 import java.io.Serializable;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 
 import static hac.utils.Constants.*;
 
@@ -16,9 +17,11 @@ public class UserInfo implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Size(min = 2 ,max = 30, message = STRING_LENGTH_2_TO_30)
     @NotEmpty(message = FIRST_NAME_MANDATORY)
     private String firstName;
 
+    @Size(min = 2 ,max = 30, message = STRING_LENGTH_2_TO_30)
     @NotEmpty(message = LAST_NAME_MANDATORY)
     private String lastName;
 
@@ -26,6 +29,7 @@ public class UserInfo implements Serializable {
     @Email(message = EMAIL_NOT_VALID)
     private String email;
 
+    @Size(min = 2 ,max = 30, message = STRING_LENGTH_2_TO_30)
     @NotEmpty(message = PASSWORD_MANDATORY)
     private String password;
 
