@@ -21,16 +21,12 @@
                         <div th:id="'deleteBtn-' + ${jokeObj.id}" class="w-100 btn delete-btn" th:data-joke-id="${jokeObj.id}">
                              <i class="fa-solid fa-trash"></i>
                        </div>
-                        <div th:id="'deleteLoader-' + ${jokeObj.id}" class="visually-hidden">
-                            <div class="spinner-border text-dark" role="status"></div>
-                        </div>
+                        <div th:replace="~{fragments/loader.html::loader(id='deleteLoader-' + ${jokeObj.id})}"></div>
                     </div>
                 </div>
         </div>
 
-        <div id="pageLoader" class="d-flex justify-content-center visually-hidden">
-            <div class="spinner-border text-dark" role="status"></div>
-        </div>
+        <div th:replace="~{fragments/loader.html::loader(id='pageLoader')}"></div>
 
         <div th:if="${showLoadMoreBtn}" id="loadMoreContainer" class="my-3 row justify-content-center">
             <button id="loadMore" class="btn btn-primary col-4">More</button>

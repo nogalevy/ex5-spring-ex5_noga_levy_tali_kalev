@@ -2,7 +2,10 @@ import {toast, checkStatus} from './utils.js';
 import {TWO_PART_TYPE} from "./consts.js";
 
 const mainModule = (function (){
+    let isGenerate = false;
+    let generateNewLoader;
     const handleInitialButtonState = function (isFavourite) {
+        generateNewLoader = document.getElementById("gengenerateNewLoader")
         const buttonIcon = document.getElementById("buttonIcon");
         let addBtn = document.getElementById("addFavourite");
         addBtn.setAttribute("data-isFavourite", isFavourite);
@@ -22,20 +25,26 @@ const mainModule = (function (){
         if(!card.classList.contains('flip-btn')) return;
         flipCard(true);
     }
+    const displayGenerateNewLoader = function (display = false){
+        if(display) generateNewLoader.classList.remove("visually-hidden");
+        else generateNewLoader.classList.add("visually-hidden");
+    }
 
     const generateNew = function(){
+        if(isGenerate) return;
+        isGenerate = true;
         const card = document.getElementById('clickable');
         let cardBox = document.getElementById("cardBox");
         let frontContent = document.getElementById('frontCardContent');
         let backContent = document.getElementById('backCardContent');
+        flipCard();
+        displayGenerateNewLoader(true);
 
         fetch('/api/getJokes')
         .then(checkStatus)
         .then(response => response.json())
         .then(jsonData => {
             cardBox.setAttribute("name", jsonData.id);
-            flipCard();
-            //TODO: add to constantnsnsts!
             if (jsonData.type === TWO_PART_TYPE) {
                 frontContent.innerHTML = jsonData.setup;
                 backContent.innerHTML = jsonData.delivery;
@@ -52,7 +61,10 @@ const mainModule = (function (){
         .catch(error => {
             toast("errorToast");
             console.log(error);
-        });
+        })
+        .finally(()=> {
+            displayGenerateNewLoader(false);
+            isGenerate = false})
     }
 
     /**
