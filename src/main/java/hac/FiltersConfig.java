@@ -24,6 +24,10 @@ public class FiltersConfig implements WebMvcConfigurer {
     @Resource(name = "sessionUser")
     private UserSession sessionUser;
 
+    /**
+     * add interceptors to the registry
+     * @param registry InterceptorRegistry
+     */
     @Override
     public void addInterceptors(InterceptorRegistry registry){
         //Interceptor for unauth users
@@ -32,6 +36,10 @@ public class FiltersConfig implements WebMvcConfigurer {
         registry.addInterceptor(new AuthInterceptor(sessionUser)).addPathPatterns("/pages/**","/api/**", "/");
     }
 
+    /**
+     * add resource handlers to the registry
+     * @param registry ResourceHandlerRegistry
+     */
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry

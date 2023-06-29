@@ -1,7 +1,8 @@
 package hac.exceptions;
 
-import org.apache.catalina.User;
-
+/**
+ * User not found exception
+ */
 public class UserNotFound extends RuntimeException{
     public UserNotFound(String message) {
         super(message);

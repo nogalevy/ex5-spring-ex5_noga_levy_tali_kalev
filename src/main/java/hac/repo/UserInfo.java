@@ -11,6 +11,9 @@ import jakarta.validation.constraints.Size;
 
 import static hac.utils.Constants.*;
 
+/**
+ * User entity saves information on user
+ */
 @Entity
 public class UserInfo implements Serializable {
     @Id
@@ -85,5 +88,3 @@ public class UserInfo implements Serializable {
     }
 
 }
-
-

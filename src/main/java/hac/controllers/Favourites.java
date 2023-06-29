@@ -7,21 +7,21 @@ import hac.repo.Favourite;
 import hac.services.UserFavouritesService;
 import hac.utils.JokeApiHandler;
 import jakarta.servlet.http.HttpServletRequest;
-import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.ui.Model;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
 import static hac.utils.Constants.DEFAULT_OFFSET;
 import static hac.utils.Constants.LIMIT;
 
+/**
+ * Favourites controller
+ */
 @Controller
 @RequestMapping(value = "/api/favourites")
 public class Favourites {
@@ -63,6 +63,7 @@ public class Favourites {
      * delete from favourite the joke id of the current user
      * @param jokeId int
      * @return jokeId on success else error code
+     * @throws Exception if joke id is not in user favourites or user id is not found
      */
     @PostMapping("/delete")
     public synchronized ResponseEntity<Long> deleteUserFavourite(@RequestBody Long jokeId) throws Exception{
@@ -82,12 +83,23 @@ public class Favourites {
         return ResponseEntity.ok(numOfUserFavourites);
     }
 
+    /**
+     * Handles user not found exception
+     * @param e exception
+     * @param request http request
+     * @return error message
+     */
     @ExceptionHandler({UserNotFound.class})
     public ResponseEntity<String> handleUserNotFoundExceptions(UserNotFound e, HttpServletRequest request) {
-        request.getSession().invalidate();
+        request.getSession().invalidate(); //ends session -> signs out user
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
     }
 
+    /**
+     * Handles all other exceptions
+     * @param e exception
+     * @return error message
+     */
     @ExceptionHandler({Exception.class})
     public ResponseEntity<String> handleValidationExceptions(Exception e) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());

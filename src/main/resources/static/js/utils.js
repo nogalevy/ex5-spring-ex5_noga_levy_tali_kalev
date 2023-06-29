@@ -19,6 +19,7 @@ export function toast(toastId) {
  * check the status code of fetch request
  * @param response a response from fetching that data we want to check its status
  * @returns {Promise} error if statuscode > 200 else the response
+ * if status code is 401, then signed out, redirects to login page
  */
 export function checkStatus(response) {
     if (response.status >= 200 && response.status < 300) {

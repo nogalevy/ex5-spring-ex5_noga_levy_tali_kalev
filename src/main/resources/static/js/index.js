@@ -1,10 +1,18 @@
 import { toast, checkStatus } from './utils.js';
 import { TWO_PART_TYPE } from "./consts.js";
 
+/**
+ * This module is responsible for the main page.
+ * @type {{generateNew: generateNew, handleFlip: handleFlip, handleInitialButtonState: handleInitialButtonState}}
+ */
 const mainModule = (function () {
     let isGenerate = false;
     let generateNewLoader;
 
+    /**
+     * This function is responsible for setting the initial state of the like button.
+     * @param isFavourite - boolean. true if the joke is favourite, false otherwise
+     */
     const handleInitialButtonState = function (isFavourite) {
         generateNewLoader = document.getElementById("gengenerateNewLoader")
         const buttonIcon = document.getElementById("buttonIcon");
@@ -21,17 +29,28 @@ const mainModule = (function () {
         }
     }
 
+    /**
+     * This function is responsible for flipping the card.
+     * @param e - event
+     */
     const handleFlip = function (e) {
         const card = document.getElementById('clickable');
         if (!card.classList.contains('flip-btn')) return;
         flipCard(true);
     }
 
+    /**
+     * This function is responsible for displaying the loader.
+     * @param display - boolean. true if we want to display the loader, false otherwise
+     */
     const displayGenerateNewLoader = function (display = false) {
         if (display) generateNewLoader.classList.remove("visually-hidden");
         else generateNewLoader.classList.add("visually-hidden");
     }
 
+    /**
+     * This function generates a new joke by requesting it from the server.
+     */
     const generateNew = function () {
         if (isGenerate) return;
         isGenerate = true;
@@ -70,7 +89,7 @@ const mainModule = (function () {
     }
 
     /**
-     *
+     * This function is responsible for flipping the card.
      * @param toggle boolean . true if we want to toggle the card. false if just want to force cover it
      */
     const flipCard = function (toggle = false) {
@@ -82,6 +101,9 @@ const mainModule = (function () {
         }
     }
 
+    /**
+     * This function is responsible for adding a joke to the favourites.
+     */
     const add = function () {
         let cardBox = document.getElementById("cardBox");
         let jokeId = cardBox.getAttribute("name");

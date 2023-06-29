@@ -4,12 +4,15 @@ import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
 
+/**
+ * Save users session data
+ */
 @Component
 public class UserSession implements Serializable {
     private long userId;
     private boolean loggedIn;
 
-public UserSession() {
+    public UserSession() {
         this.loggedIn = false;
     }
 
@@ -18,6 +21,7 @@ public UserSession() {
         this.loggedIn = false;
     }
 
+    // Getters and setters for the members
     public long getUserId() {
         return userId;
     }

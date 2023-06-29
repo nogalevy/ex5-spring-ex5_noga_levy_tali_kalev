@@ -16,6 +16,14 @@ public class AuthInterceptor implements HandlerInterceptor {
         userSession = u;
     }
 
+    /**
+     * Check if user is logged in, if not redirect to login page
+     * @param request http request
+     * @param response http response
+     * @param handler handler
+     * @return boolean
+     * @throws Exception exception
+     */
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
             throws Exception {
@@ -26,17 +34,4 @@ public class AuthInterceptor implements HandlerInterceptor {
         }
         return true;
     }
-
-    @Override
-    public void postHandle(HttpServletRequest request, HttpServletResponse response, //
-                           Object handler, ModelAndView modelAndView) throws Exception {
-
-    }
-
-    @Override
-    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, //
-                                Object handler, Exception ex) throws Exception {
-
-    }
-
 }

@@ -7,7 +7,7 @@ import java.io.Serializable;
 import static hac.utils.Constants.INITIAL_SEARCH_FILTER;
 
 /**
- * save the search filter form data
+ * Save users search filter form data
  */
 @Component
 public class SearchFilter implements Serializable {

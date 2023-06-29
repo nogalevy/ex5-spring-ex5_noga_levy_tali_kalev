@@ -11,6 +11,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * User favourites service implementation
+ */
 @Service
 public class UserFavouritesServiceImpl implements UserFavouritesService {
     @Autowired
@@ -34,11 +37,22 @@ public class UserFavouritesServiceImpl implements UserFavouritesService {
         favouriteRepository.delete(favourite);
     }
 
+    /**
+     * get number of user favourites
+     * @param userId long
+     * @return Integer
+     */
     @Override
     public Integer getNumOfUserFavourites(Long userId) {
         return favouriteRepository.countFavouritesByUserInfo_Id(userId);
     }
 
+    /**
+     * save user favourite
+     * @param jokeId long
+     * @param userId long
+     * @throws Exception if favourite already exist or if user not found
+     */
     @Override
     public void saveUserFavourite(Long jokeId, Long userId) throws Exception {
         Favourite newFavourite = new Favourite(jokeId);
@@ -53,11 +67,24 @@ public class UserFavouritesServiceImpl implements UserFavouritesService {
         }).orElseThrow(() -> new UserNotFound());
     }
 
+    /**
+     * get user favourites data
+     * @param limit int
+     * @param offset int
+     * @param userId long
+     * @return List of favourites
+     */
     public synchronized List<Favourite> getUserFavouritesData(int limit, int offset, Long userId) {
         Pageable pageable = new OffsetBasedPageRequest(limit, offset);
         return favouriteRepository.findFavouritesByUserInfo_Id(userId, pageable);
     }
 
+    /**
+     * check if joke is favourite
+     * @param jokeId Long
+     * @param userId Long
+     * @return Boolean
+     */
     @Override
     public Boolean isFavourite(Long jokeId, Long userId) {
         Favourite favourite = favouriteRepository.getFavouriteByJokeIdAndUserInfo_Id(jokeId, userId);

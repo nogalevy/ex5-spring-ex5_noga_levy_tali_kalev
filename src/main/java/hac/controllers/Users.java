@@ -4,7 +4,6 @@ import hac.beans.UserSession;
 import hac.exceptions.UserNotFound;
 import hac.repo.UserInfo;
 import hac.services.UserInfoService;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -14,6 +13,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+/**
+ * Users controller
+ */
 @Controller
 @RequestMapping(value = "/users")
 public class Users {
@@ -24,11 +26,22 @@ public class Users {
     @Autowired
     private UserInfoService userInfoService;
 
+    /**
+     * renders login page
+     * @return login page
+     */
     @GetMapping("/login")
     public String login() {
         return "login";
     }
 
+    /**
+     * logs in user and redirects to index page
+     * @param email string
+     * @param password string
+     * @return index page
+     * @throws UserNotFound exception if not found in table
+     */
     @PostMapping("/login")
     public synchronized String loginUser(@RequestParam("email") String email, @RequestParam("password") String password) throws UserNotFound {
         Long existingUserId;
@@ -38,12 +51,24 @@ public class Users {
         return "redirect:/";
     }
 
+    /**
+     * renders user register page
+     * @param model model
+     * @return register page
+     */
     @GetMapping("/register")
     public String register(Model model) {
         model.addAttribute(new UserInfo());
         return "register";
     }
 
+    /**
+     * retrieves register info from form and checks if errors exist, if not registers user and redirects to login page
+     * @param userInfo user info object
+     * @param result binding result
+     * @return login page
+     * @throws Exception exception if issue with adding to table other than user already existing
+     */
     @PostMapping("/register")
     public synchronized String registerUser(@Valid UserInfo userInfo, BindingResult result) throws Exception{
         //retrieve register info from form and check if errors
@@ -61,12 +86,24 @@ public class Users {
         }
     }
 
+    /**
+     * redirects to login page with error message
+     * @param e exception
+     * @param redirectAttributes redirect attributes
+     * @return login page
+     */
     @ExceptionHandler({UserNotFound.class})
     public String handleUserNotFoundExceptions(UserNotFound e, RedirectAttributes redirectAttributes) {
         redirectAttributes.addFlashAttribute("error", e.getMessage());
         return "redirect:/users/login";
     }
 
+    /**
+     * handles all other exceptions, redirects to error page with error message
+     * @param e exception
+     * @param redirectAttributes redirect attributes
+     * @return error page
+     */
     @ExceptionHandler({Exception.class})
     public String handleExceptions(Exception e, RedirectAttributes redirectAttributes){
         redirectAttributes.addFlashAttribute("error","An unexpected error occured: " + e.getMessage());

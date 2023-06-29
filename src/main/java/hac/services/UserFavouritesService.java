@@ -4,6 +4,9 @@ import hac.repo.Favourite;
 
 import java.util.List;
 
+/**
+ * User favourites service interface
+ */
 public interface UserFavouritesService {
     void deleteUserFavourite(Long jokeId, Long userId) throws Exception;
     Integer getNumOfUserFavourites(Long userId);

@@ -3,11 +3,13 @@ package hac.services;
 import hac.exceptions.UserNotFound;
 import hac.repo.UserInfo;
 import hac.repo.UserInfoRepository;
-import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+/**
+ * User info service implementation
+ */
 @Service
 public class UserInfoServiceImpl implements  UserInfoService{
 

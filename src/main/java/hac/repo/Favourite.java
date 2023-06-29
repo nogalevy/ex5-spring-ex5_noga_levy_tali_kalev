@@ -2,14 +2,15 @@ package hac.repo;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.PositiveOrZero;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
-import org.springframework.data.relational.core.sql.In;
 
 import static hac.utils.Constants.JOKE_ID_MANDATORY;
 
+/**
+ * Favourite entity
+ */
 @Entity
 public class Favourite {
     @Id
@@ -27,12 +28,14 @@ public class Favourite {
 
     }
 
+    //relationship with UserInfo
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "userId", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnore
     private UserInfo userInfo;
 
+    //getters and setters
     public Long getJokeId() {
         return jokeId;
     }

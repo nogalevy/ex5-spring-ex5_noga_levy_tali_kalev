@@ -1,14 +1,17 @@
 package hac.utils;
 
+/**
+ * Constants class
+ */
 public final class Constants {
     private Constants(){}
-    //
+    // Joke API constants for retrieving favourites
     public static final String LIMIT = "6";
     public static final String DEFAULT_OFFSET = "0";
-    //
+    // Initial search filter chosen option for retrieving from joke API
     public static final String INITIAL_SEARCH_FILTER = "Any";
 
-    // validation msgs
+    // Validation messages
     public static final String FIRST_NAME_MANDATORY = "First name is mandatory";
     public static final String LAST_NAME_MANDATORY = "Last name is mandatory";
     public static final String EMAIL_MANDATORY = "Email is mandatory";

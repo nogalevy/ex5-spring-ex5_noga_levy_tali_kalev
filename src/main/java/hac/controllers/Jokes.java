@@ -17,8 +17,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.util.List;
-
+/**
+ * Jokes controller
+ */
 @Controller
 @RequestMapping(value = "/api")
 public class Jokes {

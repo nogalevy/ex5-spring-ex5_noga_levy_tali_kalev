@@ -10,7 +10,6 @@ import hac.services.UserFavouritesService;
 import hac.services.UserInfoService;
 import hac.utils.JokeApiHandler;
 import jakarta.servlet.http.HttpServletRequest;
-import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -22,6 +21,9 @@ import java.util.List;
 
 import static hac.utils.Constants.LIMIT;
 
+/**
+ * Pages controller
+ */
 @Controller
 public class Pages {
     @Autowired
@@ -38,6 +40,11 @@ public class Pages {
     @Autowired
     private UserFavouritesService userFavouritesService;
 
+    /**
+     * retrieves joke from joke API and renders it to index page
+     * @param model model
+     * @return index page
+     */
     @GetMapping("/")
     public synchronized String index(Model model) {
         Joke joke = JokeApiHandler.getJokesFromApi(currSearchFilter);
@@ -54,6 +61,11 @@ public class Pages {
         return "index";
     }
 
+    /**
+     * retrieves user's favourited jokes from joke API and renders it to favourite page
+     * @param model model
+     * @return favourite page
+     */
     @GetMapping("/pages/favourite")
     public synchronized String favourite(Model model) {
         Long userId = currUserSession.getUserId();
@@ -69,6 +81,12 @@ public class Pages {
         return "favourite";
     }
 
+    /**
+     * retrieves user's information and renders to user profile page
+     * @param model model
+     * @return user profile page
+     * @throws UserNotFound exception if user is not found in table
+     */
     @GetMapping("/pages/userprofile")
     public synchronized String userProfile(Model model) throws UserNotFound {
         List<String> categories = JokeApiHandler.getCategoriesFromApi();
@@ -85,6 +103,12 @@ public class Pages {
         return "userProfile";
     }
 
+    /**
+     * logs out user and redirects to login page
+     * @param request request
+     * @param redirectAttributes redirectAttributes
+     * @return login page
+     */
     @PostMapping("/pages/logout")
     public String logoutUser(HttpServletRequest request,  RedirectAttributes redirectAttributes){
         request.getSession().invalidate();
@@ -92,6 +116,13 @@ public class Pages {
         return "redirect:/users/login";
     }
 
+    /**
+     * handles user not found exception
+     * @param e exception
+     * @param request request
+     * @param redirectAttributes redirectAttributes
+     * @return login page
+     */
     @ExceptionHandler({UserNotFound.class})
     public String handleUserNotFoundExceptions(UserNotFound e,HttpServletRequest request, RedirectAttributes redirectAttributes) {
         request.getSession().invalidate();
@@ -99,6 +130,12 @@ public class Pages {
         return "redirect:/users/login";
     }
 
+    /**
+     * handles all exceptions
+     * @param e exception
+     * @param redirectAttributes redirectAttributes
+     * @return error page
+     */
     @ExceptionHandler({Exception.class})
     public String handleExceptions(Exception e, RedirectAttributes redirectAttributes){
         redirectAttributes.addFlashAttribute("error","An unexpected error occured: " + e.getMessage());
