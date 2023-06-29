@@ -2,7 +2,6 @@ package hac.filters;
 
 import org.springframework.web.servlet.HandlerInterceptor;
 import hac.beans.UserSession;
-import org.springframework.web.servlet.ModelAndView;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
