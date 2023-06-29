@@ -128,22 +128,31 @@ const mainModule = (function () {
     }
 })()
 
+// --------------------------------------------------------------
+/**
+ * upon loading the page, we bind handlers
+ */
 document.addEventListener("DOMContentLoaded", () => {
+
     let addBtn = document.getElementById("addFavourite");
     const buttonIcon = document.getElementById("buttonIcon");
 
+    // init event handler on buttons
     (function () {
         const isFavourite = addBtn.getAttribute("data-isFavourite");
         mainModule.handleInitialButtonState(isFavourite === "true");
     })();
 
+    // click events
     document.getElementById('clickable').addEventListener('click', mainModule.handleFlip);
     document.getElementById("generate").addEventListener("click", mainModule.generateNew);
 
+    // hover event on button
     addBtn.addEventListener('mouseenter', () => {
         buttonIcon.classList.add("fa-beat");
     });
 
+    // hover event on button
     addBtn.addEventListener('mouseleave', () => {
         buttonIcon.classList.remove("fa-beat");
     });

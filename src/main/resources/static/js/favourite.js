@@ -12,8 +12,8 @@ const cardsModule = (function () {
 
     /**
      * This function is responsible for flipping the card.
-     * @param f
-     * @param b
+     * @param f html element front side
+     * @param b html element back side
      */
     const handleFlip = function (f, b) {
         f.classList.toggle('flipped')
@@ -64,7 +64,7 @@ const cardsModule = (function () {
         showElement(currLoader, true)
         showElement(currDeleteBtn, false)
         fetch('/api/favourites/delete', {
-            method: 'POST',
+            method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -141,7 +141,7 @@ const cardsModule = (function () {
 
     /**
      * Function adds more favourites to DOM
-     * @param data
+     * @param data object
      */
     const addCards = function (data) {
         data.forEach((fav) => {
@@ -205,7 +205,7 @@ const cardsModule = (function () {
 
     /**
      * Function handles event of clicking on delete button
-     * @param button
+     * @param button html element
      */
     const deleteButtonEvent = function (button) {
         const jokeId = button.getAttribute('data-joke-id');
@@ -232,20 +232,24 @@ const cardsModule = (function () {
 
 // --------------------------------------------------------------
 /**
- * upon loading the page, we bind handlers to the form and the button
+ * upon loading the page, we bind handlers
  */
 (function () {
     document.addEventListener("DOMContentLoaded", () => {
+        // init module data after DOM loaded
         (function () {
             cardsModule.initModule();
         })();
+
         let loadMoreBtn = document.getElementById("loadMore");
+        // add events to cards
         document.querySelectorAll('.card-con').forEach(card => {
             if (card.getAttribute("type") === 'twopart')
                 cardsModule.addCardEvent(card);
             cardsModule.addDeleteButtonEvent(card);
         });
 
+        // add click event to load more if needed
         if (loadMoreBtn) loadMoreBtn.addEventListener('click', () => cardsModule.loadMoreFavourites(false));
     })
 }());

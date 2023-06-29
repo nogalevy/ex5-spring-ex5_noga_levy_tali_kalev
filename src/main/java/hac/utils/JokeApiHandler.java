@@ -31,13 +31,12 @@ public class JokeApiHandler {
     private static  <T> ResponseEntity<T> GetRestExchange(String url, Class<T> resType){
         RestTemplate restTemplate = new RestTemplate();
         try{
-
-        return restTemplate.exchange(
-                url,
-                HttpMethod.GET,
-                null,
-                resType
-        );
+            return restTemplate.exchange(
+                    url,
+                    HttpMethod.GET,
+                    null,
+                    resType
+            );
         }
         catch (Exception err){
             return null;
@@ -128,7 +127,6 @@ public class JokeApiHandler {
      */
     public static Joke getJokeById(Long id){
         final String uri = GET_BY_ID_URI_QUERY + id;
-
         return getJokebyURI(uri);
     }
 

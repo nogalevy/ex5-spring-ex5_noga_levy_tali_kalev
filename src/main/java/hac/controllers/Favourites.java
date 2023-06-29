@@ -65,7 +65,7 @@ public class Favourites {
      * @return jokeId on success else error code
      * @throws Exception if joke id is not in user favourites or user id is not found
      */
-    @PostMapping("/delete")
+    @DeleteMapping("/delete")
     public synchronized ResponseEntity<Long> deleteUserFavourite(@RequestBody Long jokeId) throws Exception{
         long userId = currUserSession.getUserId();
         userFavouritesService.deleteUserFavourite(jokeId, userId);

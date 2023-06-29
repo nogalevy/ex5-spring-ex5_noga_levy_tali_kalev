@@ -7,10 +7,13 @@ import org.springframework.data.domain.Sort;
 public class OffsetBasedPageRequest implements Pageable {
     private final int offset;
     private final int limit;
-
-    // Constructor could be expanded if sorting is needed
     private Sort sort = null;
 
+    /**
+     * constructor
+     * @param limit int num of elements to get
+     * @param offset int num of elements to skip
+     */
     public OffsetBasedPageRequest(int limit, int offset) {
         if (limit < 1) {
             throw new IllegalArgumentException("Limit must not be less than one!");
@@ -23,6 +26,7 @@ public class OffsetBasedPageRequest implements Pageable {
         this.offset = offset;
     }
 
+    // getters and setters
     @Override
     public int getPageNumber() { return offset/limit; }
 
@@ -41,7 +45,6 @@ public class OffsetBasedPageRequest implements Pageable {
     }
 
     public Pageable previous() {
-        // The integers are positive. Subtracting does not let them become bigger than integer.
         return hasPrevious() ?
                 new OffsetBasedPageRequest(getPageSize(), (int) (getOffset() - getPageSize())): this;
     }
