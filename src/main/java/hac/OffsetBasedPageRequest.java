@@ -3,7 +3,6 @@ package hac;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
-//NOGA : https://blog.felix-seifert.com/limit-and-offset-spring-data-jpa-repositories/
 public class OffsetBasedPageRequest implements Pageable {
     private final static String ILLEGAL_LIMIT_ERROR_MSG = "Limit must not be less than one!";
     private final static String ILLEGAL_OFFSET_ERROR_MSG = "Offset index must not be less than zero!";
