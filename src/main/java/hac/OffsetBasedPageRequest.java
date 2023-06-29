@@ -5,6 +5,8 @@ import org.springframework.data.domain.Sort;
 
 //NOGA : https://blog.felix-seifert.com/limit-and-offset-spring-data-jpa-repositories/
 public class OffsetBasedPageRequest implements Pageable {
+    private final static String ILLEGAL_LIMIT_ERROR_MSG = "Limit must not be less than one!";
+    private final static String ILLEGAL_OFFSET_ERROR_MSG = "Offset index must not be less than zero!";
     private final int offset;
     private final int limit;
     private Sort sort = null;
@@ -16,10 +18,10 @@ public class OffsetBasedPageRequest implements Pageable {
      */
     public OffsetBasedPageRequest(int limit, int offset) {
         if (limit < 1) {
-            throw new IllegalArgumentException("Limit must not be less than one!");
+            throw new IllegalArgumentException(ILLEGAL_LIMIT_ERROR_MSG);
         }
         if (offset < 0) {
-            throw new IllegalArgumentException("Offset index must not be less than zero!");
+            throw new IllegalArgumentException(ILLEGAL_OFFSET_ERROR_MSG);
         }
         this.sort = sort.by(Sort.Direction.ASC, "id");
         this.limit = limit;

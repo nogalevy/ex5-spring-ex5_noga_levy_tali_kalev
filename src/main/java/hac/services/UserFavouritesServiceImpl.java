@@ -11,6 +11,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import static hac.utils.Constants.FAVOURITE_DATA_ERROR_MSG;
+import static hac.utils.Constants.FAVOURITE_EXIST_ERROR_MSG;
+
 /**
  * User favourites service implementation
  */
@@ -32,7 +35,7 @@ public class UserFavouritesServiceImpl implements UserFavouritesService {
     public void deleteUserFavourite(Long jokeId, Long userId) throws Exception {
         Favourite favourite = favouriteRepository.getFavouriteByJokeIdAndUserInfo_Id(jokeId, userId);
         if (favourite == null) {
-            throw new Exception("Cannot find favourite with the given jokeId and userId");
+            throw new Exception(FAVOURITE_DATA_ERROR_MSG);
         }
         favouriteRepository.delete(favourite);
     }
@@ -59,7 +62,7 @@ public class UserFavouritesServiceImpl implements UserFavouritesService {
         Favourite isExist = favouriteRepository.getFavouriteByJokeIdAndUserInfo_Id(jokeId, userId);
 
         //checks if already exist in db
-        if (isExist != null) throw new Exception("favourite already exist");
+        if (isExist != null) throw new Exception(FAVOURITE_EXIST_ERROR_MSG);
 
         Favourite favourite = userInfoRepository.findById(userId).map(user -> {
             newFavourite.setUserInfo(user);

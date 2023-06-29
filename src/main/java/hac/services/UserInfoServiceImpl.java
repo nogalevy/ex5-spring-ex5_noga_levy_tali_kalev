@@ -7,6 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import static hac.utils.Constants.USER_EMAIL_EXIST_ERROR_MSG;
+import static hac.utils.Constants.USER_INVALID_LOGIN_ERROR_MSG;
+
 /**
  * User info service implementation
  */
@@ -29,7 +32,7 @@ public class UserInfoServiceImpl implements  UserInfoService{
     public Long findUser(String email, String password) throws UserNotFound {
         UserInfo existingUser = userInfoRepository.findUserByEmail(email.trim());
         if(existingUser == null || !passwordEncoder.matches(password, existingUser.getPassword())) {
-            throw new UserNotFound("Invalid email or password");
+            throw new UserNotFound(USER_INVALID_LOGIN_ERROR_MSG);
         }
         return existingUser.getId();
     }
@@ -43,7 +46,7 @@ public class UserInfoServiceImpl implements  UserInfoService{
     public void registerUser(UserInfo userInfo) throws IllegalArgumentException {
         UserInfo existingUser = userInfoRepository.findUserByEmail(userInfo.getEmail().trim());
         if(existingUser != null){
-            throw new IllegalArgumentException("There is already an account registered with that email");
+            throw new IllegalArgumentException(USER_EMAIL_EXIST_ERROR_MSG);
         }
         userInfo.setPassword(passwordEncoder.encode(userInfo.getPassword()));
         userInfoRepository.save(userInfo);

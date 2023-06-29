@@ -22,4 +22,10 @@ public final class Constants {
     public static final String JOKE_ID_MANDATORY = "Joke id is mandatory";
     public static final String STRING_LENGTH_2_TO_30 = "Must be between 2 and 30 characters";
 
+    // general exception messages
+    public static final String FAVOURITE_DATA_ERROR_MSG = "Cannot find favourite with the given jokeId and userId";
+    public static final String FAVOURITE_EXIST_ERROR_MSG = "favourite already exist";
+    public static final String USER_EMAIL_EXIST_ERROR_MSG = "There is already an account registered with that email";
+    public static final String USER_INVALID_LOGIN_ERROR_MSG = "Invalid email or password";
+
 }
